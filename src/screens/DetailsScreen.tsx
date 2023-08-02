@@ -9,6 +9,7 @@ import { useTheme } from "@react-navigation/native";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
@@ -27,7 +28,7 @@ const DetailsScreen = ({
     <View style={{ flex: 1 }}>
       <Image
         source={{
-          uri: "https://images.unsplash.com/photo-1571945153237-4929e783af4a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
+          uri: "https://wimpykid.com/wp-content/uploads/2023/02/DWK18_3D-Cover_HiRes.png",
         }}
         style={{ flex: 1 }}
       />
@@ -36,7 +37,7 @@ const DetailsScreen = ({
         edges={["top"]}
         style={{ position: "absolute", top: 0, left: 0, right: 0 }}
       >
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <View
           style={{
             flexDirection: "row",
@@ -52,12 +53,12 @@ const DetailsScreen = ({
               aspectRatio: 1,
               alignItems: "center",
               justifyContent: "center",
-              borderRadius: 52,
-              borderWidth: 1,
-              borderColor: "#fff",
+              borderRadius: 32,
+              borderWidth: 3,
+              borderColor: "#000",
             }}
           >
-            <Icons name="arrow-back" size={24} color={"#fff"} />
+            <Icons name="arrow-back" size={34} color={"#000"} />
           </TouchableOpacity>
           <View style={{ flex: 1 }} />
           <TouchableOpacity
@@ -67,11 +68,11 @@ const DetailsScreen = ({
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 52,
-              borderWidth: 1,
-              borderColor: "#fff",
+              borderWidth: 3,
+              borderColor: "#000",
             }}
           >
-            <Icons name="favorite-border" size={24} color={"#fff"} />
+            <Icons name="favorite-border" size={34} color={"#000"} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -80,11 +81,11 @@ const DetailsScreen = ({
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 52,
-              borderWidth: 1,
-              borderColor: "#fff",
+              borderWidth: 3,
+              borderColor: "#000",
             }}
           >
-            <Icons name="add-shopping-cart" size={24} color={"#fff"} />
+            <Icons name="add-shopping-cart" size={34} color={"#000"} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -93,19 +94,19 @@ const DetailsScreen = ({
         detached
         snapPoints={[64, 500]}
         index={0}
-        style={{ marginHorizontal: 20 }}
-        bottomInset={insets.bottom + 20}
+        style={{ marginHorizontal: 10 }}
+        bottomInset={insets.bottom + 10}
         backgroundStyle={{
-          borderRadius: 24,
+          borderRadius: 30,
           backgroundColor: colors.background,
         }}
         handleIndicatorStyle={{
-          backgroundColor: colors.primary,
+          backgroundColor: colors.text,
         }}
       >
         <View style={{ padding: 16, gap: 16, flex: 1 }}>
-          <Text style={{ fontSize: 20, fontWeight: "600", color: colors.text }}>
-            PUMA Everyday Hussle
+          <Text style={{ fontSize: 27, fontWeight: "700", color: colors.text }}>
+            Diary of a Wimpy Kid
           </Text>
 
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -116,7 +117,7 @@ const DetailsScreen = ({
                     key={i}
                     name={i < 3 ? "star" : "star-border"}
                     color="#facc15"
-                    size={20}
+                    size={26}
                   />
                 ))}
               </View>
@@ -139,7 +140,7 @@ const DetailsScreen = ({
                 gap: 6,
                 backgroundColor: colors.primary,
                 padding: 6,
-                borderRadius: 100,
+                borderRadius: 80,
               }}
             >
               <TouchableOpacity
@@ -180,57 +181,59 @@ const DetailsScreen = ({
             </View>
           </View>
 
-          <View>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View>            
+            <View style={{ flexDirection: "row", alignItems: "center" }}>  
+            <TouchableOpacity style={{
+              width: 60,
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: "#000",
+            }}
+          >       
+            <MaterialIcons name="menu-book" size={44} color="black" />
+            </TouchableOpacity>   
               <Text
                 style={{
                   flex: 1,
-                  fontSize: 16,
-                  fontWeight: "600",
+                  fontSize: 28,
+                  fontWeight: "400",
                   color: colors.text,
-                  textTransform: "uppercase",
+                  padding: 10,
                 }}
               >
-                Model is 6'1'', Size M
-              </Text>
-              <Text style={{ color: colors.text, opacity: 0.5 }}>
-                Size guide
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 6,
-                marginTop: 6,
-              }}
-            >
-              {SIZES.map((s, i) => (
-                <TouchableOpacity
-                  key={i}
-                  onPress={() => setSize(s)}
-                  style={{
-                    width: 44,
-                    height: 44,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: s === size ? colors.primary : colors.card,
-                    borderRadius: 44,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: s === size ? colors.card : colors.text,
-                      fontWeight: "600",
-                      fontSize: 16,
-                    }}
-                  >
-                    {s}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+                   Read the book...
+              </Text>                      
+            </View>            
+          </View>
+          <View>            
+            <View style={{ flexDirection: "row", alignItems: "center" }}>  
+            <TouchableOpacity style={{
+              width: 60,
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: "#000",
+            }}
+          >       
+            <MaterialIcons name="volume-up" size={44} color="black" />
+            </TouchableOpacity>   
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 28,
+                  fontWeight: "400",
+                  color: colors.text,
+                  padding: 10,
+                }}
+              >
+                   Get the Audio...
+              </Text>                      
+            </View>            
           </View>
 
           <View>
@@ -242,70 +245,35 @@ const DetailsScreen = ({
                 color: colors.text,
               }}
             >
-              Description
+              Summary:
             </Text>
             <Text
               style={{ color: colors.text, opacity: 0.75 }}
               numberOfLines={3}
             >
-              Aute magna dolore sint ipsum dolor fugiat. Ad magna ad elit labore
-              culpa sunt sint laboris consectetur sunt. Lorem excepteur occaecat
-              reprehenderit nostrud culpa ad ex exercitation tempor.
+              Diary of a Wimpy Kid is a humorous and engaging coming-of-age book series that follows the misadventures of a middle school boy named Greg Heffley as he navigates the challenges of growing up.
             </Text>
           </View>
-
-          <View style={{ flex: 1 }} />
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{ color: colors.text, opacity: 0.75, marginBottom: 4 }}
-              >
-                Total
-              </Text>
-              <Text
-                style={{ color: colors.text, fontSize: 18, fontWeight: "600" }}
-              >
-                ${(25000).toLocaleString()}
-              </Text>
-            </View>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: colors.primary,
-                height: 64,
-                borderRadius: 64,
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-                flexDirection: "row",
-                padding: 12,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  color: colors.background,
-                  paddingHorizontal: 16,
-                }}
-              >
-                Add to cart
-              </Text>
-
-              <View
-                style={{
-                  backgroundColor: colors.card,
-                  width: 40,
-                  aspectRatio: 1,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Icons name="arrow-forward" size={24} color={colors.text} />
-              </View>
-            </TouchableOpacity>
+          <View>
+            <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: colors.text,
+            }}>
+                Author: Jeff Kinney
+            </Text>
           </View>
+          <View>
+            <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: colors.text,
+            }}>
+                Characters: Greg Heffley, Rowley Jefferson, Rodrick, Susan
+            </Text>
+          </View>     
         </View>
       </BottomSheet>
     </View>

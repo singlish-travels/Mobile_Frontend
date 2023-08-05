@@ -5,6 +5,8 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackScreenProps } from "./RootNavigator";
@@ -44,7 +46,7 @@ const TabsNavigator = () => {
       />
       <TabsStack.Screen
         name="Cart"
-        component={Example}
+        component={RegisterScreen}
         options={{
           tabBarIcon(props) {
             return <Icons name="shopping-cart" {...props} />;

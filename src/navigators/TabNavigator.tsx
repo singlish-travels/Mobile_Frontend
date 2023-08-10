@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
+import PdfViewer from "../screens/PdfViewer"
 import RegisterScreen from "../screens/RegisterScreen";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -16,6 +17,7 @@ export type TabsStackParamList = {
   Home: undefined;
   Cart: undefined;
   Payment: undefined;
+  Pdf:undefined;
   Profile: undefined;
 };
 const TabsStack = createBottomTabNavigator<TabsStackParamList>();
@@ -62,6 +64,15 @@ const TabsNavigator = () => {
           },
         }}
       />
+      <TabsStack.Screen
+        name="Pdf"
+        component={PdfViewer}
+        options={{
+          tabBarIcon(props) {
+            return <Icons name="book" {...props} />;
+          },
+        }}
+      />      
       <TabsStack.Screen
         name="Profile"
         component={Example}

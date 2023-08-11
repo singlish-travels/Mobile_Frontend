@@ -192,6 +192,7 @@ const DetailsScreen = ({
               borderWidth: 1,
               borderColor: "#000",
             }}
+            onPress={() => navigation.navigate('Pdf', { id: '124' })}
           >       
             <MaterialIcons name="menu-book" size={44} color="black" />
             </TouchableOpacity>   

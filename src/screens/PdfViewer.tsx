@@ -22,7 +22,7 @@ import Pdf from "react-native-pdf";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const PdfViewer= ({ navigation }: TabsStackScreenProps<"Pdf">) => {
-  const PdfResource = {uri : 'https://archive.org/download/diaryofawimpykidbookseriesbyjeffkinney_202004/Diary%20of%20a%20wimpy%20kid%20book01.pdf',cache:true}
+  const PdfResource = {uri : 'https://www.africau.edu/images/default/sample.pdf',cache:true}
   return (
     <View style = {styles.container}>
       <Pdf

@@ -6,12 +6,15 @@ import {
 } from "@react-navigation/native-stack";
 import DetailsScreen from "../screens/DetailsScreen";
 import TabsNavigator, { TabsStackParamList } from "./TabNavigator";
+import PdfScreen from "../screens/PdfScreen";
+import Pdf from "react-native-pdf";
 
 export type RootStackParamList = {
   TabsStack: NavigatorScreenParams<TabsStackParamList>;
   Details: {
     id: string;
   };
+  Pdf: { id: string };
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +39,13 @@ const RootNavigator = () => {
           headerShown: false,
         }}
       />
+      <RootStack.Screen
+        name="Pdf"
+        component={PdfScreen}
+        options={{
+          headerShown: false,
+        }}
+      />      
     </RootStack.Navigator>
   );
 };

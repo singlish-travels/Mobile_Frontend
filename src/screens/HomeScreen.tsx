@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  Button,
   Appearance,
 } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
@@ -36,7 +35,7 @@ const PROFILE_PICTURE =
 const BOOK_LIST_DATA = [
   {
     imageUrl:
-      "https://cdn-ackhb.nitrocdn.com/YTibXMIwXCUkXtfHFnkSuEHUqRRKKBBW/assets/images/optimized/rev-1ca4f7f/wp-content/uploads/2022/09/The-Leaf-Thief.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/A18OnuYW2dL._AC_UL210_SR210,210_.jpg",
     title: "The Leaf Thief",
     price: 200,
   },
@@ -67,7 +66,6 @@ const BOOK_LIST_DATA = [
 ];
 
 const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
-  const [theme, setTheme] = useState(Appearance.getColorScheme());
   Appearance.addChangeListener((scheme) => {
     console.log(scheme.colorScheme);
   });

@@ -1,52 +1,50 @@
 import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    ScrollView
-  } from "react-native";
-  import React from "react";
-  import Spacing from "../constants/Spacing";
-  import FontSize from "../constants/FontSize";
-  import Colors from "../constants/Colors";
-  import { Ionicons } from "@expo/vector-icons";
-  import { NativeStackScreenProps } from "@react-navigation/native-stack";
-  import { RootStackParamList } from "../types";
-  import AppTextInput from "../components/AppTextInput";
-import { TabsStackScreenProps } from "../navigators/TabNavigator";
-  
-  type Props = NativeStackScreenProps<RootStackParamList, "Register">;
-  
-  const RegisterScreen= ({ navigation }: TabsStackScreenProps<"Cart">) => {
-    return (
-        <ScrollView>
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from "react-native";
+import React from "react";
+import Spacing from "../constants/Spacing";
+import FontSize from "../constants/FontSize";
+import Colors from "../constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
+import AppTextInput from "../components/AppTextInput";
+import { RootStackScreenProps } from "../navigators/RootNavigator";
+
+const RegisterScreen = ({
+  navigation,
+}: RootStackScreenProps<"Register">) => {
+  return (
+    <ScrollView>
       <SafeAreaView>
         <View
           style={{
-            padding: Spacing ,
+            padding: Spacing,
           }}
         >
           <View
             style={{
               alignItems: "center",
-              padding:10
+              padding: 10,
             }}
           >
             <Text
               style={{
-                fontWeight: 'bold',
+                fontWeight: "bold",
                 fontSize: 39,
                 color: Colors.primary,
-                marginVertical: Spacing ,
+                marginVertical: Spacing,
               }}
             >
               Create account
             </Text>
             <Text
               style={{
-                fontWeight: 'bold',
+                fontWeight: "bold",
                 fontSize: 14,
                 maxWidth: "80%",
                 textAlign: "center",
@@ -64,26 +62,26 @@ import { TabsStackScreenProps } from "../navigators/TabNavigator";
             <AppTextInput placeholder="Password" />
             <AppTextInput placeholder="Confirm Password" />
           </View>
-  
+
           <TouchableOpacity
             style={{
-                padding: Spacing*2,
-                backgroundColor: Colors.primary,
-                marginVertical: Spacing,
-                marginHorizontal: Spacing *5,
-                borderRadius: 130,
-                shadowColor: 'black',
-                shadowOffset: {
-                  width: 200,
-                  height: 10,
-                },
-                shadowOpacity: 10,
-                shadowRadius: 10,
-                elevation: 14, // Android
+              padding: Spacing * 2,
+              backgroundColor: Colors.primary,
+              marginVertical: Spacing,
+              marginHorizontal: Spacing * 5,
+              borderRadius: 130,
+              shadowColor: "black",
+              shadowOffset: {
+                width: 200,
+                height: 10,
+              },
+              shadowOpacity: 10,
+              shadowRadius: 10,
+              elevation: 14, // Android
             }}
           >
             <Text
-              style={{      
+              style={{
                 color: Colors.onPrimary,
                 textAlign: "center",
                 fontSize: FontSize.large,
@@ -93,24 +91,23 @@ import { TabsStackScreenProps } from "../navigators/TabNavigator";
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            //onPress={() => navigate("Login")}
+            onPress={() => navigation.navigate("Login")}
             style={{
               padding: Spacing,
             }}
           >
             <Text
               style={{
-             
                 color: Colors.text,
                 textAlign: "center",
                 fontSize: FontSize.small,
-                fontWeight: 'bold'
+                fontWeight: "bold",
               }}
             >
               Already have an account
             </Text>
           </TouchableOpacity>
-  
+
           <View
             style={{
               marginVertical: Spacing,
@@ -121,12 +118,12 @@ import { TabsStackScreenProps } from "../navigators/TabNavigator";
                 color: Colors.primary,
                 textAlign: "center",
                 fontSize: FontSize.small,
-                fontWeight: 'bold'
+                fontWeight: "bold",
               }}
             >
               Or continue with
             </Text>
-  
+
             <View
               style={{
                 marginTop: Spacing,
@@ -180,8 +177,8 @@ import { TabsStackScreenProps } from "../navigators/TabNavigator";
           </View>
         </View>
       </SafeAreaView>
-      </ScrollView>
-    );
-  };
-  
-  export default RegisterScreen;
+    </ScrollView>
+  );
+};
+
+export default RegisterScreen;

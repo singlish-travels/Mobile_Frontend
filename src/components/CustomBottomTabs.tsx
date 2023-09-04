@@ -1,15 +1,10 @@
-import { View, Text, TouchableOpacity, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icons from "@expo/vector-icons/MaterialIcons";
-import { ParamListBase, useTheme } from "@react-navigation/native";
-import Animated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-} from "react-native-reanimated";
+import {useTheme } from "@react-navigation/native";
+import Animated from "react-native-reanimated";
 
 const CustomBottomTabs = (props: BottomTabBarProps) => {
   const { colors } = useTheme();
@@ -86,12 +81,14 @@ const TabItem = ({
               ? "shopping-cart"
               : routeName === "Payment"
               ? "account-balance-wallet"
-              : "person"
+              : routeName==="Pdf"
+              ? "book"
+              :"person"
           }
           size={24}
           color={isActive ? colors.card : colors.text}
           style={{
-            opacity: isActive ? 1 : 0.5,
+            opacity: isActive ? 1 : 0.4,
           }}
         />
       </Animated.View>
@@ -99,8 +96,8 @@ const TabItem = ({
         <Text
           style={{
             marginLeft: 4,
-            fontSize: 12,
-            fontWeight: "600",
+            fontSize: 13,
+            fontWeight: "800",
             color: colors.text,
           }}
         >

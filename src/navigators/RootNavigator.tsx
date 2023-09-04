@@ -7,14 +7,18 @@ import {
 import DetailsScreen from "../screens/DetailsScreen";
 import TabsNavigator, { TabsStackParamList } from "./TabNavigator";
 import PdfScreen from "../screens/PdfScreen";
-import Pdf from "react-native-pdf";
+import Login from "../screens/LoginScreen";
+import Register from "../screens/RegisterScreen";
 
 export type RootStackParamList = {
+  Login: undefined;
+  Register: undefined;
   TabsStack: NavigatorScreenParams<TabsStackParamList>;
   Details: {
     id: string;
   };
   Pdf: { id: string };
+  PdfScreen: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -25,6 +29,21 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
 const RootNavigator = () => {
   return (
     <RootStack.Navigator>
+      <RootStack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          headerShown: false,
+        }}
+      />
+
       <RootStack.Screen
         name="TabsStack"
         component={TabsNavigator}
@@ -40,12 +59,12 @@ const RootNavigator = () => {
         }}
       />
       <RootStack.Screen
-        name="Pdf"
+        name="PdfScreen"
         component={PdfScreen}
         options={{
           headerShown: false,
         }}
-      />      
+      />
     </RootStack.Navigator>
   );
 };

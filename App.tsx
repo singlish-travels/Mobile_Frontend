@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, useColorScheme } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import {
   DarkTheme,
   DefaultTheme,
@@ -12,14 +12,13 @@ import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-// import PdfViewer from "./src/screens/PdfViewer";
 
 export default function App() {
   const colorScheme = useColorScheme();
 
   const theme: Theme = useMemo(
     () =>
-      colorScheme === "dark"
+      colorScheme === "light"
         ? {
             ...DarkTheme,
             colors: {
@@ -42,13 +41,13 @@ export default function App() {
   );
 
   return (
-    <SafeAreaProvider style={{ flex: 1 }}>
+    <SafeAreaProvider style={{ flex: 2 }}>
       <GestureHandlerRootView style={styles.container}>
         <NavigationContainer theme={theme}>
           <BottomSheetModalProvider>
             <RootNavigator />
           </BottomSheetModalProvider>
-          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+          <StatusBar style={colorScheme === "dark" ? "dark" : "light"} />
         </NavigationContainer>
       </GestureHandlerRootView>
     </SafeAreaProvider>

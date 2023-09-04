@@ -12,14 +12,13 @@ import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
 import AppTextInput from "../components/AppTextInput";
-import { TabsStackScreenProps } from "../navigators/TabNavigator";
+import { RootStackScreenProps } from "../navigators/RootNavigator";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const LoginScreen= ({ navigation }: TabsStackScreenProps<"Cart">) => {
+const LoginScreen= ({
+  navigation,
+}: RootStackScreenProps<"Login">) => {
   return (
     <ScrollView>
     <SafeAreaView>
@@ -92,6 +91,7 @@ const LoginScreen= ({ navigation }: TabsStackScreenProps<"Cart">) => {
             shadowRadius: 10,
             elevation: 14, // Android
           }}
+          onPress={() => navigation.navigate("Register")}
         >
           <Text
             style={{

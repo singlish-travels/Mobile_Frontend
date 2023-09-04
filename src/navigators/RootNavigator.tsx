@@ -30,20 +30,20 @@ const RootNavigator = () => {
   return (
     <RootStack.Navigator>
       <RootStack.Screen
-        name="Register"
-        component={Register}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <RootStack.Screen
         name="Login"
         component={Login}
         options={{
           headerShown: false,
         }}
       />
-      
+      <RootStack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          headerShown: false,
+        }}
+      />
+
       <RootStack.Screen
         name="TabsStack"
         component={TabsNavigator}

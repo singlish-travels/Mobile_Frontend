@@ -7,7 +7,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
@@ -16,12 +16,77 @@ import AppTextInput from "../components/AppTextInput/AppTextInput";
 import { RootStackScreenProps } from "../navigators/RootNavigator";
 
 const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errormessage, setErrormessage] = useState("");
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleRegister = async () => {
+    if (name === "") {
+      setErrormessage("Name is required");
+      return;
+    }
+    if (email === "") {
+      setErrormessage("Email is required");
+      return;
+    }
+    if (username === "") {
+      setErrormessage("Username is required");
+      return;
+    }
+    if (password === "") {
+      setErrormessage("Password is required");
+      return;
+    }
+    if (password.length < 6) {
+      setErrormessage("Password must be at least 6 characters");
+      return;
+    }
+    const registerData = {
+      name: name,
+      email: email,
+      username: username,
+      password: password,
+    };
+    console.log(registerData);
+    try {
+      const response = await fetch(
+        "http://192.168.8.122:3001/api/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(registerData),
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (responseData.message === "User is added successfully.") {
+        console.log(responseData);
+        navigation.navigate("Login");
+      } else {
+        console.log(responseData);
+        setErrormessage(responseData.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <ScrollView>
       <SafeAreaView>
         <View
           style={{
-            padding: Spacing,
+            padding: Spacing * 3,
+            flex: 1,
           }}
         >
           <View
@@ -56,9 +121,38 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               marginVertical: Spacing,
             }}
           >
-            <AppTextInput placeholder="Email" />
-            <AppTextInput placeholder="Password" />
-            <AppTextInput placeholder="Confirm Password" />
+            <AppTextInput
+              placeholder="Name*"
+              onChangeText={(text) => {
+                setName(text);
+              }}
+            
+            />
+            <AppTextInput
+              placeholder="Email*"
+              onChangeText={(text) => {
+                setEmail(text);
+              }}
+        
+            />
+            <AppTextInput
+              placeholder="Username*"
+              onChangeText={(text) => {
+                setUsername(text);
+              }}
+     
+            />
+            <AppTextInput
+              placeholder="Password*"
+              secureTextEntry={showPassword ? false : true}
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
+
+            />
+            <TouchableOpacity onPress={handleTogglePasswordVisibility}>
+              <Text>{showPassword ? "Hide Password" : "Show Password"}</Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity
@@ -77,6 +171,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               shadowRadius: 10,
               elevation: 14, // Android
             }}
+            onPress={handleRegister}
           >
             <Text
               style={{
@@ -86,6 +181,18 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               }}
             >
               Sign up
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: FontSize.medium,
+                color: "red",
+                alignSelf: "center",
+              }}
+            >
+              {errormessage}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

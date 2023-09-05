@@ -24,33 +24,33 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin =async () => {
+  const handleLogin = async () => {
     const loginData = {
       username: username,
       password: password,
     };
+    console.log(loginData);
 
     try {
-      const response = await fetch('http://localhost:3001/api/user/login', {
-        method: 'POST',
+      const response = await fetch("http://10.0.2.2:3001/api/user/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(loginData),
       });
 
       const responseData = await response.json();
 
-      if (responseData.message === 'Login successful.') {
+      if (responseData.message === "Login successful.") {
         console.log(responseData);
-        navigation.navigate({name:"TabsStack",key: "123"});
+        navigation.navigate({ name: "TabsStack", key: "123" });
       } else {
         console.log(responseData);
         setErrormessage(responseData.message);
       }
-
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
   return (
@@ -156,7 +156,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
               style={{
                 fontWeight: "bold",
                 fontSize: FontSize.medium,
-                color: 'red',
+                color: "red",
                 alignSelf: "center",
               }}
             >

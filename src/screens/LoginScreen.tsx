@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
     console.log(loginData);
 
     try {
-      const response = await fetch("http://10.0.2.2:3001/api/user/login", {
+      const response = await fetch("http://192.168.8.122:3001/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,6 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
@@ -16,16 +15,43 @@ import AppTextInput from "../components/AppTextInput/AppTextInput";
 import { RootStackScreenProps } from "../navigators/RootNavigator";
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errormessage, setErrormessage] = useState("");
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = () => {
-    // You can access the password value from the 'password' state variable here.
-    console.log("Password:", password);
+  const handleLogin =async () => {
+    const loginData = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      const responseData = await response.json();
+
+      if (responseData.message === 'Login successful.') {
+        console.log(responseData);
+        navigation.navigate({name:"TabsStack",key: "123"});
+      } else {
+        console.log(responseData);
+        setErrormessage(responseData.message);
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
   return (
     <ScrollView>
@@ -68,7 +94,11 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
               marginVertical: Spacing,
             }}
           >
-            <AppTextInput placeholder="Username *" />
+            <AppTextInput
+              placeholder="Username *"
+              onChangeText={(newText) => setUsername(newText)}
+              value={username}
+            />
             <AppTextInput
               placeholder="Password *"
               secureTextEntry={showPassword ? false : true}
@@ -109,7 +139,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
               shadowRadius: 10,
               elevation: 14, // Android
             }}
-            onPress={() => navigation.navigate("TabsStack")}
+            onPress={handleLogin}
           >
             <Text
               style={{
@@ -119,6 +149,18 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
               }}
             >
               Sign in
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: FontSize.medium,
+                color: 'red',
+                alignSelf: "center",
+              }}
+            >
+              {errormessage}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

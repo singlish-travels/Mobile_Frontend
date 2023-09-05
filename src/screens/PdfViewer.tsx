@@ -15,7 +15,7 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
-import AppTextInput from "../components/AppTextInput";
+import AppTextInput from "../components/AppTextInput/AppTextInput";
 import { TabsStackScreenProps } from "../navigators/TabNavigator";
 import Pdf from "react-native-pdf";
 

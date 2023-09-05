@@ -8,7 +8,7 @@ import Pdf from "react-native-pdf";
 
 const PdfScreen = () => {
   const PdfResource = {
-    uri: "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/pdf%2FFlowcharts.pdf88a19bd5-5571-4b2f-95a3-13832e1ddfb2?alt=media&token=22e62d2d-3932-4463-ace6-49f1a0612989",
+    uri: "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/pdf%2FTractor%20Gets%20Help.pdf3f78769b-0730-4735-976e-4f64165459ba?alt=media&token=9030693b-fbeb-4291-bb4c-dda2a8bb49b8",
     cache: true,
   };
   return (

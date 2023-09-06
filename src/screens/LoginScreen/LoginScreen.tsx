@@ -25,6 +25,14 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
   };
 
   const handleLogin = async () => {
+    if (username === "") {
+      setErrormessage("Username is required");
+      return;
+    }
+    if (password === "") {
+      setErrormessage("Password is required");
+      return;
+    }
     const loginData = {
       username: username,
       password: password,
@@ -105,8 +113,19 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
               onChangeText={(newText) => setPassword(newText)}
               value={password}
             />
-            <TouchableOpacity onPress={handleTogglePasswordVisibility}>
-              <Text>{showPassword ? "Hide Password" : "Show Password"}</Text>
+            <TouchableOpacity
+              onPress={handleTogglePasswordVisibility}
+              style={{ marginLeft: Spacing }}
+            >
+              <Ionicons
+                name={showPassword ? "eye-off" : "eye"}
+                size={24}
+                color="black"
+                style={{ flexDirection: "row", alignItems: "center" }}
+              />
+              <Text style={{ color: Colors.darkText,marginLeft: 5 }} >
+                {showPassword ? "Hide Password" : "Show Password"}
+              </Text>
             </TouchableOpacity>
           </View>
 

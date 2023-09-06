@@ -15,9 +15,9 @@ import Icons from "@expo/vector-icons/MaterialIcons";
 import MasonryList from "reanimated-masonry-list";
 import { BlurView } from "expo-blur";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import CustomBackdrop from "../components/CustomBackdrop";
-import FilterView from "../components/FilterView";
-import { TabsStackScreenProps } from "../navigators/TabNavigator";
+import CustomBackdrop from "../../components/CustomBackdrop";
+import FilterView from "../../components/FilterView";
+import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import { Switch } from "react-native-gesture-handler";
 
 const BOOK_CATEGORIES = [

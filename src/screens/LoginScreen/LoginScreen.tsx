@@ -2,22 +2,19 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import Spacing from "../constants/Spacing";
-import FontSize from "../constants/FontSize";
-import Colors from "../constants/Colors";
+import Spacing from "../../constants/Spacing";
+import FontSize from "../../constants/FontSize";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextInput from "../components/AppTextInput/AppTextInput";
-import { RootStackScreenProps } from "../navigators/RootNavigator";
+import AppTextInput from "../../components/AppTextInput/AppTextInput";
+import { RootStackScreenProps } from "../../navigators/RootNavigator";
 
-const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,51 +24,27 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
     setShowPassword(!showPassword);
   };
 
-  const handleRegister = async () => {
-    if (name === "") {
-      setErrormessage("Name is required");
-      return;
-    }
-    if (email === "") {
-      setErrormessage("Email is required");
-      return;
-    }
-    if (username === "") {
-      setErrormessage("Username is required");
-      return;
-    }
-    if (password === "") {
-      setErrormessage("Password is required");
-      return;
-    }
-    if (password.length < 6) {
-      setErrormessage("Password must be at least 6 characters");
-      return;
-    }
-    const registerData = {
-      name: name,
-      email: email,
+  const handleLogin = async () => {
+    const loginData = {
       username: username,
       password: password,
     };
-    console.log(registerData);
+    console.log(loginData);
+
     try {
-      const response = await fetch(
-        "http://192.168.8.122:3001/api/user/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(registerData),
-        }
-      );
+      const response = await fetch("http://192.168.8.122:3001/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
 
       const responseData = await response.json();
 
-      if (responseData.message === "User is added successfully.") {
+      if (responseData.message === "Login successful.") {
         console.log(responseData);
-        navigation.navigate("Login");
+        navigation.navigate({ name: "TabsStack", key: "123" });
       } else {
         console.log(responseData);
         setErrormessage(responseData.message);
@@ -85,35 +58,35 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
       <SafeAreaView>
         <View
           style={{
-            padding: Spacing * 3,
-            flex: 1,
+            paddingTop: Spacing * 5,
+            paddingLeft: Spacing * 2,
+            paddingRight: Spacing * 2,
           }}
         >
           <View
             style={{
               alignItems: "center",
-              padding: 10,
+              padding: Spacing,
             }}
           >
             <Text
               style={{
-                fontWeight: "bold",
-                fontSize: 39,
+                fontWeight: "700",
+                fontSize: 40,
                 color: Colors.primary,
-                marginVertical: Spacing,
               }}
             >
-              Create account
+              Login here
             </Text>
             <Text
               style={{
-                fontWeight: "bold",
-                fontSize: 14,
-                maxWidth: "80%",
+                fontWeight: "700",
+                fontSize: FontSize.large,
+                maxWidth: "90%",
                 textAlign: "center",
               }}
             >
-              Discovering New Horizons Through the Magic of Books.
+              Welcome back you've been missed!
             </Text>
           </View>
           <View
@@ -122,44 +95,39 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             }}
           >
             <AppTextInput
-              placeholder="Name*"
-              onChangeText={(text) => {
-                setName(text);
-              }}
-            
+              placeholder="Username *"
+              onChangeText={(newText) => setUsername(newText)}
+              value={username}
             />
             <AppTextInput
-              placeholder="Email*"
-              onChangeText={(text) => {
-                setEmail(text);
-              }}
-        
-            />
-            <AppTextInput
-              placeholder="Username*"
-              onChangeText={(text) => {
-                setUsername(text);
-              }}
-     
-            />
-            <AppTextInput
-              placeholder="Password*"
+              placeholder="Password *"
               secureTextEntry={showPassword ? false : true}
-              onChangeText={(text) => {
-                setPassword(text);
-              }}
-
+              onChangeText={(newText) => setPassword(newText)}
+              value={password}
             />
             <TouchableOpacity onPress={handleTogglePasswordVisibility}>
               <Text>{showPassword ? "Hide Password" : "Show Password"}</Text>
             </TouchableOpacity>
           </View>
 
+          <View>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: FontSize.small,
+                color: Colors.primary,
+                alignSelf: "flex-end",
+              }}
+            >
+              Forgot your password ?
+            </Text>
+          </View>
+
           <TouchableOpacity
             style={{
               padding: Spacing * 2,
               backgroundColor: Colors.primary,
-              marginVertical: Spacing,
+              marginVertical: Spacing * 3,
               marginHorizontal: Spacing * 5,
               borderRadius: 130,
               shadowColor: "black",
@@ -171,16 +139,16 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               shadowRadius: 10,
               elevation: 14, // Android
             }}
-            onPress={handleRegister}
+            onPress={handleLogin}
           >
             <Text
               style={{
                 color: Colors.onPrimary,
                 textAlign: "center",
-                fontSize: FontSize.large,
+                fontSize: 20,
               }}
             >
-              Sign up
+              Sign in
             </Text>
           </TouchableOpacity>
           <TouchableOpacity>
@@ -196,37 +164,40 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("Register")}
             style={{
               padding: Spacing,
+              backgroundColor: Colors.lightPrimary,
+              borderRadius: Spacing / 2,
+              marginHorizontal: Spacing * 5,
             }}
           >
             <Text
               style={{
+                fontWeight: "bold",
                 color: Colors.text,
                 textAlign: "center",
-                fontSize: FontSize.small,
-                fontWeight: "bold",
+                fontSize: 18,
               }}
             >
-              Already have an account
+              Create new account
             </Text>
           </TouchableOpacity>
 
           <View
             style={{
-              marginVertical: Spacing,
+              marginVertical: Spacing * 3,
             }}
           >
             <Text
               style={{
+                fontWeight: "bold",
                 color: Colors.primary,
                 textAlign: "center",
                 fontSize: FontSize.small,
-                fontWeight: "bold",
               }}
             >
-              Or continue with
+              Or Continue With
             </Text>
 
             <View
@@ -240,21 +211,17 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
                 style={{
                   padding: Spacing,
                   backgroundColor: Colors.gray,
-                  borderRadius: Spacing / 2,
+                  borderRadius: Spacing,
                   marginHorizontal: Spacing,
                 }}
               >
-                <Ionicons
-                  name="logo-google"
-                  color={Colors.text}
-                  size={Spacing * 2}
-                />
+                <Ionicons name="logo-google" size={Spacing * 2} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   padding: Spacing,
                   backgroundColor: Colors.gray,
-                  borderRadius: Spacing / 2,
+                  borderRadius: Spacing,
                   marginHorizontal: Spacing,
                 }}
               >
@@ -268,7 +235,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
                 style={{
                   padding: Spacing,
                   backgroundColor: Colors.gray,
-                  borderRadius: Spacing / 2,
+                  borderRadius: Spacing,
                   marginHorizontal: Spacing,
                 }}
               >
@@ -286,4 +253,6 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
   );
 };
 
-export default RegisterScreen;
+export default LoginScreen;
+
+const styles = StyleSheet.create({});

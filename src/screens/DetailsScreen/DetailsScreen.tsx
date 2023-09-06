@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import React, { useRef, useState } from "react";
-import { RootStackScreenProps } from "../navigators/RootNavigator";
+import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -9,7 +9,7 @@ import { useTheme } from "@react-navigation/native";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
@@ -180,21 +180,22 @@ const DetailsScreen = ({
             </View>
           </View>
 
-          <View>            
-            <View style={{ flexDirection: "row", alignItems: "center" }}>  
-            <TouchableOpacity style={{
-              width: 60,
-              aspectRatio: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: "#000",
-            }}
-            onPress={() => navigation.navigate('PdfScreen')}
-          >       
-            <MaterialIcons name="menu-book" size={44} color="black" />
-            </TouchableOpacity>   
+          <View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity
+                style={{
+                  width: 60,
+                  aspectRatio: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: "#000",
+                }}
+                onPress={() => navigation.navigate("PdfScreen")}
+              >
+                <MaterialIcons name="menu-book" size={44} color="black" />
+              </TouchableOpacity>
               <Text
                 style={{
                   flex: 1,
@@ -204,24 +205,25 @@ const DetailsScreen = ({
                   padding: 10,
                 }}
               >
-                   Read the book...
-              </Text>                      
-            </View>            
+                Read the book...
+              </Text>
+            </View>
           </View>
-          <View>            
-            <View style={{ flexDirection: "row", alignItems: "center" }}>  
-            <TouchableOpacity style={{
-              width: 60,
-              aspectRatio: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: "#000",
-            }}
-          >       
-            <MaterialIcons name="volume-up" size={44} color="black" />
-            </TouchableOpacity>   
+          <View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity
+                style={{
+                  width: 60,
+                  aspectRatio: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: "#000",
+                }}
+              >
+                <MaterialIcons name="volume-up" size={44} color="black" />
+              </TouchableOpacity>
               <Text
                 style={{
                   flex: 1,
@@ -231,9 +233,9 @@ const DetailsScreen = ({
                   padding: 10,
                 }}
               >
-                   Get the Audio...
-              </Text>                      
-            </View>            
+                Get the Audio...
+              </Text>
+            </View>
           </View>
 
           <View>
@@ -251,29 +253,33 @@ const DetailsScreen = ({
               style={{ color: colors.text, opacity: 0.75 }}
               numberOfLines={3}
             >
-              Diary of a Wimpy Kid is a humorous and engaging coming-of-age book series that follows the misadventures of a middle school boy named Greg Heffley as he navigates the challenges of growing up.
+              Diary of a Wimpy Kid is a humorous and engaging coming-of-age book
+              series that follows the misadventures of a middle school boy named
+              Greg Heffley as he navigates the challenges of growing up.
             </Text>
           </View>
           <View>
             <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: colors.text,
-            }}>
-                Author: Jeff Kinney
+              style={{
+                fontSize: 16,
+                fontWeight: "600",
+                color: colors.text,
+              }}
+            >
+              Author: Jeff Kinney
             </Text>
           </View>
           <View>
             <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: colors.text,
-            }}>
-                Characters: Greg Heffley, Rowley Jefferson, Rodrick, Susan
+              style={{
+                fontSize: 16,
+                fontWeight: "600",
+                color: colors.text,
+              }}
+            >
+              Characters: Greg Heffley, Rowley Jefferson, Rodrick, Susan
             </Text>
-          </View>     
+          </View>
         </View>
       </BottomSheet>
     </View>

@@ -20,7 +20,7 @@ const AppTextInput: React.FC<TextInputProps> = ({ ...otherProps }) => {
       style={[
         {
           fontSize: FontSize.small,
-          fontStyle: "italic",
+          fontStyle: "normal",
           fontWeight: "500",
           padding: Spacing * 2,
           backgroundColor: Colors.lightPrimary,

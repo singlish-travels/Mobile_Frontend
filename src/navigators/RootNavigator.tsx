@@ -4,11 +4,11 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from "@react-navigation/native-stack";
-import DetailsScreen from "../screens/DetailsScreen";
+import DetailsScreen from "../screens/DetailsScreen/DetailsScreen";
 import TabsNavigator, { TabsStackParamList } from "./TabNavigator";
-import PdfScreen from "../screens/PdfScreen";
-import Login from "../screens/LoginScreen";
-import Register from "../screens/RegisterScreen";
+import PdfScreen from "../screens/PdfScreen/PdfScreen";
+import Login from "../screens/LoginScreen/LoginScreen";
+import Register from "../screens/RegisterScreen/RegisterScreen";
 
 export type RootStackParamList = {
   Login: undefined;

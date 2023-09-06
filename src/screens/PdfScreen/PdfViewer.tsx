@@ -9,14 +9,14 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
-import Spacing from "../constants/Spacing";
-import FontSize from "../constants/FontSize";
-import Colors from "../constants/Colors";
+import Spacing from "../../constants/Spacing";
+import FontSize from "../../constants/FontSize";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
-import AppTextInput from "../components/AppTextInput/AppTextInput";
-import { TabsStackScreenProps } from "../navigators/TabNavigator";
+import { RootStackParamList } from "../../types";
+import AppTextInput from "../../components/AppTextInput/AppTextInput";
+import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import Pdf from "react-native-pdf";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;

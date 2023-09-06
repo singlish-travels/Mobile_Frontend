@@ -4,8 +4,8 @@ import {
   BottomTabScreenProps,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
-import PdfViewer from "../screens/PdfViewer"
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
+import PdfViewer from "../screens/PdfScreen/PdfViewer";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackScreenProps } from "./RootNavigator";
@@ -15,7 +15,7 @@ export type TabsStackParamList = {
   Home: undefined;
   Cart: undefined;
   Payment: undefined;
-  Pdf:undefined;
+  Pdf: undefined;
   Profile: undefined;
 };
 const TabsStack = createBottomTabNavigator<TabsStackParamList>();
@@ -70,7 +70,7 @@ const TabsNavigator = () => {
             return <Icons name="book" {...props} />;
           },
         }}
-      />      
+      />
       <TabsStack.Screen
         name="Profile"
         component={Example}

@@ -13,7 +13,6 @@ import { RootStackParamList } from "../../types";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import Colors from "../../constants/Colors";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Dictionary">) => {
   const [newWord, setNewWord] = useState("");

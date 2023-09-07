@@ -273,9 +273,7 @@ const DetailsScreen = ({
               style={{ color: colors.text, opacity: 0.75 }}
               numberOfLines={3}
             >
-              Diary of a Wimpy Kid is a humorous and engaging coming-of-age book
-              series that follows the misadventures of a middle school boy named
-              Greg Heffley as he navigates the challenges of growing up.
+              {book.summary}
             </Text>
           </View>
           <View>
@@ -286,7 +284,7 @@ const DetailsScreen = ({
                 color: colors.text,
               }}
             >
-              Author: Jeff Kinney
+              Author: {book.author}
             </Text>
           </View>
           <View>
@@ -297,7 +295,7 @@ const DetailsScreen = ({
                 color: colors.text,
               }}
             >
-              Characters: Greg Heffley, Rowley Jefferson, Rodrick, Susan
+              Genre: {book.genre}
             </Text>
           </View>
         </View>

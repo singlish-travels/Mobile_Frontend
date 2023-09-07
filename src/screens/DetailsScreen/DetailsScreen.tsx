@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import React, { useRef, useState } from "react";
+import React, {  useState,useEffect } from "react";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import {
   SafeAreaView,
@@ -11,7 +11,6 @@ import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const SIZES = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
 const DetailsScreen = ({
   navigation,
@@ -22,14 +21,35 @@ const DetailsScreen = ({
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const [count, setCount] = useState(1);
+  const [book,setBook]=useState({} as any);
+
+  const fetchBook=async()=>{
+    console.log(id);
+    const response=await fetch("http://192.168.8.122:3001/api/book/show",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        id:id
+      })
+    })
+    const data=await response.json()
+    setBook(data);
+  }
+
+  useEffect(() => {
+   fetchBook();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
       <Image
         source={{
-          uri: "https://wimpykid.com/wp-content/uploads/2023/02/DWK18_3D-Cover_HiRes.png",
+          uri: book.coverpage,
         }}
         style={{ flex: 1 }}
+        resizeMode="cover"
       />
 
       <SafeAreaView
@@ -105,7 +125,7 @@ const DetailsScreen = ({
       >
         <View style={{ padding: 16, gap: 16, flex: 1 }}>
           <Text style={{ fontSize: 27, fontWeight: "700", color: colors.text }}>
-            Diary of a Wimpy Kid
+            {book.title}
           </Text>
 
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -192,7 +212,7 @@ const DetailsScreen = ({
                   borderWidth: 1,
                   borderColor: "#000",
                 }}
-                onPress={() => navigation.navigate("PdfScreen")}
+                onPress={() => navigation.navigate("PdfScreen", { link: book.pdf })}
               >
                 <MaterialIcons name="menu-book" size={44} color="black" />
               </TouchableOpacity>

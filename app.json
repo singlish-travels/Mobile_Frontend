@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/AReader3Dpublishers.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [

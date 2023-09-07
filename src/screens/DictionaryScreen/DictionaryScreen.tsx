@@ -15,7 +15,7 @@ import Colors from "../../constants/Colors";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
+const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Dictionary">) => {
   const [newWord, setNewWord] = useState("");
   const [checkedWord, setCheckedWord] = useState("");
   const [definition, setDefinition] = useState("");

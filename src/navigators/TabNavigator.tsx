@@ -14,7 +14,7 @@ import DictionaryViewer from "../screens/DictionaryScreen";
 
 export type TabsStackParamList = {
   Home: undefined;
-  Cart: undefined;
+  Dictionary: undefined;
   Payment: undefined;
   Pdf: undefined;
   Profile: undefined;
@@ -46,11 +46,11 @@ const TabsNavigator = () => {
         }}
       />
       <TabsStack.Screen
-        name="Cart"
+        name="Dictionary"
         component={DictionaryViewer}
         options={{
           tabBarIcon(props) {
-            return <Icons name="shopping-cart" {...props} />;
+            return <Icons name="bookmarks" {...props} />;
           },
         }}
       />

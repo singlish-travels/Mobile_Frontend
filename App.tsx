@@ -18,7 +18,7 @@ export default function App() {
 
   const theme: Theme = useMemo(
     () =>
-      colorScheme === "light"
+      colorScheme === "dark"
         ? {
             ...DarkTheme,
             colors: {

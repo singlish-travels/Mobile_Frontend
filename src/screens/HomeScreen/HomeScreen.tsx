@@ -285,6 +285,13 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
           contentContainerStyle={{ paddingHorizontal: 12 }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, i }: any) => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Details", {
+                  id: item._id,
+                });
+              }} 
+          >
             <View style={{ padding: 6 }}>
               <View
                 style={{
@@ -381,6 +388,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                 </View>
               </View>
             </View>
+            </TouchableOpacity>
           )}
           onEndReachedThreshold={0.1}
         />

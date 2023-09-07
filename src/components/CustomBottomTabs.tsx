@@ -77,8 +77,8 @@ const TabItem = ({
           name={
             routeName === "Home"
               ? "home"
-              : routeName === "Cart"
-              ? "shopping-cart"
+              : routeName === "Dictionary"
+              ? "bookmarks"
               : routeName === "Payment"
               ? "account-balance-wallet"
               : routeName==="Pdf"

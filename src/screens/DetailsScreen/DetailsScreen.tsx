@@ -10,6 +10,7 @@ import Icons from "@expo/vector-icons/MaterialIcons";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { MaterialIcons } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
 
 
 const DetailsScreen = ({
@@ -214,7 +215,7 @@ const DetailsScreen = ({
                 }}
                 onPress={() => navigation.navigate("PdfScreen", { link: book.pdf })}
               >
-                <MaterialIcons name="menu-book" size={44} color="black" />
+                <MaterialIcons name="menu-book" size={44} color={Colors.text} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -242,7 +243,7 @@ const DetailsScreen = ({
                   borderColor: "#000",
                 }}
               >
-                <MaterialIcons name="volume-up" size={44} color="black" />
+                <MaterialIcons name="volume-up" size={44} color={Colors.text} />
               </TouchableOpacity>
               <Text
                 style={{

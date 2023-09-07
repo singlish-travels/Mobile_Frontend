@@ -8,7 +8,7 @@ import {
   FlatList,
   Appearance,
 } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState,useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
 import Icons from "@expo/vector-icons/MaterialIcons";
@@ -32,38 +32,8 @@ const BOOK_CATEGORIES = [
 const PROFILE_PICTURE =
   "https://c0.wallpaperflare.com/preview/1015/464/838/adorable-beautiful-boy-child.jpg";
 
-const BOOK_LIST_DATA = [
-  {
-    imageUrl:
-      "https://images-na.ssl-images-amazon.com/images/I/A18OnuYW2dL._AC_UL210_SR210,210_.jpg",
-    title: "The Leaf Thief",
-    price: 200,
-  },
-  {
-    imageUrl:
-      "https://marketplace.canva.com/EAD7WdPHbx8/1/0/1003w/canva-colorful-abstract-adventure-children%27s-book-cover-yT1fFarv3nc.jpg",
-    title: "The Adventure of Lily",
-    price: 400,
-  },
-  {
-    imageUrl:
-      "https://blog-cdn.reedsy.com/uploads/2019/12/grandude-868x1024.jpg",
-    title: "Hey Grandude!",
-    price: 300,
-  },
-  {
-    imageUrl:
-      "https://images.squarespace-cdn.com/content/v1/5aff8a237e3c3abd03568195/8ac1a9ab-338d-4e35-b3b6-11f30425e82b/Maribel%27s-Year.jpg",
-    title: "Maribel's Year",
-    price: 280,
-  },
-  {
-    imageUrl:
-      "https://marketplace.canva.com/EAD7YHrjZYY/1/0/1003w/canva-blue-illustrated-stars-children%27s-book-cover-haFtaSNXXF4.jpg",
-    title: "Journey To The Stars",
-    price: 420,
-  },
-];
+
+
 
 const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
   Appearance.addChangeListener((scheme) => {
@@ -75,6 +45,31 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
 
   const openFilterModal = useCallback(() => {
     bottomSheetModalRef.current?.present();
+  }, []);
+  const [BOOK_LIST_DATA, setBOOK_LIST_DATA] = useState([]) as any;
+
+  const fetchFreeBooks = async () => {
+    try {
+      const response = await fetch("http://192.168.8.122:3001/api/book/pricebook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          starting_Price: 0,
+          ending_Price: 10000,
+        }),
+      });
+      const responseData = await response.json();
+      setBOOK_LIST_DATA(responseData.response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchFreeBooks();
   }, []);
 
   return (
@@ -290,6 +285,13 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
           contentContainerStyle={{ paddingHorizontal: 12 }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, i }: any) => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Details", {
+                  id: item._id,
+                });
+              }} 
+          >
             <View style={{ padding: 6 }}>
               <View
                 style={{
@@ -301,7 +303,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
               >
                 <Image
                   source={{
-                    uri: item.imageUrl,
+                    uri: item.coverpage,
                   }}
                   resizeMode="cover"
                   style={StyleSheet.absoluteFill}
@@ -386,6 +388,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                 </View>
               </View>
             </View>
+            </TouchableOpacity>
           )}
           onEndReachedThreshold={0.1}
         />

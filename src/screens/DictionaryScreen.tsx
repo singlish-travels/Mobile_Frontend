@@ -15,7 +15,7 @@ import Colors from "../constants/Colors";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
+const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Dictionary">) => {
   const [newWord, setNewWord] = useState("");
   const [checkedWord, setCheckedWord] = useState("");
   const [definition, setDefinition] = useState("");
@@ -26,15 +26,15 @@ const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
   };
 
   const getInfo = async () => {
-    var url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + newWord;
+    let url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + newWord;
 
     const data = await fetch(url);
     const response = await data.json();
-    var word = response[0].word;
+    let word = response[0].word;
     setCheckedWord(word);
-    var def = response[0].meanings[0].definitions[0].definition;
+    let def = response[0].meanings[0].definitions[0].definition;
     setDefinition(def);
-    var eg = response[0].meanings[0].definitions[0].example;
+    let eg = response[0].meanings[0].definitions[0].example;
     setExample(eg);
   };
 

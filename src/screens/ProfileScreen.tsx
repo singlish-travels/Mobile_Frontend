@@ -26,7 +26,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
   const [biodata, setBiodata] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isNameEditing, setIsNameEditing] = useState(false);
   const [isEmailEditing, setIsEmailEditing] = useState(false);
   const [isPasswordEditing, setIsPasswordEditing] = useState(false);
   const [isAccountNoEditing, setIsAccountNoEditing] = useState(false);
@@ -49,8 +49,8 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       setName(responseData.user[0].name);
       setemail(responseData.user[0].email);
       setUsername(responseData.user[0].username);
-      setBiodata(responseData.user[0].biodata);
-      setPhoneNumber(responseData.user[0].phoneNumber);
+      setBiodata(responseData.user[0].bio_data);
+      setPhoneNumber(responseData.user[0].phonenumber);
       console.log(responseData);
     } catch (error) {
       console.log(error);
@@ -60,20 +60,50 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
     fetchdata();
   }, []);
 
-  const [textColor, setTextColor] = useState("red");
-
-  const handleEditPress = () => {
-    setIsEditing(true);
-  };
-
-  const handleSavePress = () => {
+  const handleSavePress = async() => {
     setIsEmailEditing(false);
     setIsPasswordEditing(false);
     setIsAccountNoEditing(false);
     setIsAddressEditing(false);
     setIsPhoneNumberEditing(false);
+    interface UserData {
+      id: string;
+      name: string;
+      email: string;
+      username: string;
+      bio_data?: string;
+      phonenumber?: string;
+      password?: string; 
+    }
 
-    // Handle saving the edited text here, e.g., send it to an API or update state.
+    const updateData: UserData = {
+      id: "64f6f556104f2b6525e78793",
+      name: name,
+      email: email,
+      username: username,
+    };
+
+    if (password !== "") {
+      updateData.password = password;
+    }
+    if (biodata !== "") {
+        updateData.bio_data = biodata;
+    }
+    if (phoneNumber !== "") {
+        updateData.phonenumber = phoneNumber;
+    }
+    try {
+        const response = await fetch("http://192.168.8.122:3001/api/user/update",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updateData),
+        });
+        }
+        catch (error) {
+            console.log(error);
+        }
   };
 
   return (
@@ -101,6 +131,26 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       <View style={styles.lowerPart}>
         <Text style={styles.nameText}>{name}</Text>
         <View style={styles.lowerPart}>
+        <View style={styles.editabletext}>
+            <Text style={styles.label}>Name : </Text>
+            <TextInput
+              style={[
+                styles.textInput,
+                { color: isNameEditing ? "black" : "gray" },
+              ]}
+              value={name}
+              editable={isNameEditing}
+              onChangeText={(newText) => setName(newText)}
+            />
+            <TouchableOpacity onPress={() => setIsNameEditing(true)}>
+              <Icon
+                name="edit"
+                style={{ paddingLeft: 5, paddingTop: 5 }}
+                size={30}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
           <View style={styles.editabletext}>
             <Text style={styles.label}>Email : </Text>
             <TextInput
@@ -295,6 +345,7 @@ const styles = StyleSheet.create({
   label: {
     alignSelf: "center",
     width: 110,
+    fontWeight: "bold",
   },
 
   textInput: {

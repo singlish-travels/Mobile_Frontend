@@ -11,6 +11,7 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackScreenProps } from "./RootNavigator";
 import CustomBottomTabs from "../components/CustomBottomTabs";
 import DictionaryViewer from "../screens/DictionaryScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 export type TabsStackParamList = {
   Home: undefined;
@@ -49,6 +50,7 @@ const TabsNavigator = () => {
         name="Dictionary"
         component={DictionaryViewer}
         options={{
+          headerShown: false,
           tabBarIcon(props) {
             return <Icons name="bookmarks" {...props} />;
           },
@@ -58,6 +60,7 @@ const TabsNavigator = () => {
         name="Payment"
         component={Example}
         options={{
+          headerShown: false,
           tabBarIcon(props) {
             return <Icons name="account-balance-wallet" {...props} />;
           },
@@ -67,6 +70,7 @@ const TabsNavigator = () => {
         name="Pdf"
         component={PdfViewer}
         options={{
+          headerShown: false,
           tabBarIcon(props) {
             return <Icons name="book" {...props} />;
           },
@@ -74,8 +78,9 @@ const TabsNavigator = () => {
       />
       <TabsStack.Screen
         name="Profile"
-        component={Example}
+        component={ProfileScreen}
         options={{
+          headerShown: false,
           tabBarIcon(props) {
             return <Icons name="person" {...props} />;
           },

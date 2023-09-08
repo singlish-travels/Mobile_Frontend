@@ -1,11 +1,15 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { View ,StyleSheet, Image, Text, SafeAreaView,Button, TextInput,TouchableOpacity} from 'react-native';
-import { useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from "@expo/vector-icons/MaterialIcons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types";
+import { TabsStackScreenProps } from "../navigators/TabNavigator";
 
-import img from "../assets/girl.jpeg";
+type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-function ProfileScreen(props) {
+const ProfileScreen=({
+    navigation,
+  }: TabsStackScreenProps<"Profile">)=>{
     const [email, setemail] = useState('abcd@gmail.com');
     const [password, setPassword] = useState('password');
     const [accountNo, setAccountNo] = useState('AccountNo');
@@ -42,7 +46,7 @@ function ProfileScreen(props) {
             <Text style={styles.text}>Profile</Text>
             <View style={styles.settingsButton}><Button title='Settings' /></View>
             <View style={styles.logOutButton}><Button title='Log out' /></View>
-            <Image resizeMode="cover" style={styles.circle} source={img}/>
+            <Image resizeMode="cover" style={styles.circle} source={require("../assets/images/photo-1483134529005-4c93495107d5.jpg")}/>
         </View>
         <View style={styles.lowerPart}>
             <Text style={styles.nameText}  >Full Name</Text>
@@ -124,7 +128,7 @@ function ProfileScreen(props) {
 
             </View>
         </View>
-        <View style={styles.saveButton}><Button variant="outlined" title='Save' onPress={handleSavePress} /></View>
+        <View style={styles.saveButton}><Button title='Save' onPress={handleSavePress} /></View>
         </SafeAreaView>
     );
 }
@@ -172,7 +176,6 @@ const styles = StyleSheet.create({
         bottom:50,
         padding: 10,
         borderRadius: 5,
-        width:200,
         color: 'white',
     },
 

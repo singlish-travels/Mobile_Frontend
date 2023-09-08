@@ -18,6 +18,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 const DictionaryScreen = ({
   navigation,
 }: TabsStackScreenProps<"Dictionary">) => {
+  const statusBarHeight = StatusBar.currentHeight ?? 0;
   const [newWord, setNewWord] = useState("");
   const [checkedWord, setCheckedWord] = useState("");
   const [definition, setDefinition] = useState("");
@@ -90,7 +91,13 @@ const DictionaryScreen = ({
     }
   };
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        marginTop: statusBarHeight,
+      }}
+    >
       <ImageBackground
         source={require("../../assets/2219.jpg")}
         resizeMode="cover"
@@ -171,14 +178,15 @@ const DictionaryScreen = ({
                 Entered Word :
               </Text>
               {checkedWord === "" ? null : (
-              <Text
-                style={{
-                  fontSize: 20,
-                  padding: 6,
-                }}
-              >
-                {checkedWord}
-              </Text>)}
+                <Text
+                  style={{
+                    fontSize: 20,
+                    padding: 6,
+                  }}
+                >
+                  {checkedWord}
+                </Text>
+              )}
               <Text
                 style={{
                   fontSize: 20,
@@ -189,15 +197,16 @@ const DictionaryScreen = ({
                 Definition :
               </Text>
               {definition === "" ? null : (
-              <Text
-                style={{
-                  fontSize: 20,
-                  padding: 6,
-                  paddingLeft: 10,
-                }}
-              >
-                {definition}
-              </Text>)}
+                <Text
+                  style={{
+                    fontSize: 20,
+                    padding: 6,
+                    paddingLeft: 10,
+                  }}
+                >
+                  {definition}
+                </Text>
+              )}
               <Text
                 style={{
                   fontSize: 20,
@@ -208,14 +217,15 @@ const DictionaryScreen = ({
                 Example :
               </Text>
               {example === "" ? null : (
-              <Text
-                style={{
-                  fontSize: 20,
-                  padding: 6,
-                }}
-              >
-                {example}
-              </Text>)}
+                <Text
+                  style={{
+                    fontSize: 20,
+                    padding: 6,
+                  }}
+                >
+                  {example}
+                </Text>
+              )}
             </View>
           </View>
         </View>

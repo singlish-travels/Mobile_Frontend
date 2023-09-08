@@ -47,7 +47,7 @@ export default function App() {
           <BottomSheetModalProvider>
             <RootNavigator />
           </BottomSheetModalProvider>
-          <StatusBar style={colorScheme === "dark" ? "dark" : "light"} />
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </NavigationContainer>
       </GestureHandlerRootView>
     </SafeAreaProvider>

@@ -92,7 +92,7 @@ const DictionaryScreen = ({
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../assets/603.jpg")}
+        source={require("../../assets/2219.jpg")}
         resizeMode="cover"
         style={{ flex: 1 }}
       >
@@ -111,7 +111,7 @@ const DictionaryScreen = ({
             <TextInput
               style={styles.inputBox}
               placeholder="search a word"
-              placeholderTextColor={Colors.text}
+              placeholderTextColor={Colors.primary}
               textAlign="center"
               clearButtonMode="always"
               onChangeText={searchWord}
@@ -186,10 +186,10 @@ const styles = StyleSheet.create({
   inputBox: {
     width: "80%",
     height: 50,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "black",
     borderRadius: 20,
-    marginTop: 50,
+    marginTop: 10,
     fontSize: 25,
   },
   buttonDesign: {

@@ -15,11 +15,14 @@ import Colors from "../constants/Colors";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Dictionary">) => {
+const DictionaryScreen = ({
+  navigation,
+}: TabsStackScreenProps<"Dictionary">) => {
   const [newWord, setNewWord] = useState("");
   const [checkedWord, setCheckedWord] = useState("");
   const [definition, setDefinition] = useState("");
   const [example, setExample] = useState("");
+  const [printmessage, setPrintmessage] = useState("");
 
   const searchWord = (enteredWord: React.SetStateAction<string>) => {
     setNewWord(enteredWord);
@@ -44,23 +47,66 @@ const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Dictionary">) =>
     setExample("");
     setNewWord("");
   };
+
+  const handleAddDictionary = async () => {
+    if (checkedWord === "") {
+      console.log("Word is required");
+      return;
+    }
+    if (definition === "") {
+      console.log("Definition is required");
+      return;
+    }
+    if (example === "") {
+      console.log("Example is required");
+      return;
+    }
+    const dictionaryData = {
+      user_id: "64f6f556104f2b6525e78793",
+      word: checkedWord,
+      meaning: definition,
+      example: example,
+    };
+    console.log(dictionaryData);
+    try {
+      const response = await fetch(
+        "http://192.168.8.122:3001/api/dictionary/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dictionaryData),
+        }
+      );
+      const responseData = await response.json();
+      if (responseData.message === "Word is added successfully.") {
+        setPrintmessage(responseData.message);
+      } else {
+        setPrintmessage(responseData.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
-    
     <View style={styles.container}>
       <ImageBackground
         source={require("../../assets/603.jpg")}
         resizeMode="cover"
         style={{ flex: 1 }}
-      >        
+      >
         <View style={{ flex: 1 }}>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text style={{
+            <Text
+              style={{
                 fontSize: 30,
                 fontFamily: "sans-serif",
                 fontVariant: ["small-caps"],
                 fontWeight: "bold",
-            }}>
-                Dictionary
+              }}
+            >
+              Dictionary
             </Text>
             <TextInput
               style={styles.inputBox}
@@ -98,8 +144,17 @@ const DictionaryScreen = ({ navigation }: TabsStackScreenProps<"Dictionary">) =>
                 <Text style={styles.buttonText}>Clear</Text>
               </TouchableOpacity>
             </View>
+            <View>
+            <TouchableOpacity
+                style={styles.buttonDesign}
+                onPress={handleAddDictionary}
+              >
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
 
             <View>
+              <Text style={styles.textDesign}>{printmessage}</Text>
               <Text style={styles.textDesign}>
                 Entered Word :{checkedWord}{" "}
               </Text>

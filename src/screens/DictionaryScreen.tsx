@@ -101,8 +101,6 @@ const DictionaryScreen = ({
             <Text
               style={{
                 fontSize: 30,
-                fontFamily: "sans-serif",
-                fontVariant: ["small-caps"],
                 fontWeight: "bold",
               }}
             >
@@ -110,7 +108,7 @@ const DictionaryScreen = ({
             </Text>
             <TextInput
               style={styles.inputBox}
-              placeholder="search a word"
+              placeholder="Search a word"
               placeholderTextColor={Colors.primary}
               textAlign="center"
               clearButtonMode="always"
@@ -145,7 +143,7 @@ const DictionaryScreen = ({
               </TouchableOpacity>
             </View>
             <View>
-            <TouchableOpacity
+              <TouchableOpacity
                 style={styles.buttonDesign}
                 onPress={handleAddDictionary}
               >
@@ -154,12 +152,70 @@ const DictionaryScreen = ({
             </View>
 
             <View>
-              <Text style={styles.textDesign}>{printmessage}</Text>
-              <Text style={styles.textDesign}>
-                Entered Word :{checkedWord}{" "}
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: "green",
+                }}
+              >
+                {printmessage}
               </Text>
-              <Text style={styles.textDesign}>Definition : {definition} </Text>
-              <Text style={styles.textDesign}>Example : {example} </Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  padding: 6,
+                }}
+              >
+                Entered Word :
+              </Text>
+              {checkedWord === "" ? null : (
+              <Text
+                style={{
+                  fontSize: 20,
+                  padding: 6,
+                }}
+              >
+                {checkedWord}
+              </Text>)}
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  padding: 6,
+                }}
+              >
+                Definition :
+              </Text>
+              {definition === "" ? null : (
+              <Text
+                style={{
+                  fontSize: 20,
+                  padding: 6,
+                  paddingLeft: 10,
+                }}
+              >
+                {definition}
+              </Text>)}
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  padding: 6,
+                }}
+              >
+                Example :
+              </Text>
+              {example === "" ? null : (
+              <Text
+                style={{
+                  fontSize: 20,
+                  padding: 6,
+                }}
+              >
+                {example}
+              </Text>)}
             </View>
           </View>
         </View>
@@ -202,15 +258,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 25,
-    fontFamily: "sans-serif",
-    fontVariant: ["small-caps"],
     fontWeight: "bold",
     alignSelf: "center",
     marginTop: 5,
-  },
-  speakerButton: {
-    width: 50,
-    height: 40,
   },
   textDesign: {
     fontSize: 20,

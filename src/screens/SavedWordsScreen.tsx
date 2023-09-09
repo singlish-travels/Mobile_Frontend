@@ -1,9 +1,12 @@
-import React from 'react';
-import { SafeAreaView, Text, View,StyleSheet, FlatList,TouchableOpacity,Alert } from 'react-native';
+import React,{useState,useEffect} from 'react';
+import { SafeAreaView, Text, View,StyleSheet, FlatList,TouchableOpacity,Alert,ScrollView,AppState } from 'react-native';
 import Icon from "@expo/vector-icons/MaterialIcons";
+import { RootStackScreenProps } from "../navigators/RootNavigator";
 
-function SavedWords(props) {
-  const handleDeleteWord = () => {
+
+const SavedWords=({ navigation }: RootStackScreenProps<"SavedWord">)=> {
+  const [word, setWord] = useState("");
+  const handleDeleteWord = (id: string) => {
     Alert.alert(
       'Delete Word',
       'Are you sure you want to delete this word?',
@@ -15,7 +18,20 @@ function SavedWords(props) {
         {
           text: 'Delete',
           onPress: () => {
-            // Implement the deletion logic here
+            try{
+              const response = fetch("http://192.168.8.122:3001/api/dictionary/remove", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ _id: id }),
+              });
+              alert("Word Deleted Successfully");
+              setWord("Word Deleted Successfully");
+            }
+            catch(error){
+              console.error("Error:", error);
+            }
           },
           style: 'destructive', 
         },
@@ -25,39 +41,35 @@ function SavedWords(props) {
   };
 
   const DisplayHome=()=>{
-
+    navigation.navigate({ name: "TabsStack", key: "123" });
   };
 
-  const DATA =[
-    {
-      word: "Dog",
-      meaning: "A domesticated mammal of the species Canis lupus familiaris, known for its loyalty and companionship with humans.",
-      example: "My dog enjoys going for walks in the park."
-    },
-    {
-      word: "Ocean",
-      meaning: "A vast body of saltwater that covers most of the Earth's surface, consisting of interconnected seas and providing habitat for various marine life.",
-      example: "The ocean's waves crashed against the shore."
-    },
-    {
-      word: "Sunflower",
-      meaning: "A tall plant with a large, yellow flower head that follows the movement of the sun and is cultivated for its seeds, oil, and ornamental beauty.",
-      example: "The sunflower in our garden turned to face the sun throughout the day."
-    },
-    {
-      word: "Computer",
-      meaning: "An electronic device capable of processing data, performing calculations, and executing tasks based on programmed instructions, used for various purposes such as data processing and communication.",
-      example: "I use my computer for work and entertainment."
-    },
-    {
-      word: "Adventure",
-      meaning: "An exciting or unusual experience, often involving exploration, travel, or risky activities, typically undertaken with a spirit of excitement and curiosity.",
-      example: "Going on a backpacking adventure through the mountains was an unforgettable experience."
-    },
-    
-  ];
+  const [DATA,setDATA]=useState([]);
+
+  const fetchData = async () => {
+    try{
+      const response = await fetch("http://192.168.8.122:3001/api/dictionary/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: "64f6f556104f2b6525e78793" }),
+      });
+      const responseData = await response.json();
+      setDATA(responseData.data);
+      console.log(responseData.data);
+    }catch(error){
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [word]);
+
 
   return (
+    <ScrollView>
    <SafeAreaView>
     <View style={styles.topicContainer} >
       <TouchableOpacity onPress={()=>DisplayHome()} style={{flexDirection:"row"}}>
@@ -68,10 +80,9 @@ function SavedWords(props) {
      <View style={styles.WordsContainer}>
      <FlatList
         data={DATA}
-        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.wordItem}>
-            <TouchableOpacity onPress={handleDeleteWord}>
+            <TouchableOpacity onPress={() => handleDeleteWord(item._id)}>
             <Icon name="delete" style={{ right:5, position:"absolute",paddingBottom:10}} size={30} />
             </TouchableOpacity>
             <Text style={{color:"black",alignSelf:"flex-start",fontSize:20,fontWeight:"bold",paddingBottom:10}}>{item.word}</Text>
@@ -83,6 +94,7 @@ function SavedWords(props) {
      </View>
     
    </SafeAreaView>
+   </ScrollView>
   );
 }
 

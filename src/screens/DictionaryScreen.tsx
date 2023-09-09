@@ -49,6 +49,10 @@ const DictionaryScreen = ({
     setNewWord("");
   };
 
+  const handleViewDictionary = () => {
+    navigation.navigate("SavedWord");
+  };
+
   const handleAddDictionary = async () => {
     if (checkedWord === "") {
       console.log("Word is required");
@@ -149,12 +153,24 @@ const DictionaryScreen = ({
                 <Text style={styles.buttonText}>Clear</Text>
               </TouchableOpacity>
             </View>
-            <View>
+            <View style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "60%",
+                marginTop: 20,
+                marginBottom: 20,
+              }}>
               <TouchableOpacity
                 style={styles.buttonDesign}
                 onPress={handleAddDictionary}
               >
                 <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonDesign}
+                onPress={handleViewDictionary}
+              >
+                <Text style={styles.buttonText}>View</Text>
               </TouchableOpacity>
             </View>
 

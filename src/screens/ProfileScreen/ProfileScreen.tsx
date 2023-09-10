@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
-import { TabsStackScreenProps } from "../navigators/TabNavigator";
+import { RootStackParamList } from "../../types";
+import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -51,7 +51,6 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       setUsername(responseData.user[0].username);
       setBiodata(responseData.user[0].bio_data);
       setPhoneNumber(responseData.user[0].phonenumber);
-      console.log(responseData);
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +59,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
     fetchdata();
   }, []);
 
-  const handleSavePress = async() => {
+  const handleSavePress = async () => {
     setIsEmailEditing(false);
     setIsPasswordEditing(false);
     setIsAccountNoEditing(false);
@@ -73,7 +72,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       username: string;
       bio_data?: string;
       phonenumber?: string;
-      password?: string; 
+      password?: string;
     }
 
     const updateData: UserData = {
@@ -87,23 +86,25 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       updateData.password = password;
     }
     if (biodata !== "") {
-        updateData.bio_data = biodata;
+      updateData.bio_data = biodata;
     }
     if (phoneNumber !== "") {
-        updateData.phonenumber = phoneNumber;
+      updateData.phonenumber = phoneNumber;
     }
     try {
-        const response = await fetch("http://192.168.8.122:3001/api/user/update",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updateData),
-        });
+      const response = await fetch(
+        "http://192.168.8.122:3001/api/user/update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData),
         }
-        catch (error) {
-            console.log(error);
-        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -125,13 +126,13 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
         <Image
           resizeMode="cover"
           style={styles.circle}
-          source={require("../assets/images/photo-1483134529005-4c93495107d5.jpg")}
+          source={require("../../assets/images/photo-1483134529005-4c93495107d5.jpg")}
         />
       </View>
       <View style={styles.lowerPart}>
         <Text style={styles.nameText}>{name}</Text>
         <View style={styles.lowerPart}>
-        <View style={styles.editabletext}>
+          <View style={styles.editabletext}>
             <Text style={styles.label}>Name : </Text>
             <TextInput
               style={[

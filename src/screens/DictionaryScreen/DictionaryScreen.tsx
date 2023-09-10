@@ -9,7 +9,7 @@ import {
   StatusBar,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
-import { TabsStackScreenProps } from "../navigators/TabNavigator";
+import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 
 const DictionaryScreen = ({
   navigation,

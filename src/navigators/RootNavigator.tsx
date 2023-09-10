@@ -9,7 +9,7 @@ import TabsNavigator, { TabsStackParamList } from "./TabNavigator";
 import PdfScreen from "../screens/PdfScreen/PdfScreen";
 import Login from "../screens/LoginScreen/LoginScreen";
 import Register from "../screens/RegisterScreen/RegisterScreen";
-import SavedWord from "../screens/SavedWordsScreen";
+import SavedWord from "../screens/SavedWordScreen/SavedWordsScreen";
 
 export type RootStackParamList = {
   Login: undefined;

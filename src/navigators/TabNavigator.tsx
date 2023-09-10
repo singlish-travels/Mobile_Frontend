@@ -10,8 +10,8 @@ import Icons from "@expo/vector-icons/MaterialIcons";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackScreenProps } from "./RootNavigator";
 import CustomBottomTabs from "../components/CustomBottomTabs";
-import DictionaryViewer from "../screens/DictionaryScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import DictionaryViewer from "../screens/DictionaryScreen/DictionaryScreen";
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 
 export type TabsStackParamList = {
   Home: undefined;

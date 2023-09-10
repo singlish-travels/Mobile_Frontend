@@ -1,19 +1,15 @@
+import React, { useState } from "react";
 import {
+  SafeAreaView,
   StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
   View,
-  ImageBackground,
+  Text,
+  TouchableOpacity,
+  TextInput,
   StatusBar,
 } from "react-native";
-import React, { useState } from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../navigators/TabNavigator";
-import Colors from "../constants/Colors";
-
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const DictionaryScreen = ({
   navigation,
@@ -25,8 +21,8 @@ const DictionaryScreen = ({
   const [example, setExample] = useState("");
   const [printmessage, setPrintmessage] = useState("");
 
-  const searchWord = (enteredWord: React.SetStateAction<string>) => {
-    setNewWord(enteredWord);
+  const DisplaySavedWords = () => {
+    navigation.navigate("SavedWord");
   };
 
   const getInfo = async () => {
@@ -47,10 +43,7 @@ const DictionaryScreen = ({
     setDefinition("");
     setExample("");
     setNewWord("");
-  };
-
-  const handleViewDictionary = () => {
-    navigation.navigate("SavedWord");
+    setPrintmessage("");
   };
 
   const handleAddDictionary = async () => {
@@ -94,176 +87,153 @@ const DictionaryScreen = ({
       console.error("Error:", error);
     }
   };
+
+  const searchWord = (enteredWord: React.SetStateAction<string>) => {
+    setNewWord(enteredWord);
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        marginTop: statusBarHeight,
-      }}
-    >
-      <ImageBackground
-        source={require("../../assets/2219.jpg")}
-        resizeMode="cover"
-        style={{ flex: 1 }}
-      >
-        <View style={{ flex: 1 }}>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "bold",
-              }}
-            >
-              Dictionary
-            </Text>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Search a word"
-              placeholderTextColor={Colors.primary}
-              textAlign="center"
-              clearButtonMode="always"
-              onChangeText={searchWord}
-              value={newWord}
-            ></TextInput>
+    <SafeAreaView>
+      <View style={styles.topicContainer}>
+        <TouchableOpacity
+          onPress={() => DisplaySavedWords()}
+          style={{ flexDirection: "row" }}
+        >
+          <Text
+            style={{
+              color: "white",
+              alignSelf: "center",
+              fontSize: 20,
+              paddingLeft: 195,
+            }}
+          >
+            Saved Words
+          </Text>
+          <Icon
+            name="keyboard-arrow-right"
+            style={{ paddingTop: 5 }}
+            size={30}
+            color="white"
+          />
+        </TouchableOpacity>
+        <Text style={styles.topicText}>Dictionary</Text>
+      </View>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "60%",
-                marginTop: 20,
-                marginBottom: 20,
-              }}
-            >
-              <TouchableOpacity
-                style={styles.buttonDesign}
-                onPress={() => {
-                  getInfo();
-                }}
-              >
-                <Text style={styles.buttonText}>Go !</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.buttonDesign}
-                onPress={() => {
-                  clear();
-                }}
-              >
-                <Text style={styles.buttonText}>Clear</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "60%",
-                marginTop: 20,
-                marginBottom: 20,
-              }}>
-              <TouchableOpacity
-                style={styles.buttonDesign}
-                onPress={handleAddDictionary}
-              >
-                <Text style={styles.buttonText}>Add</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.buttonDesign}
-                onPress={handleViewDictionary}
-              >
-                <Text style={styles.buttonText}>View</Text>
-              </TouchableOpacity>
-            </View>
+      <View style={styles.textSearch}>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="Enter text"
+          placeholderTextColor="gray"
+          clearButtonMode="always"
+          onChangeText={searchWord}
+          value={newWord}
+        ></TextInput>
 
-            <View>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  color: "green",
-                }}
-              >
-                {printmessage}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  padding: 6,
-                }}
-              >
-                Entered Word :
-              </Text>
-              {checkedWord === "" ? null : (
-                <Text
-                  style={{
-                    fontSize: 20,
-                    padding: 6,
-                  }}
-                >
-                  {checkedWord}
-                </Text>
-              )}
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  padding: 6,
-                }}
-              >
-                Definition :
-              </Text>
-              {definition === "" ? null : (
-                <Text
-                  style={{
-                    fontSize: 20,
-                    padding: 6,
-                    paddingLeft: 10,
-                  }}
-                >
-                  {definition}
-                </Text>
-              )}
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  padding: 6,
-                }}
-              >
-                Example :
-              </Text>
-              {example === "" ? null : (
-                <Text
-                  style={{
-                    fontSize: 20,
-                    padding: 6,
-                  }}
-                >
-                  {example}
-                </Text>
-              )}
-            </View>
-          </View>
-        </View>
-      </ImageBackground>
-      <StatusBar />
-    </View>
+        <TouchableOpacity
+          onPress={() => {
+            getInfo();
+          }}
+        >
+          <Icon
+            name="search"
+            style={{ paddingLeft: 5, paddingTop: 10 }}
+            size={50}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
+          <Text style={styles.buttonText}>Save</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={clear}>
+          <Text style={styles.buttonText}>Clear</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.WordMeaning}>
+        {printmessage === "" ? null : (
+          <Text
+            style={{
+              fontSize: 20,
+              paddingLeft: 20,
+              paddingTop: 10,
+              color: "green",
+            }}
+          >
+            {printmessage}
+          </Text>
+        )}
+        <Text
+          style={{
+            fontSize: 30,
+            paddingLeft: 20,
+            paddingTop: 20,
+            fontWeight: "bold",
+          }}
+        >
+          {checkedWord}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            paddingLeft: 20,
+            paddingTop: checkedWord ? 0 : 23,
+            fontWeight: "bold",
+          }}
+        >
+          ___________________
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            paddingLeft: 20,
+            paddingTop: 20,
+            fontWeight: "bold",
+          }}
+        >
+          Definition :
+        </Text>
+        <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
+          {definition}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            paddingLeft: 20,
+            paddingTop: 20,
+            fontWeight: "bold",
+          }}
+        >
+          Example :
+        </Text>
+        <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
+          {example}
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default DictionaryScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
+  topicContainer: {
+    width: "100%",
+    height: 100,
+    backgroundColor: "#000030",
+    justifyContent: "center",
   },
-
-  imageDesign: {
-    width: "80%",
-    height: "120%",
-    marginLeft: 50,
-    marginTop: 30,
+  topicText: {
+    fontSize: 30,
+    color: "white",
+    alignSelf: "center",
+  },
+  textSearch: {
+    height: 100,
+    backgroundColor: "#bab9c7",
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingTop: 15,
   },
   inputBox: {
     width: "80%",
@@ -272,26 +242,33 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 20,
     marginTop: 10,
-    fontSize: 25,
+    fontSize: 20,
+    paddingLeft: 15,
   },
-  buttonDesign: {
-    backgroundColor: "lightblue",
+  button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignItems: "center",
     width: 100,
-    height: 50,
-    borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 20,
+    margin: 8,
   },
   buttonText: {
-    fontSize: 25,
+    color: "white",
+    fontSize: 16,
     fontWeight: "bold",
-    alignSelf: "center",
-    marginTop: 5,
   },
-  textDesign: {
-    fontSize: 20,
-    marginTop: 10,
+  buttonContainer: {
+    backgroundColor: "#bab9c7",
+    flexDirection: "row",
     padding: 10,
-    alignSelf: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-end",
+  },
+  WordMeaning: {
+    height: "100%",
+    backgroundColor: "white",
   },
 });

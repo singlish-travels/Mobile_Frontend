@@ -11,6 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import getdetails from "../../api/details/details";
 
 
 const DetailsScreen = ({
@@ -25,17 +26,7 @@ const DetailsScreen = ({
   const [book,setBook]=useState({} as any);
 
   const fetchBook=async()=>{
-    console.log(id);
-    const response=await fetch("http://10.10.12.7:3001/api/book/show",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        id:id
-      })
-    })
-    const data=await response.json()
+    const data=await getdetails(id);
     setBook(data);
   }
 

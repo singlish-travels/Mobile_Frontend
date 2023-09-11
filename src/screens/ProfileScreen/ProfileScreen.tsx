@@ -14,6 +14,7 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
+import getPublisher from "../../api/profile/get_user";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -35,17 +36,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
 
   const fetchdata = async () => {
     try {
-      const response = await fetch(
-        "http://192.168.8.122:3001/api/user/getUser",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: "64f6f556104f2b6525e78793" }),
-        }
-      );
-      const responseData = await response.json();
+      const responseData = await getPublisher();
       setName(responseData.user[0].name);
       setemail(responseData.user[0].email);
       setUsername(responseData.user[0].username);

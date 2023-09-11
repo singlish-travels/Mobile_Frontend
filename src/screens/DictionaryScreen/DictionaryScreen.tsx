@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
+import saveWord from "../../api/dictionary/save_word";
 
 const DictionaryScreen = ({
   navigation,
@@ -24,7 +25,6 @@ const DictionaryScreen = ({
   const DisplaySavedWords = () => {
     navigation.navigate("SavedWord");
   };
-
   const getInfo = async () => {
     let url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + newWord;
 
@@ -67,17 +67,7 @@ const DictionaryScreen = ({
     };
     console.log(dictionaryData);
     try {
-      const response = await fetch(
-        "http://192.168.8.122:3001/api/dictionary/add",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dictionaryData),
-        }
-      );
-      const responseData = await response.json();
+      const responseData = await saveWord(dictionaryData);
       if (responseData.message === "Word is added successfully.") {
         setPrintmessage(responseData.message);
       } else {

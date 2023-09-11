@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-  AppState,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
+import removeWord from "../../api/dictionary/remove_word";
+import getWords from "../../api/dictionary/get_words";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
   const [word, setWord] = useState("");
@@ -28,16 +30,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
           text: "Delete",
           onPress: () => {
             try {
-              const response = fetch(
-                "http://192.168.8.122:3001/api/dictionary/remove",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ _id: id }),
-                }
-              );
+              removeWord(id);
               alert("Word Deleted Successfully");
               setWord("Word Deleted Successfully");
             } catch (error) {
@@ -59,17 +52,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        "http://192.168.8.122:3001/api/dictionary/get",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user_id: "64f6f556104f2b6525e78793" }),
-        }
-      );
-      const responseData = await response.json();
+      const responseData = await getWords();
       setDATA(responseData.data);
     } catch (error) {
       console.error("Error:", error);

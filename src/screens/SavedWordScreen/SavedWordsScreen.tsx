@@ -29,7 +29,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
           onPress: () => {
             try {
               const response = fetch(
-                "http://192.168.8.122:3001/api/dictionary/remove",
+                "http://10.10.12.7:3001/api/dictionary/remove",
                 {
                   method: "POST",
                   headers: {
@@ -60,7 +60,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "http://192.168.8.122:3001/api/dictionary/get",
+        "http://10.10.12.7:3001/api/dictionary/get",
         {
           method: "POST",
           headers: {

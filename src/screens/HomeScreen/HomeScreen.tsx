@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
 
   const fetchFreeBooks = async () => {
     try {
-      const response = await fetch("http://192.168.8.122:3001/api/book/pricebook", {
+      const response = await fetch("http://10.10.12.7:3001/api/book/pricebook", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

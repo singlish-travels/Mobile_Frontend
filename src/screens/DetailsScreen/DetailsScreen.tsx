@@ -26,7 +26,7 @@ const DetailsScreen = ({
 
   const fetchBook=async()=>{
     console.log(id);
-    const response=await fetch("http://192.168.8.122:3001/api/book/show",{
+    const response=await fetch("http://10.10.12.7:3001/api/book/show",{
       method:"POST",
       headers:{
         "Content-Type":"application/json"

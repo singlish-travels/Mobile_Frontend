@@ -13,6 +13,7 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import AppTextInput from "../../components/AppTextInput/AppTextInput";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
+import loginPublisher from "../../api/auth/login";
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
   const [username, setUsername] = useState("");
@@ -40,15 +41,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
     console.log(loginData);
 
     try {
-      const response = await fetch("http://192.168.8.122:3001/api/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginData),
-      });
-
-      const responseData = await response.json();
+      const responseData = await loginPublisher(loginData);
 
       if (responseData.message === "Login successful.") {
         console.log(responseData);

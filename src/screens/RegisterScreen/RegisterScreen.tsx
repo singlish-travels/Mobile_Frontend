@@ -1,8 +1,6 @@
 import {
   SafeAreaView,
-  StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
@@ -14,6 +12,7 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import AppTextInput from "../../components/AppTextInput/AppTextInput";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
+import registerPublisher from "../../api/auth/register";
 
 const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
   const [name, setName] = useState("");
@@ -56,18 +55,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
     };
     console.log(registerData);
     try {
-      const response = await fetch(
-        "http://192.168.8.122:3001/api/user/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(registerData),
-        }
-      );
-
-      const responseData = await response.json();
+      const responseData = await registerPublisher(registerData);
 
       if (responseData.message === "User is added successfully.") {
         console.log(responseData);

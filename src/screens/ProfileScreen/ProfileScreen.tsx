@@ -36,7 +36,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
   const fetchdata = async () => {
     try {
       const response = await fetch(
-        "http://192.168.8.122:3001/api/user/getUser",
+        "http://10.10.12.7:3001/api/user/getUser",
         {
           method: "POST",
           headers: {

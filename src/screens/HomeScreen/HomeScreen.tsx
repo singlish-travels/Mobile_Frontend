@@ -19,6 +19,7 @@ import CustomBackdrop from "../../components/CustomBackdrop";
 import FilterView from "../../components/FilterView";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import { Switch } from "react-native-gesture-handler";
+import getPriceBook from "../../api/home/price_book";
 
 const BOOK_CATEGORIES = [
   "Adventure",
@@ -50,17 +51,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
 
   const fetchFreeBooks = async () => {
     try {
-      const response = await fetch("http://10.10.12.7:3001/api/book/pricebook", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          starting_Price: 0,
-          ending_Price: 10000,
-        }),
-      });
-      const responseData = await response.json();
+      const responseData = await getPriceBook();
       setBOOK_LIST_DATA(responseData.response);
     } catch (error) {
       console.error("Error:", error);

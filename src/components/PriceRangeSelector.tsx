@@ -8,12 +8,9 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import {
-  Gesture,
-  GestureDetector,
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
-import { PanGesture } from "react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture";
 
 const PriceRangeSelector = ({
   minPrice,

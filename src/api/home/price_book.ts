@@ -1,14 +1,14 @@
 import baseURL from "../../config/baseURL";
 
-async function getPriceBook(): Promise<any> {
+async function getPriceBook(start:Number,end:Number): Promise<any> {
     const response = await fetch(`${baseURL}/api/book/pricebook`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          starting_Price: 0,
-          ending_Price: 10000,
+          starting_Price: start,
+          ending_Price: end,
         }),
       });
       const responseData = await response.json();

@@ -8,7 +8,7 @@ import {
   FlatList,
   Appearance,
 } from "react-native";
-import React, { useCallback, useRef, useState,useEffect } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
 import Icons from "@expo/vector-icons/MaterialIcons";
@@ -20,8 +20,10 @@ import FilterView from "../../components/FilterView";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import { Switch } from "react-native-gesture-handler";
 import getPriceBook from "../../api/home/price_book";
+import getGenreBook from "../../api/home/genre_book";
 
 const BOOK_CATEGORIES = [
+  "All",
   "Adventure",
   "Mystery",
   "Poetry",
@@ -32,9 +34,6 @@ const BOOK_CATEGORIES = [
 
 const PROFILE_PICTURE =
   "https://c0.wallpaperflare.com/preview/1015/464/838/adorable-beautiful-boy-child.jpg";
-
-
-
 
 const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
   Appearance.addChangeListener((scheme) => {
@@ -48,20 +47,27 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
     bottomSheetModalRef.current?.present();
   }, []);
   const [BOOK_LIST_DATA, setBOOK_LIST_DATA] = useState([]) as any;
+  const [Free_Book, setFree_Book] = useState([]) as any;
 
   const fetchFreeBooks = async () => {
     try {
-      const responseData = await getPriceBook();
-      setBOOK_LIST_DATA(responseData.response);
+      if (categoryIndex === 0){
+        const responseData = await getPriceBook(0,10000);
+        setBOOK_LIST_DATA(responseData.response);
+      }else{
+        const responseData = await getGenreBook(BOOK_CATEGORIES[categoryIndex]);
+        setBOOK_LIST_DATA(responseData.response);      
+      }      
+      const responseData = await getPriceBook(0,0);
+      setFree_Book(responseData.response);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-
   useEffect(() => {
     fetchFreeBooks();
-  }, []);
+  }, [categoryIndex]);
 
   return (
     <ScrollView>
@@ -192,43 +198,37 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
             <Text
               style={{ fontSize: 20, fontWeight: "700", color: colors.text }}
             >
-              Recently Added Books
+              Free Books
             </Text>
             <TouchableOpacity>
               <Text style={{ color: colors.primary }}>See All</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: "row", height: 200, gap: 12 }}>
-            <Card
-              onPress={() => {
-                navigation.navigate("Details", {
-                  id: "123",
-                });
-              }}
-              price={120}
-              imageUrl="https://blog-cdn.reedsy.com/uploads/2019/12/stargazing-705x1024.jpg"
-            />
-            <View style={{ flex: 1, gap: 12 }}>
-              <Card
-                onPress={() => {
-                  navigation.navigate("Details", {
-                    id: "456",
-                  });
-                }}
-                price={120}
-                imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXHiRpFKbETXd35EL-S_zWSkOhBM8eW2PslA&usqp=CAU"
-              />
-              <Card
-                onPress={() => {
-                  navigation.navigate("Details", {
-                    id: "789",
-                  });
-                }}
-                price={170}
-                imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWF0vBdDYD-FNkcbRsj0tg1RHGjF-1iL_7fQ&usqp=CAU"
-              />
+          <ScrollView
+            horizontal
+            contentContainerStyle={{ paddingHorizontal: 2 }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              {Free_Book.map(
+                (
+                  book: { _id: string; price: number; coverpage: string },
+                  index: React.Key
+                ) =>
+                   (
+                    <Card
+                      key={index} // Don't forget to add a unique key prop when mapping over an array
+                      onPress={() => {
+                        navigation.navigate("Details", {
+                          id: book._id, // Pass book._id as the 'id' parameter to the "Details" page
+                        });
+                      }}
+                      price={book.price}
+                      imageUrl={book.coverpage}
+                    />
+                  )
+              )}
             </View>
-          </View>
+          </ScrollView>
         </View>
 
         {/* BOOK_CATEGORIES Section */}
@@ -281,104 +281,108 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                 navigation.navigate("Details", {
                   id: item._id,
                 });
-              }} 
-          >
-            <View style={{ padding: 6 }}>
-              <View
-                style={{
-                  aspectRatio: i === 0 ? 1 : 2 / 3,
-                  position: "relative",
-                  overflow: "hidden",
-                  borderRadius: 24,
-                }}
-              >
-                <Image
-                  source={{
-                    uri: item.coverpage,
-                  }}
-                  resizeMode="cover"
-                  style={StyleSheet.absoluteFill}
-                />
+              }}
+            >
+              <View style={{ padding: 6 }}>
                 <View
-                  style={[
-                    StyleSheet.absoluteFill,
-                    {
-                      padding: 12,
-                    },
-                  ]}
+                  style={{
+                    aspectRatio: i === 0 ? 1 : 2 / 3,
+                    position: "relative",
+                    overflow: "hidden",
+                    borderRadius: 24,
+                  }}
                 >
-                  <View style={{ flexDirection: "row", gap: 8, padding: 4 }}>
-                    <Text
-                      style={{
-                        flex: 1,
-                        fontSize: 16,
-                        fontWeight: "900",
-                        color: "#000",
-                        textShadowColor: "rgba(0,0,0,0.2)",
-                        textShadowOffset: {
-                          height: 1,
-                          width: 0,
-                        },
-                        textShadowRadius: 4,
-                      }}
-                    >
-                      {item.title}
-                    </Text>
-                    <View
-                      style={{
-                        backgroundColor: colors.card,
-                        borderRadius: 100,
-                        height: 32,
-                        aspectRatio: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Icons
-                        name="favorite-border"
-                        size={20}
-                        color={colors.text}
-                      />
-                    </View>
-                  </View>
-                  <View style={{ flex: 1 }} />
-                  <BlurView
-                    style={{
-                      flexDirection: "row",
-                      backgroundColor: "rgba(0,0,0,0.5)",
-                      alignItems: "center",
-                      padding: 6,
-                      borderRadius: 100,
-                      overflow: "hidden",
+                  <Image
+                    source={{
+                      uri: item.coverpage,
                     }}
-                    intensity={20}
+                    resizeMode="cover"
+                    style={StyleSheet.absoluteFill}
+                  />
+                  <View
+                    style={[
+                      StyleSheet.absoluteFill,
+                      {
+                        padding: 12,
+                      },
+                    ]}
                   >
-                    <Text
+                    <View style={{ flexDirection: "row", gap: 8, padding: 4 }}>
+                      <Text
+                        style={{
+                          flex: 1,
+                          fontSize: 16,
+                          fontWeight: "900",
+                          color: "#000",
+                          textShadowColor: "rgba(0,0,0,0.2)",
+                          textShadowOffset: {
+                            height: 1,
+                            width: 0,
+                          },
+                          textShadowRadius: 4,
+                        }}
+                      >
+                        {item.title}
+                      </Text>
+                      <View
+                        style={{
+                          backgroundColor: colors.card,
+                          borderRadius: 100,
+                          height: 32,
+                          aspectRatio: 1,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Icons
+                          name="favorite-border"
+                          size={20}
+                          color={colors.text}
+                        />
+                      </View>
+                    </View>
+                    <View style={{ flex: 1 }} />
+                    <BlurView
                       style={{
-                        flex: 1,
-                        fontSize: 16,
-                        fontWeight: "600",
-                        color: "#fff",
-                        marginLeft: 8,
-                      }}
-                      numberOfLines={1}
-                    >
-                      Rs.{item.price}
-                    </Text>
-                    <TouchableOpacity
-                      style={{
-                        paddingHorizontal: 12,
-                        paddingVertical: 8,
+                        flexDirection: "row",
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        alignItems: "center",
+                        padding: 6,
                         borderRadius: 100,
-                        backgroundColor: "#fff",
+                        overflow: "hidden",
                       }}
+                      intensity={20}
                     >
-                      <Icons name="add-shopping-cart" size={18} color="#000" />
-                    </TouchableOpacity>
-                  </BlurView>
+                      <Text
+                        style={{
+                          flex: 1,
+                          fontSize: 16,
+                          fontWeight: "600",
+                          color: "#fff",
+                          marginLeft: 8,
+                        }}
+                        numberOfLines={1}
+                      >
+                        Rs.{item.price}
+                      </Text>
+                      <TouchableOpacity
+                        style={{
+                          paddingHorizontal: 12,
+                          paddingVertical: 8,
+                          borderRadius: 100,
+                          backgroundColor: "#fff",
+                        }}
+                      >
+                        <Icons
+                          name="add-shopping-cart"
+                          size={18}
+                          color="#000"
+                        />
+                      </TouchableOpacity>
+                    </BlurView>
+                  </View>
                 </View>
               </View>
-            </View>
             </TouchableOpacity>
           )}
           onEndReachedThreshold={0.1}
@@ -419,10 +423,11 @@ const Card = ({
     <TouchableOpacity
       onPress={onPress}
       style={{
-        flex: 1,
-        position: "relative",
-        overflow: "hidden",
-        borderRadius: 24,
+        width: 150, // Set the width to 160 pixels
+        height: 200, // Set a fixed height
+        marginRight: 16,
+        borderRadius: 24, // Apply borderRadius to round corners
+        overflow: "hidden", // Clip content to the rounded corners
       }}
     >
       <Image
@@ -431,11 +436,9 @@ const Card = ({
         }}
         resizeMode="cover"
         style={{
+          width: "100%",
+          height: "100%",
           position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
         }}
       />
       <View

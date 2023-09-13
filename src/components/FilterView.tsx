@@ -1,69 +1,44 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState,useEffect } from "react";
 import { useTheme } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import PriceRangeSelector from "./PriceRangeSelector";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import getAuthor from "../api/home/get_author";
 
-const MAX_PRICE = 500;
-
-const COLORS = [
-  {
-    color: "#D93F3E",
-    label: "Red",
-    itemCount: 4,
-  },
-  {
-    color: "#FFFFFF",
-    label: "White",
-    itemCount: 2,
-  },
-  {
-    color: "#58AB51",
-    label: "Green",
-    itemCount: 6,
-  },
-  {
-    color: "#FB8C1D",
-    label: "Orange",
-    itemCount: 10,
-  },
-  {
-    color: "#D3B38D",
-    label: "Tan",
-    itemCount: 10,
-  },
-  {
-    color: "#FDE737",
-    label: "Yellow",
-    itemCount: 10,
-  },
-];
-
-const SLEEVES = [
-  {
-    id: "sortsleeve",
-    label: "Sort Sleeve",
-    itemCount: 20,
-  },
-  {
-    id: "longsleeve",
-    label: "Long Sleeve",
-    itemCount: 100,
-  },
-  {
-    id: "sleeveless",
-    label: "Sleeve Less",
-    itemCount: 60,
-  },
-];
+const MAX_PRICE = 3000;
 
 const FilterView = () => {
-  const [startPrice, setStartPrice] = useState(50);
-  const [endPrice, setEndPrice] = useState(250);
+  const [startPrice, setStartPrice] = useState(0);
+  const [endPrice, setEndPrice] = useState(500);
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const BOOK_CATEGORIES = [
+    "Adventure",
+    "Mystery",
+    "Poetry",
+    "Non-Fiction",
+    "Fairy Tales and Folklore",
+    "Animal Stories",
+  ];
+
+  const [Author, setAuthor] = useState([]);
+  
+
+  const fetchData = async () => {
+    try {
+      const responseData = await getAuthor();
+      setAuthor(responseData.response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <BottomSheetScrollView style={{ flex: 1 }}>
@@ -111,15 +86,15 @@ const FilterView = () => {
           {/* Sports Category Filter */}
           <View style={{ paddingHorizontal: 24 }}>
             <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 12 }}>
-              Sports
+              Genre
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
-              {new Array(7).fill("").map((_, i) => {
+              {BOOK_CATEGORIES.map((_, i) => {
                 return (
                   <Chip
                     key={i}
                     itemCount={i}
-                    label="Item"
+                    label={BOOK_CATEGORIES[i]}
                     isSelected={i === 0}
                   />
                 );
@@ -129,25 +104,15 @@ const FilterView = () => {
           {/* Color Filter */}
           <View style={{ paddingHorizontal: 24 }}>
             <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 12 }}>
-              Color
+              Author
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
-              {COLORS.map((item, i) => {
+              {Author.map((_, i) => {
                 return (
                   <Chip
                     key={i}
-                    itemCount={item.itemCount}
-                    label={item.label}
-                    left={
-                      <View
-                        style={{
-                          backgroundColor: item.color,
-                          width: 16,
-                          height: 16,
-                          borderRadius: 8,
-                        }}
-                      />
-                    }
+                    itemCount={i}
+                    label={Author[i]}
                     isSelected={i === 0}
                   />
                 );
@@ -155,23 +120,6 @@ const FilterView = () => {
             </View>
           </View>
           {/* Sleeves Filter */}
-          <View style={{ paddingHorizontal: 24 }}>
-            <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 12 }}>
-              Sleeves
-            </Text>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
-              {SLEEVES.map((item, i) => {
-                return (
-                  <Chip
-                    key={i}
-                    itemCount={item.itemCount}
-                    label={item.label}
-                    isSelected={i === 0}
-                  />
-                );
-              })}
-            </View>
-          </View>
         </View>
       </BottomSheetScrollView>
       {/* Button */}
@@ -259,7 +207,7 @@ const Chip = ({
           color: isSelected ? theme.colors.background : theme.colors.text,
         }}
       >
-        {label} [{itemCount}]
+        {label}
       </Text>
     </View>
   );

@@ -8,12 +8,9 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import {
-  Gesture,
-  GestureDetector,
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
-import { PanGesture } from "react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture";
 
 const PriceRangeSelector = ({
   minPrice,
@@ -170,7 +167,7 @@ const PriceRangeSelector = ({
                 bottom: 24,
               }}
             />
-            <SliderHandle label={`$${startPrice}`} />
+            <SliderHandle label={`Rs.${startPrice}`} />
           </Animated.View>
         </PanGestureHandler>
 
@@ -188,7 +185,7 @@ const PriceRangeSelector = ({
                 bottom: 24,
               }}
             />
-            <SliderHandle label={`$${endPrice}`} />
+            <SliderHandle label={`Rs.${endPrice}`} />
           </Animated.View>
         </PanGestureHandler>
       </View>

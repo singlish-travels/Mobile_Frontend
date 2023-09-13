@@ -214,7 +214,8 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                   book: { _id: string; price: number; coverpage: string },
                   index: React.Key
                 ) =>
-                   (
+                  // Check if book.price is equal to 0 before rendering the Card
+ (
                     <Card
                       key={index} // Don't forget to add a unique key prop when mapping over an array
                       onPress={() => {
@@ -402,7 +403,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
           backgroundColor: colors.primary,
         }}
       >
-        <FilterView />
+        <FilterView/>
       </BottomSheetModal>
     </ScrollView>
   );

@@ -170,7 +170,7 @@ const PriceRangeSelector = ({
                 bottom: 24,
               }}
             />
-            <SliderHandle label={`$${startPrice}`} />
+            <SliderHandle label={`Rs.${startPrice}`} />
           </Animated.View>
         </PanGestureHandler>
 
@@ -188,7 +188,7 @@ const PriceRangeSelector = ({
                 bottom: 24,
               }}
             />
-            <SliderHandle label={`$${endPrice}`} />
+            <SliderHandle label={`Rs.${endPrice}`} />
           </Animated.View>
         </PanGestureHandler>
       </View>

@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  ScrollView,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";

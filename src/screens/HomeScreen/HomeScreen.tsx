@@ -20,8 +20,10 @@ import FilterView from "../../components/FilterView";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import { Switch } from "react-native-gesture-handler";
 import getPriceBook from "../../api/home/price_book";
+import getGenreBook from "../../api/home/genre_book";
 
 const BOOK_CATEGORIES = [
+  "All",
   "Adventure",
   "Mystery",
   "Poetry",
@@ -45,11 +47,19 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
     bottomSheetModalRef.current?.present();
   }, []);
   const [BOOK_LIST_DATA, setBOOK_LIST_DATA] = useState([]) as any;
+  const [Free_Book, setFree_Book] = useState([]) as any;
 
   const fetchFreeBooks = async () => {
     try {
-      const responseData = await getPriceBook();
-      setBOOK_LIST_DATA(responseData.response);
+      if (categoryIndex === 0){
+        const responseData = await getPriceBook(0,10000);
+        setBOOK_LIST_DATA(responseData.response);
+      }else{
+        const responseData = await getGenreBook(BOOK_CATEGORIES[categoryIndex]);
+        setBOOK_LIST_DATA(responseData.response);      
+      }      
+      const responseData = await getPriceBook(0,0);
+      setFree_Book(responseData.response);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -57,7 +67,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
 
   useEffect(() => {
     fetchFreeBooks();
-  }, []);
+  }, [categoryIndex]);
 
   return (
     <ScrollView>
@@ -199,13 +209,12 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
             contentContainerStyle={{ paddingHorizontal: 2 }}
           >
             <View style={{ flexDirection: "row" }}>
-              {BOOK_LIST_DATA.map(
+              {Free_Book.map(
                 (
                   book: { _id: string; price: number; coverpage: string },
                   index: React.Key
                 ) =>
-                  // Check if book.price is equal to 0 before rendering the Card
-                  book.price === 0 && (
+                   (
                     <Card
                       key={index} // Don't forget to add a unique key prop when mapping over an array
                       onPress={() => {

@@ -12,10 +12,10 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import saveWord from "../../api/dictionary/save_word";
 
+
 const DictionaryScreen = ({
   navigation,
 }: TabsStackScreenProps<"Dictionary">) => {
-  const statusBarHeight = StatusBar.currentHeight ?? 0;
   const [newWord, setNewWord] = useState("");
   const [checkedWord, setCheckedWord] = useState("");
   const [definition, setDefinition] = useState("");

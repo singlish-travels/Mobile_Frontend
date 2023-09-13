@@ -19,7 +19,7 @@ export type RootStackParamList = {
     id: string;
   };
   Pdf: { id: string };
-  PdfScreen: undefined;
+  PdfScreen: {link:string};
   SavedWord: undefined;
 };
 

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, {  useState,useEffect } from "react";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import {
   SafeAreaView,
@@ -13,6 +13,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import getdetails from "../../api/details/details";
 
+
 const DetailsScreen = ({
   navigation,
   route: {
@@ -22,21 +23,23 @@ const DetailsScreen = ({
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const [count, setCount] = useState(1);
-  const [book, setBook] = useState({} as any);
+  const [book,setBook]=useState({} as any);
 
-  const fetchBook = async () => {
-    const data = await getdetails(id);
+  const fetchBook=async()=>{
+    const data=await getdetails(id);
     setBook(data);
-  };
+  }
 
   useEffect(() => {
-    fetchBook();
+   fetchBook();
   }, []);
 
   return (
     <View style={{ flex: 1 }}>
       <Image
-        source={{ uri: book.coverpage }}
+        source={{
+          uri: book.coverpage,
+        }}
         style={{ flex: 1 }}
         resizeMode="cover"
       />
@@ -201,9 +204,7 @@ const DetailsScreen = ({
                   borderWidth: 1,
                   borderColor: "#000",
                 }}
-                onPress={() =>
-                  navigation.navigate("PdfScreen", { link: book.pdf })
-                }
+                onPress={() => navigation.navigate("PdfScreen", { link: book.pdf })}
               >
                 <MaterialIcons name="menu-book" size={44} color={Colors.text} />
               </TouchableOpacity>

@@ -13,7 +13,6 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import removeWord from "../../api/dictionary/remove_word";
 import getWords from "../../api/dictionary/get_words";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
   const [word, setWord] = useState("");
@@ -48,7 +47,14 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
     navigation.navigate({ name: "TabsStack", key: "123" });
   };
 
-  const [DATA, setDATA] = useState([]);
+  interface IDataItem {
+    _id: string;
+    word: string;
+    meaning: string;
+    example: string;
+  }
+
+  const [DATA, setDATA] = useState<IDataItem[]>([]);
 
   const fetchData = async () => {
     try {
@@ -64,7 +70,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
   }, [word]);
 
   return (
-    <ScrollView>
+    
       <SafeAreaView>
         <View style={styles.topicContainer}>
           <TouchableOpacity
@@ -87,8 +93,8 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
         <View style={styles.WordsContainer}>
           <FlatList
             data={DATA}
-            renderItem={({ item }) => (
-              <View style={styles.wordItem}>
+            renderItem={({ item,index }) => (
+              <View style={[styles.wordItem,, index === DATA.length - 1 ? { marginBottom: 250 } : null]}>
                 <TouchableOpacity onPress={() => handleDeleteWord(item._id)}>
                   <Icon
                     name="delete"
@@ -135,7 +141,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
           />
         </View>
       </SafeAreaView>
-    </ScrollView>
+
   );
 };
 

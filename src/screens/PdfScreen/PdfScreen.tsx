@@ -13,6 +13,12 @@ const PdfScreen = ({
   route: {
     params: { link },
   },
+}: {
+  route: {
+    params: {
+      link: string; // Annotate 'link' as a string type
+    };
+  };
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState(""); // State to store the search term

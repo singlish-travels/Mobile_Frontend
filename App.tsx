@@ -14,11 +14,11 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
-  const colorScheme = useColorScheme();
+  const colorScheme = "light";
 
   const theme: Theme = useMemo(
     () =>
-      colorScheme === "dark"
+      colorScheme === "light"
         ? {
             ...DarkTheme,
             colors: {
@@ -47,7 +47,7 @@ export default function App() {
           <BottomSheetModalProvider>
             <RootNavigator />
           </BottomSheetModalProvider>
-          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+          <StatusBar style={colorScheme === "light" ? "dark" : "light"} />
         </NavigationContainer>
       </GestureHandlerRootView>
     </SafeAreaProvider>

@@ -15,6 +15,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import getPublisher from "../../api/profile/get_user";
+import updateReader from "../../api/profile/update_user";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -83,19 +84,12 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       updateData.phonenumber = phoneNumber;
     }
     try {
-      const response = await fetch(
-        "http://192.168.8.122:3001/api/user/update",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updateData),
-        }
-      );
+      const response = await updateReader(updateData);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
+
   };
 
   return (

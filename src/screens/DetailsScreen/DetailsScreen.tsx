@@ -234,7 +234,7 @@ const DetailsScreen = ({
                   borderColor: "#000",
                 }}
               >
-                <MaterialIcons name="volume-up" size={44} color={Colors.text} />
+                <MaterialIcons name="3d-rotation" size={44} color={Colors.text} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -245,7 +245,7 @@ const DetailsScreen = ({
                   padding: 10,
                 }}
               >
-                Get the Audio...
+                View AR...
               </Text>
             </View>
           </View>

@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Linking,
   StatusBar,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
@@ -13,6 +14,7 @@ import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import saveWord from "../../api/dictionary/save_word";
 import axios from "axios";
 import "react-native-url-polyfill/auto";
+import SoundPlayer from "react-native-sound-player";
 
 const DictionaryScreen = ({
   navigation,
@@ -33,9 +35,9 @@ const DictionaryScreen = ({
     method: "POST",
     url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
     headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'X-RapidAPI-Key': '1ceca769b9msh7fbf81dddafb618p1426edjsn063fb2693492',
-      'X-RapidAPI-Host': 'cloudlabs-text-to-speech.p.rapidapi.com'
+      "content-type": "application/x-www-form-urlencoded",
+      "X-RapidAPI-Key": "1ceca769b9msh7fbf81dddafb618p1426edjsn063fb2693492",
+      "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
     },
     data: encodedParams,
   };
@@ -68,6 +70,11 @@ const DictionaryScreen = ({
     try {
       const response = await axios.request(options);
       console.log(response.data);
+      try {
+        SoundPlayer.playUrl(response.data.audio_url);
+      } catch (e) {
+        console.log(`cannot play the sound file`, e);
+      }
     } catch (error) {
       console.error(error);
     }

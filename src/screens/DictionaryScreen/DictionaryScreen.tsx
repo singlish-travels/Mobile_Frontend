@@ -11,7 +11,8 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import saveWord from "../../api/dictionary/save_word";
-
+import axios from "axios";
+import "react-native-url-polyfill/auto";
 
 const DictionaryScreen = ({
   navigation,
@@ -21,6 +22,23 @@ const DictionaryScreen = ({
   const [definition, setDefinition] = useState("");
   const [example, setExample] = useState("");
   const [printmessage, setPrintmessage] = useState("");
+
+  const encodedParams = new URLSearchParams();
+  encodedParams.set("voice_code", "en-US-1");
+  encodedParams.set("text", "Hi, I am Aravinda I am testing this API");
+  encodedParams.set("speed", "1.00");
+  encodedParams.set("pitch", "1.00");
+  encodedParams.set("output_type", "audio_url");
+  const options = {
+    method: "POST",
+    url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'X-RapidAPI-Key': '1ceca769b9msh7fbf81dddafb618p1426edjsn063fb2693492',
+      'X-RapidAPI-Host': 'cloudlabs-text-to-speech.p.rapidapi.com'
+    },
+    data: encodedParams,
+  };
 
   const DisplaySavedWords = () => {
     navigation.navigate("SavedWord");
@@ -44,6 +62,15 @@ const DictionaryScreen = ({
     setExample("");
     setNewWord("");
     setPrintmessage("");
+  };
+
+  const getVoice = async () => {
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddDictionary = async () => {
@@ -133,6 +160,9 @@ const DictionaryScreen = ({
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={getVoice}>
+          <Text style={styles.buttonText}>Voice</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>

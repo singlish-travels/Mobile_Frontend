@@ -56,6 +56,7 @@ const DictionaryScreen = ({
     setDefinition(def);
     let eg = response[0].meanings[0].definitions[0].example;
     setExample(eg);
+    setPrintmessage("");
   };
 
   const clear = () => {

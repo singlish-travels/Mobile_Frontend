@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   textSearch: {
     height: 100,
-    backgroundColor: "#bab9c7",
+    backgroundColor: "white",
     flexDirection: "row",
     justifyContent: "center",
     paddingTop: 15,
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonContainer: {
-    backgroundColor: "#bab9c7",
+    backgroundColor: "white",
     flexDirection: "row",
     padding: 10,
     alignItems: "flex-start",

@@ -36,7 +36,7 @@ const DictionaryScreen = ({
     url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
-      "X-RapidAPI-Key": "1ceca769b9msh7fbf81dddafb618p1426edjsn063fb2693492",
+      "X-RapidAPI-Key": "44108d15b5mshd58f9ad61fb81bbp1bde0cjsn28bbeb797e89",
       "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
     },
     data: encodedParams,
@@ -56,6 +56,7 @@ const DictionaryScreen = ({
     setDefinition(def);
     let eg = response[0].meanings[0].definitions[0].example;
     setExample(eg);
+    setPrintmessage("");
   };
 
   const clear = () => {
@@ -66,18 +67,20 @@ const DictionaryScreen = ({
     setPrintmessage("");
   };
 
-  const getVoice = async () => {
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-      try {
-        SoundPlayer.playUrl(response.data.audio_url);
-      } catch (e) {
-        console.log(`cannot play the sound file`, e);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const getVoice = () => {
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data.result.audio_url);
+        if (response.data.result.audio_url === undefined) {
+          console.log("No audio file");
+          return;
+        }
+        SoundPlayer.playUrl(response.data.result.audio_url);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   const handleAddDictionary = async () => {
@@ -147,7 +150,7 @@ const DictionaryScreen = ({
         <TextInput
           style={styles.inputBox}
           placeholder="Enter text"
-          placeholderTextColor="gray"
+          placeholderTextColor="black"
           clearButtonMode="always"
           onChangeText={searchWord}
           value={newWord}
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     paddingTop: 15,
+    boxShadow: "5px 5px 10px 0 rgba(0, 0, 0, 0.9)",
   },
   inputBox: {
     width: "80%",

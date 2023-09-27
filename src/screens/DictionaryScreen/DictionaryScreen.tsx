@@ -6,8 +6,6 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Linking,
-  StatusBar,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
@@ -24,23 +22,6 @@ const DictionaryScreen = ({
   const [definition, setDefinition] = useState("");
   const [example, setExample] = useState("");
   const [printmessage, setPrintmessage] = useState("");
-
-  const encodedParams = new URLSearchParams();
-  encodedParams.set("voice_code", "en-US-1");
-  encodedParams.set("text", "Hi, I am Aravinda I am testing this API");
-  encodedParams.set("speed", "1.00");
-  encodedParams.set("pitch", "1.00");
-  encodedParams.set("output_type", "audio_url");
-  const options = {
-    method: "POST",
-    url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-      "X-RapidAPI-Key": "44108d15b5mshd58f9ad61fb81bbp1bde0cjsn28bbeb797e89",
-      "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
-    },
-    data: encodedParams,
-  };
 
   const DisplaySavedWords = () => {
     navigation.navigate("SavedWord");
@@ -67,7 +48,23 @@ const DictionaryScreen = ({
     setPrintmessage("");
   };
 
-  const getVoice = () => {
+  const getVoice = (text: string) => {
+    const encodedParams = new URLSearchParams();
+    encodedParams.set("voice_code", "en-US-1");
+    encodedParams.set("text", text);
+    encodedParams.set("speed", "1.00");
+    encodedParams.set("pitch", "1.00");
+    encodedParams.set("output_type", "audio_url");
+    const options = {
+      method: "POST",
+      url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Key": "44108d15b5mshd58f9ad61fb81bbp1bde0cjsn28bbeb797e89",
+        "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
+      },
+      data: encodedParams,
+    };
     axios
       .request(options)
       .then(function (response) {
@@ -170,9 +167,9 @@ const DictionaryScreen = ({
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={getVoice}>
+        {/* <TouchableOpacity style={styles.button} onPress={getVoice}>
           <Text style={styles.buttonText}>Voice</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
@@ -193,16 +190,36 @@ const DictionaryScreen = ({
             {printmessage}
           </Text>
         )}
-        <Text
-          style={{
-            fontSize: 30,
-            paddingLeft: 20,
-            paddingTop: 20,
-            fontWeight: "bold",
-          }}
-        >
-          {checkedWord}
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text
+            style={{
+              fontSize: 30,
+              paddingLeft: 20,
+              paddingTop: 20,
+              fontWeight: "bold",
+            }}
+          >
+            {checkedWord}
+          </Text>
+
+          {checkedWord === "" ? null : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity onPress={() => {
+            getVoice(checkedWord);
+          }}>
+                <Text>
+                  <Icon
+                    name="volume-up"
+                    style={{ paddingTop: 20, paddingLeft: 30 }}
+                    size={30}
+                    color="black"
+                  />
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
         <Text
           style={{
             fontSize: 20,
@@ -213,29 +230,65 @@ const DictionaryScreen = ({
         >
           ___________________
         </Text>
-        <Text
-          style={{
-            fontSize: 20,
-            paddingLeft: 20,
-            paddingTop: 20,
-            fontWeight: "bold",
-          }}
-        >
-          Definition :
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text
+            style={{
+              fontSize: 20,
+              paddingLeft: 20,
+              paddingTop: 20,
+              fontWeight: "bold",
+            }}
+          >
+            Definition :
+          </Text>
+          {definition === "" ? null : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity onPress={() => {
+            getVoice(definition);
+          }}>
+                <Text>
+                  <Icon
+                    name="volume-up"
+                    style={{ paddingTop: 20, paddingLeft: 30 }}
+                    size={30}
+                    color="black"
+                  />
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
         <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
           {definition}
         </Text>
-        <Text
-          style={{
-            fontSize: 20,
-            paddingLeft: 20,
-            paddingTop: 20,
-            fontWeight: "bold",
-          }}
-        >
-          Example :
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text
+            style={{
+              fontSize: 20,
+              paddingLeft: 20,
+              paddingTop: 20,
+              fontWeight: "bold",
+            }}
+          >
+            Example :
+          </Text>
+          {example === "" ? null : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity onPress={() => {
+            getVoice(example);
+          }}>
+                <Text>
+                  <Icon
+                    name="volume-up"
+                    style={{ paddingTop: 20, paddingLeft: 30 }}
+                    size={30}
+                    color="black"
+                  />
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
         <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
           {example}
         </Text>

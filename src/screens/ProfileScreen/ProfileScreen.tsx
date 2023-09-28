@@ -16,8 +16,9 @@ import { RootStackParamList } from "../../types";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import getPublisher from "../../api/profile/get_user";
 import updateReader from "../../api/profile/update_user";
-import jwt from 'jwt-decode';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -43,18 +44,12 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
   }
 
   const fetchdata = async () => {
-    try{
+    try {
       const token = await AsyncStorage.getItem("token");
       const decodedToken = jwt(token) as DecodedToken;
       setID(decodedToken._id);
-      console.log(token);
-    }
-    catch(e){
-      console.log(e);
-    }
 
-    try {
-      const responseData = await getPublisher(id);
+      const responseData = await getPublisher(decodedToken._id);
       setName(responseData.user[0].name);
       setemail(responseData.user[0].email);
       setUsername(responseData.user[0].username);
@@ -85,7 +80,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
     }
 
     const updateData: UserData = {
-      id: "64f6f556104f2b6525e78793",
+      id: id,
       name: name,
       email: email,
       username: username,
@@ -106,7 +101,16 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
     } catch (error) {
       console.log(error);
     }
+  };
 
+  const handleLogout = async () => {
+    console.log("logout");
+    try {
+      await AsyncStorage.removeItem("token");
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -122,9 +126,12 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
         <View style={styles.settingsButton}>
           <Button title="Settings" />
         </View>
-        <View style={styles.logOutButton}>
-          <Button title="Log out" />
-        </View>
+        <TouchableOpacity style={styles.logOutButton}>
+          <View>
+            <Button title="Log out"  onPress={handleLogout}/>
+          </View>
+        </TouchableOpacity>
+
         <Image
           resizeMode="cover"
           style={styles.circle}

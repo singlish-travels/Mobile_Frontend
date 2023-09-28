@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,6 +13,8 @@ import saveWord from "../../api/dictionary/save_word";
 import axios from "axios";
 import "react-native-url-polyfill/auto";
 import SoundPlayer from "react-native-sound-player";
+import jwt from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DictionaryScreen = ({
   navigation,
@@ -94,12 +96,12 @@ const DictionaryScreen = ({
       return;
     }
     const dictionaryData = {
-      user_id: "64f6f556104f2b6525e78793",
+      user_id: id,
       word: checkedWord,
       meaning: definition,
       example: example,
     };
-    console.log(dictionaryData);
+    // console.log(dictionaryData);
     try {
       const responseData = await saveWord(dictionaryData);
       if (responseData.message === "Word is added successfully.") {
@@ -115,6 +117,23 @@ const DictionaryScreen = ({
   const searchWord = (enteredWord: React.SetStateAction<string>) => {
     setNewWord(enteredWord);
   };
+  interface DecodedToken {
+    _id: string;
+  }
+  const [id, setID] = useState("");
+
+  const fetchdata = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const decodedToken = jwt(token) as DecodedToken;
+      setID(decodedToken._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchdata();
+  }, []);
 
   return (
     <SafeAreaView>

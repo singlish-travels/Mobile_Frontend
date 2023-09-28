@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
         }
         navigation.navigate({ name: "TabsStack", key: "123" });
       } else {
-        console.log(responseData);        
+        // console.log(responseData);        
         setErrormessage(responseData.message);
       }
     } catch (error) {

@@ -1,6 +1,6 @@
 import baseURL from "../../config/baseURL";
 
-async function getWords(): Promise<any> {
+async function getWords(id:string): Promise<any> {
     const response = await fetch(
         `${baseURL}/api/dictionary/get`,
         {
@@ -8,7 +8,7 @@ async function getWords(): Promise<any> {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user_id: "64f6f556104f2b6525e78793" }),
+          body: JSON.stringify({ user_id: id }),
         }
       );
       const responseData = await response.json();

@@ -21,6 +21,10 @@ import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import { Switch } from "react-native-gesture-handler";
 import getPriceBook from "../../api/home/price_book";
 import getGenreBook from "../../api/home/genre_book";
+import getPublisher from "../../api/profile/get_user";
+import jwt from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const BOOK_CATEGORIES = [
   "All",
@@ -49,8 +53,19 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
   const [BOOK_LIST_DATA, setBOOK_LIST_DATA] = useState([]) as any;
   const [Free_Book, setFree_Book] = useState([]) as any;
 
+  const [username, setUsername] = useState("");
+
+  interface DecodedToken {
+    _id: string;
+  }
+
   const fetchFreeBooks = async () => {
     try {
+      const token = await AsyncStorage.getItem("token");
+      const decodedToken = jwt(token) as DecodedToken;
+      const responseUserData = await getPublisher(decodedToken._id);
+      setUsername(responseUserData.user[0].name);
+
       if (categoryIndex === 0){
         const responseData = await getPriceBook(0,10000);
         setBOOK_LIST_DATA(responseData.response);
@@ -105,7 +120,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
               }}
               numberOfLines={1}
             >
-              Hi, Aravinda👋
+              Hi, {username}👋
             </Text>
             <Text
               style={{ color: colors.text, opacity: 0.5 }}

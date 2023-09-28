@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AppTextInput from "../../components/AppTextInput/AppTextInput";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import loginPublisher from "../../api/auth/login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
   const [username, setUsername] = useState("");
@@ -45,9 +46,15 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
 
       if (responseData.message === "Login successful.") {
         console.log(responseData);
+        try{
+          await AsyncStorage.setItem("token", responseData.token);
+        }
+        catch(e){
+          console.log(e);
+        }
         navigation.navigate({ name: "TabsStack", key: "123" });
       } else {
-        console.log(responseData);
+        console.log(responseData);        
         setErrormessage(responseData.message);
       }
     } catch (error) {

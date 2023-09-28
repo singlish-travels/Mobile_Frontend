@@ -16,6 +16,8 @@ import { RootStackParamList } from "../../types";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import getPublisher from "../../api/profile/get_user";
 import updateReader from "../../api/profile/update_user";
+import jwt from 'jwt-decode';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -34,10 +36,25 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
   const [isAccountNoEditing, setIsAccountNoEditing] = useState(false);
   const [isAddressEditing, setIsAddressEditing] = useState(false);
   const [isPhoneNumberEditing, setIsPhoneNumberEditing] = useState(false);
+  const [id, setID] = useState("");
+
+  interface DecodedToken {
+    _id: string;
+  }
 
   const fetchdata = async () => {
+    try{
+      const token = await AsyncStorage.getItem("token");
+      const decodedToken = jwt(token) as DecodedToken;
+      setID(decodedToken._id);
+      console.log(token);
+    }
+    catch(e){
+      console.log(e);
+    }
+
     try {
-      const responseData = await getPublisher();
+      const responseData = await getPublisher(id);
       setName(responseData.user[0].name);
       setemail(responseData.user[0].email);
       setUsername(responseData.user[0].username);

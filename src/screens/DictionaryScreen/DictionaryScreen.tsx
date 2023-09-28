@@ -56,12 +56,12 @@ const DictionaryScreen = ({
     encodedParams.set("pitch", "1.00");
     encodedParams.set("output_type", "audio_url");
     const options = {
-      method: "POST",
-      url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
+      method: 'POST',
+      url: 'https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize',
       headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "X-RapidAPI-Key": "44108d15b5mshd58f9ad61fb81bbp1bde0cjsn28bbeb797e89",
-        "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
+        'content-type': 'application/x-www-form-urlencoded',
+        'X-RapidAPI-Key': '536bd4fffcmsh099f5a1d3f6ddb1p1cc931jsn60e86fc996a5',
+        'X-RapidAPI-Host': 'cloudlabs-text-to-speech.p.rapidapi.com'
       },
       data: encodedParams,
     };

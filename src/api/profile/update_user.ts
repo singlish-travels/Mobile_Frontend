@@ -8,6 +8,7 @@ async function updateUser(updateData: any): Promise<any> {
     },
     body: JSON.stringify(updateData),
   });
+  return response.json();
 }
 
 export default updateUser;

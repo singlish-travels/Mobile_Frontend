@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useRef,useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,7 +12,7 @@ import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import saveWord from "../../api/dictionary/save_word";
 import "react-native-url-polyfill/auto";
 import jwt from "jwt-decode";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import CustomBackdrop from "../../components/CustomBackdrop";
 import FilterVoice from "../../components/FilterVoice";
@@ -31,10 +31,6 @@ const DictionaryScreen = ({
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const openFilterModal = useCallback(() => {
-    if (definition === "") {
-      setPrintmessage("Please enter a word to get voice");
-      return;
-    }
     bottomSheetModalRef.current?.present();
   }, []);
   const { colors } = useTheme();
@@ -178,18 +174,18 @@ const DictionaryScreen = ({
           <Text style={styles.buttonText}>Clear</Text>
         </TouchableOpacity>
         <TouchableOpacity
-            onPress={openFilterModal}
-            style={{
-              width: 52,
-              aspectRatio: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 52,
-              backgroundColor: colors.primary,
-            }}
-          >
-            <Icons name="volume-up" size={30} color={colors.background}/>
-          </TouchableOpacity>
+          onPress={openFilterModal}
+          style={{
+            width: 52,
+            aspectRatio: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 52,
+            backgroundColor: colors.primary,
+          }}
+        >
+          <Icons name="volume-up" size={30} color={colors.background} />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.WordMeaning}>
@@ -273,7 +269,7 @@ const DictionaryScreen = ({
           backgroundColor: colors.primary,
         }}
       >
-        <FilterVoice word_list={[checkedWord,definition,example]}/>
+        <FilterVoice word_list={[checkedWord, definition, example]} />
       </BottomSheetModal>
     </SafeAreaView>
   );

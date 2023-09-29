@@ -31,6 +31,10 @@ const DictionaryScreen = ({
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const openFilterModal = useCallback(() => {
+    if (definition === "") {
+      setPrintmessage("Please enter a word to get voice");
+      return;
+    }
     bottomSheetModalRef.current?.present();
   }, []);
   const { colors } = useTheme();
@@ -184,7 +188,7 @@ const DictionaryScreen = ({
               backgroundColor: colors.primary,
             }}
           >
-            <Icons name="tune" size={24} color={colors.background} />
+            <Icons name="volume-up" size={30} color={colors.background}/>
           </TouchableOpacity>
       </View>
 

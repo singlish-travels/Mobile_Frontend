@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { ReactNode, useState,useEffect } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import React, { ReactNode, useState, useEffect } from "react";
 import { useTheme } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icons from "@expo/vector-icons/MaterialIcons";
@@ -9,7 +9,19 @@ import getAuthor from "../api/home/get_author";
 
 const MAX_PRICE = 3000;
 
-const FilterView = () => {
+const FilterView = ({
+  startprice,
+  endprice,
+  genre,
+  author,
+  clickable,
+}: {
+  startprice: (value: number) => void;
+  endprice: (value: number) => void;
+  genre: (value: string) => void;
+  author: (value: string) => void;
+  clickable: (value: boolean) => void;
+}) => {
   const [startPrice, setStartPrice] = useState(0);
   const [endPrice, setEndPrice] = useState(500);
   const theme = useTheme();
@@ -24,7 +36,6 @@ const FilterView = () => {
   ];
 
   const [Author, setAuthor] = useState([]);
-  
 
   const fetchData = async () => {
     try {
@@ -33,11 +44,32 @@ const FilterView = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  const [selectedChipIndex1, setSelectedChipIndex1] = useState<number | null>(
+    null
+  );
+  const [selectedChipIndex2, setSelectedChipIndex2] = useState<number | null>(
+    null
+  );
+  const handleChipClick = (index: number) => {
+    setSelectedChipIndex1(index);
+  };
+  const handleChipClick2 = (index: number) => {
+    setSelectedChipIndex2(index);
+  };
+
+  const henadleFilter = () => {
+    startprice(startPrice);
+    endprice(endPrice);
+    genre(BOOK_CATEGORIES[selectedChipIndex1]);
+    author(Author[selectedChipIndex2]);
+    clickable(true);
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -89,13 +121,13 @@ const FilterView = () => {
               Genre
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
-              {BOOK_CATEGORIES.map((_, i) => {
+              {BOOK_CATEGORIES.map((item, index) => {
                 return (
                   <Chip
-                    key={i}
-                    itemCount={i}
-                    label={BOOK_CATEGORIES[i]}
-                    isSelected={i === 0}
+                    key={index}
+                    isSelected={selectedChipIndex1 === index}
+                    label={item}
+                    onItemClick={() => handleChipClick(index)}
                   />
                 );
               })}
@@ -107,13 +139,13 @@ const FilterView = () => {
               Author
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
-              {Author.map((_, i) => {
+              {Author.map((item, index) => {
                 return (
                   <Chip
-                    key={i}
-                    itemCount={i}
-                    label={Author[i]}
-                    isSelected={i === 0}
+                    key={index}
+                    isSelected={selectedChipIndex2 === index}
+                    label={item}
+                    onItemClick={() => handleChipClick2(index)}
                   />
                 );
               })}
@@ -139,6 +171,7 @@ const FilterView = () => {
             justifyContent: "center",
             position: "relative",
           }}
+          onPress={henadleFilter}
         >
           <Text
             style={{
@@ -177,38 +210,33 @@ export default FilterView;
 const Chip = ({
   isSelected,
   label,
-  itemCount,
-  left,
+  onItemClick,
 }: {
   isSelected: boolean;
   label: string;
-  itemCount: number;
-  left?: ReactNode;
+  onItemClick: () => void;
 }) => {
-  const theme = useTheme();
-
   return (
-    <View
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-        borderRadius: 100,
-        backgroundColor: isSelected
-          ? theme.colors.text
-          : theme.colors.background,
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      {!!left && <View style={{ marginRight: 8 }}>{left}</View>}
-      <Text
+    <TouchableOpacity onPress={onItemClick}>
+      <View
         style={{
-          fontSize: 14,
-          color: isSelected ? theme.colors.background : theme.colors.text,
+          paddingHorizontal: 16,
+          paddingVertical: 10,
+          borderRadius: 100,
+          backgroundColor: isSelected ? "black" : "lightgray",
+          flexDirection: "row",
+          alignItems: "center",
         }}
       >
-        {label}
-      </Text>
-    </View>
+        <Text
+          style={{
+            fontSize: 14,
+            color: isSelected ? "white" : "black",
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };

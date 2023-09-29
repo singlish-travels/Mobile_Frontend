@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useRef,useCallback } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,11 +10,14 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import saveWord from "../../api/dictionary/save_word";
-import axios from "axios";
 import "react-native-url-polyfill/auto";
-import SoundPlayer from "react-native-sound-player";
 import jwt from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import CustomBackdrop from "../../components/CustomBackdrop";
+import FilterVoice from "../../components/FilterVoice";
+import { useTheme } from "@react-navigation/native";
+import Icons from "@expo/vector-icons/MaterialIcons";
 
 const DictionaryScreen = ({
   navigation,
@@ -24,6 +27,13 @@ const DictionaryScreen = ({
   const [definition, setDefinition] = useState("");
   const [example, setExample] = useState("");
   const [printmessage, setPrintmessage] = useState("");
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const openFilterModal = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const { colors } = useTheme();
 
   const DisplaySavedWords = () => {
     navigation.navigate("SavedWord");
@@ -48,38 +58,6 @@ const DictionaryScreen = ({
     setExample("");
     setNewWord("");
     setPrintmessage("");
-  };
-
-  const getVoice = (text: string) => {
-    const encodedParams = new URLSearchParams();
-    encodedParams.set("voice_code", "en-US-1");
-    encodedParams.set("text", text);
-    encodedParams.set("speed", "1.00");
-    encodedParams.set("pitch", "1.00");
-    encodedParams.set("output_type", "audio_url");
-    const options = {
-      method: 'POST',
-      url: 'https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': '536bd4fffcmsh099f5a1d3f6ddb1p1cc931jsn60e86fc996a5',
-        'X-RapidAPI-Host': 'cloudlabs-text-to-speech.p.rapidapi.com'
-      },
-      data: encodedParams,
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data.result.audio_url);
-        if (response.data.result.audio_url === undefined) {
-          console.log("No audio file");
-          return;
-        }
-        SoundPlayer.playUrl(response.data.result.audio_url);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
   };
 
   const handleAddDictionary = async () => {
@@ -195,7 +173,21 @@ const DictionaryScreen = ({
         <TouchableOpacity style={styles.button} onPress={clear}>
           <Text style={styles.buttonText}>Clear</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+            onPress={openFilterModal}
+            style={{
+              width: 52,
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 52,
+              backgroundColor: colors.primary,
+            }}
+          >
+            <Icons name="tune" size={24} color={colors.background} />
+          </TouchableOpacity>
       </View>
+
       <View style={styles.WordMeaning}>
         {printmessage === "" ? null : (
           <Text
@@ -220,23 +212,6 @@ const DictionaryScreen = ({
           >
             {checkedWord}
           </Text>
-
-          {checkedWord === "" ? null : (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity onPress={() => {
-            getVoice(checkedWord);
-          }}>
-                <Text>
-                  <Icon
-                    name="volume-up"
-                    style={{ paddingTop: 20, paddingLeft: 30 }}
-                    size={30}
-                    color="black"
-                  />
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </View>
 
         <Text
@@ -260,22 +235,6 @@ const DictionaryScreen = ({
           >
             Definition :
           </Text>
-          {definition === "" ? null : (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity onPress={() => {
-            getVoice(definition);
-          }}>
-                <Text>
-                  <Icon
-                    name="volume-up"
-                    style={{ paddingTop: 20, paddingLeft: 30 }}
-                    size={30}
-                    color="black"
-                  />
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </View>
         <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
           {definition}
@@ -291,27 +250,27 @@ const DictionaryScreen = ({
           >
             Example :
           </Text>
-          {example === "" ? null : (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity onPress={() => {
-            getVoice(example);
-          }}>
-                <Text>
-                  <Icon
-                    name="volume-up"
-                    style={{ paddingTop: 20, paddingLeft: 30 }}
-                    size={30}
-                    color="black"
-                  />
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </View>
         <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
           {example}
         </Text>
       </View>
+
+      <BottomSheetModal
+        snapPoints={["90%"]}
+        index={0}
+        ref={bottomSheetModalRef}
+        backdropComponent={(props) => <CustomBackdrop {...props} />}
+        backgroundStyle={{
+          borderRadius: 24,
+          backgroundColor: colors.card,
+        }}
+        handleIndicatorStyle={{
+          backgroundColor: colors.primary,
+        }}
+      >
+        <FilterVoice word_list={[checkedWord,definition,example]}/>
+      </BottomSheetModal>
     </SafeAreaView>
   );
 };

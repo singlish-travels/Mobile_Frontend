@@ -23,8 +23,8 @@ import getPriceBook from "../../api/home/price_book";
 import getGenreBook from "../../api/home/genre_book";
 import getPublisher from "../../api/profile/get_user";
 import jwt from "jwt-decode";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import getFilterBook from "../../api/home/get_filter_book";
 
 const BOOK_CATEGORIES = [
   "All",
@@ -59,22 +59,45 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
     _id: string;
   }
 
+  const [startPrice, setStartPrice] = useState(0);
+  const [endPrice, setEndPrice] = useState(0);
+  const [genre, setGenre] = useState("");
+  const [author, setAuthor] = useState("");
+  const [clickFilter, setClickFilter] = useState(false);
+
   const fetchFreeBooks = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
       const decodedToken = jwt(token) as DecodedToken;
       const responseUserData = await getPublisher(decodedToken._id);
-      setUsername(responseUserData.user[0].name);
+      setUsername(responseUserData.user[0].username);
 
-      if (categoryIndex === 0){
-        const responseData = await getPriceBook(0,10000);
+      if (clickFilter) {
+        bottomSheetModalRef.current?.dismiss();
+        const responseData = await getFilterBook(
+          startPrice,
+          endPrice,
+          genre,
+          author
+        );
         setBOOK_LIST_DATA(responseData.response);
-      }else{
-        const responseData = await getGenreBook(BOOK_CATEGORIES[categoryIndex]);
-        setBOOK_LIST_DATA(responseData.response);      
-      }      
-      const responseData = await getPriceBook(0,0);
-      setFree_Book(responseData.response);
+      } else {
+        try {
+          if (categoryIndex === 0) {
+            const responseData = await getPriceBook(0, 10000);
+            setBOOK_LIST_DATA(responseData.response);
+          } else {
+            const responseData = await getGenreBook(
+              BOOK_CATEGORIES[categoryIndex]
+            );
+            setBOOK_LIST_DATA(responseData.response);
+          }
+          const responseData = await getPriceBook(0, 0);
+          setFree_Book(responseData.response);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -82,7 +105,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
 
   useEffect(() => {
     fetchFreeBooks();
-  }, [categoryIndex]);
+  }, [categoryIndex, clickFilter,startPrice,endPrice,genre,author]);
 
   return (
     <ScrollView>
@@ -228,20 +251,19 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                 (
                   book: { _id: string; price: number; coverpage: string },
                   index: React.Key
-                ) =>
+                ) => (
                   // Check if book.price is equal to 0 before rendering the Card
- (
-                    <Card
-                      key={index} // Don't forget to add a unique key prop when mapping over an array
-                      onPress={() => {
-                        navigation.navigate("Details", {
-                          id: book._id, // Pass book._id as the 'id' parameter to the "Details" page
-                        });
-                      }}
-                      price={book.price}
-                      imageUrl={book.coverpage}
-                    />
-                  )
+                  <Card
+                    key={index} // Don't forget to add a unique key prop when mapping over an array
+                    onPress={() => {
+                      navigation.navigate("Details", {
+                        id: book._id, // Pass book._id as the 'id' parameter to the "Details" page
+                      });
+                    }}
+                    price={book.price}
+                    imageUrl={book.coverpage}
+                  />
+                )
               )}
             </View>
           </ScrollView>
@@ -260,7 +282,10 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
             const isSelected = categoryIndex === index;
             return (
               <TouchableOpacity
-                onPress={() => setCategoryIndex(index)}
+                onPress={() => {
+                  setCategoryIndex(index);
+                  setClickFilter(false);
+                }}
                 style={{
                   backgroundColor: isSelected ? colors.primary : colors.card,
                   paddingHorizontal: 20,
@@ -284,6 +309,12 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
             );
           }}
         />
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          {clickFilter ? (<Text style={{ fontSize: 24, fontWeight: "bold" }}>Filter View</Text>):null}
+          
+        </View>
 
         {/* Mesonary */}
         <MasonryList
@@ -418,7 +449,13 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
           backgroundColor: colors.primary,
         }}
       >
-        <FilterView/>
+        <FilterView
+          startprice={setStartPrice}
+          endprice={setEndPrice}
+          genre={setGenre}
+          author={setAuthor}
+          clickable={setClickFilter}
+        />
       </BottomSheetModal>
     </ScrollView>
   );

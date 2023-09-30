@@ -12,12 +12,13 @@ import { RootStackScreenProps } from "./RootNavigator";
 import CustomBottomTabs from "../components/CustomBottomTabs";
 import DictionaryViewer from "../screens/DictionaryScreen/DictionaryScreen";
 import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
+import OCRScreen from "../screens/OCRScreen/OCRScreen";
 
 export type TabsStackParamList = {
   Home: undefined;
   Dictionary: undefined;
   Payment: undefined;
-  Pdf: undefined;
+  OCR: undefined;
   Profile: undefined;
 };
 const TabsStack = createBottomTabNavigator<TabsStackParamList>();
@@ -67,12 +68,12 @@ const TabsNavigator = () => {
         }}
       />
       <TabsStack.Screen
-        name="Pdf"
-        component={PdfViewer}
+        name="OCR"
+        component={OCRScreen}
         options={{
           headerShown: false,
           tabBarIcon(props) {
-            return <Icons name="book" {...props} />;
+            return <Icons name="camera" {...props} />;
           },
         }}
       />

@@ -81,8 +81,8 @@ const TabItem = ({
               ? "bookmarks"
               : routeName === "Payment"
               ? "account-balance-wallet"
-              : routeName==="Pdf"
-              ? "book"
+              : routeName==="OCR"
+              ? "camera"
               :"person"
           }
           size={24}

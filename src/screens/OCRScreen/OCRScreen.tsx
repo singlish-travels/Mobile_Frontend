@@ -1,40 +1,24 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, Text, Image } from "react-native";
+import { SafeAreaView, View, Text, Image,ScrollView } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const axios = require("axios");
+import TextRecognition from '@react-native-ml-kit/text-recognition';
+// const axios = require("axios");
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
   const [selectImage, setSelectImage] = useState("");
-  const [imageName, setImageName] = useState("");
-  const [image,setImage] = useState(null);
+  const [image, setImage] = useState(null);
+  const [text, setText] = useState(null);
 
   const getText = async () => {
-    const url = "https://text-analysis12.p.rapidapi.com/text-mining/api/v1.1";
-    const data = new FormData();
-    data.append("input_file", selectImage);
-    data.append("language", "english");
-
-    const options = {
-        method: 'POST',
-        headers: {
-            'X-RapidAPI-Key': '44108d15b5mshd58f9ad61fb81bbp1bde0cjsn28bbeb797e89',
-            'X-RapidAPI-Host': 'text-analysis12.p.rapidapi.com'
-        },
-        body: data
-    };
-    try {
-      const response = await fetch(url, options);
-      const result = await response.text();
-      console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await TextRecognition.recognize(selectImage);
+    setText(result.text);
+    console.log(result.text);   
   };
 
   const ImagePicker = () => {
@@ -44,15 +28,15 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
         quality: 1,
       },
       (response) => {
+        setImage(response);
         setSelectImage(response.assets[0].uri);
-        setImage(response.assets);
-        setImageName(response.assets[0].fileName);
         console.log(response);
       }
     );
   };
 
   return (
+    <ScrollView>
     <SafeAreaView
       style={{
         flex: 1,
@@ -66,6 +50,7 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
           style={{
             height: 400,
             width: "90%",
+            paddingTop: 20,
           }}
         >
           <Image
@@ -112,7 +97,18 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>Get Text</Text>
       </TouchableOpacity>
+      {text !== null ? (
+        <View
+          style={{
+            height: 400,
+            width: "90%",
+          }}
+        >
+          <Text>{text}</Text>
+        </View>
+      ) : null}
     </SafeAreaView>
+    </ScrollView>
   );
 };
 

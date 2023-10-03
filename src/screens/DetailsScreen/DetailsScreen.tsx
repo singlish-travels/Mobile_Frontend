@@ -5,15 +5,23 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { useTheme } from "@react-navigation/native";
+import { Link, useTheme } from "@react-navigation/native";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import getdetails from "../../api/details/details";
+import {Linking} from 'react-native';
 
-
+const openUnityLink = async () => {
+  const appExist = await Linking.openURL("unitydl://mylink?blankAR");
+  if(appExist){
+    await Linking.openURL("unitydl://mylink?blankAR");
+  } else {
+    await Linking.openURL("https://interactive-book-reader.web.app");
+  }
+}
 const DetailsScreen = ({
   navigation,
   route: {
@@ -233,6 +241,7 @@ const DetailsScreen = ({
                   borderWidth: 1,
                   borderColor: "#000",
                 }}
+                onPress={openUnityLink}
               >
                 <MaterialIcons name="3d-rotation" size={44} color={Colors.text} />
               </TouchableOpacity>
@@ -245,7 +254,7 @@ const DetailsScreen = ({
                   padding: 10,
                 }}
               >
-                View AR...
+                Visit AR...
               </Text>
             </View>
           </View>

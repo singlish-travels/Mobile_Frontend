@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { TabsStackScreenProps } from "../../navigators/TabNavigator";
@@ -114,7 +115,11 @@ const DictionaryScreen = ({
   }, []);
 
   return (
-    <SafeAreaView>
+    <ScrollView
+      showsVerticalScrollIndicator={true}
+      showsHorizontalScrollIndicator={false}
+      scrollIndicatorInsets={{ right: 5, top: 10, bottom: 10 }}
+    >
       <View style={styles.topicContainer}>
         <Text style={styles.topicText}>DICTIONARY</Text>
       </View>
@@ -299,7 +304,7 @@ const DictionaryScreen = ({
       >
         <FilterVoice word_list={[checkedWord, definition, example]} />
       </BottomSheetModal>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -14,6 +14,7 @@ import removeWord from "../../api/dictionary/remove_word";
 import getWords from "../../api/dictionary/get_words";
 import jwt from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator } from "react-native";
 
 const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
   const [word, setWord] = useState("");
@@ -43,6 +44,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
       { cancelable: true }
     );
   };
+  const [isLoading, setIsLoading] = useState(true);
 
   const DisplayHome = () => {
     navigation.navigate({ name: "TabsStack", key: "123" });
@@ -63,6 +65,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
   }
 
   const fetchData = async () => {
+    setIsLoading(true); // Start loading
     try {
       const token = await AsyncStorage.getItem("token");
       const decodedToken = jwt(token) as DecodedToken;
@@ -71,6 +74,8 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
       setDATA(responseData.data);
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsLoading(false); // Finish loading, whether successful or not
     }
   };
 
@@ -95,64 +100,68 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
             Home
           </Text>
         </TouchableOpacity>
-        <Text style={styles.topicText}>Saved Words</Text>
+        <Text style={styles.topicText}>SAVED WORDS</Text>
       </View>
 
       <View style={styles.WordsContainer}>
-        <FlatList
-          data={DATA}
-          renderItem={({ item, index }) => (
-            <View
-              style={[
-                styles.wordItem,
-                ,
-                index === DATA.length - 1 ? { marginBottom: 250 } : null,
-              ]}
-            >
-              <TouchableOpacity onPress={() => handleDeleteWord(item._id)}>
-                <Icon
-                  name="delete"
+        {isLoading ? ( // Display loading indicator while data is being fetched
+          <ActivityIndicator size="large" color="#357cab" />
+        ) : (
+          <FlatList
+            data={DATA}
+            renderItem={({ item, index }) => (
+              <View
+                style={[
+                  styles.wordItem,
+                  ,
+                  index === DATA.length - 1 ? { marginBottom: 250 } : null,
+                ]}
+              >
+                <TouchableOpacity onPress={() => handleDeleteWord(item._id)}>
+                  <Icon
+                    name="delete"
+                    style={{
+                      right: 5,
+                      position: "absolute",
+                      paddingBottom: 10,
+                    }}
+                    size={30}
+                  />
+                </TouchableOpacity>
+                <Text
                   style={{
-                    right: 5,
-                    position: "absolute",
+                    color: "#357cab",
+                    alignSelf: "flex-start",
+                    fontSize: 30,
+                    fontWeight: "bold",
                     paddingBottom: 10,
                   }}
-                  size={30}
-                />
-              </TouchableOpacity>
-              <Text
-                style={{
-                  color: "black",
-                  alignSelf: "flex-start",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  paddingBottom: 10,
-                }}
-              >
-                {item.word}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  alignSelf: "flex-start",
-                  fontSize: 20,
-                }}
-              >
-                {item.meaning}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  alignSelf: "flex-start",
-                  fontSize: 20,
-                  paddingTop: 10,
-                }}
-              >
-                Example : {item.example}
-              </Text>
-            </View>
-          )}
-        />
+                >
+                  {item.word}
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    alignSelf: "flex-start",
+                    fontSize: 17,
+                  }}
+                >
+                  {item.meaning}
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    alignSelf: "flex-start",
+                    fontSize: 20,
+                    paddingTop: 10,
+                  }}
+                >
+                  EXAMPLE : {item.example}
+                </Text>
+              </View>
+            )}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -166,6 +175,7 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: "#000030",
     justifyContent: "center",
+    marginTop: 50,
   },
   topicText: {
     fontSize: 30,
@@ -177,14 +187,21 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "gray",
     color: "white",
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 5,
     width: "95%",
     alignSelf: "center",
     backgroundColor: "white",
-    shadowOpacity: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
   },
   WordsContainer: {
-    backgroundColor: "#FFFFF0",
+    backgroundColor: "white",
   },
 });

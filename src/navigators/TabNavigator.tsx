@@ -53,7 +53,7 @@ const TabsNavigator = () => {
         options={{
           headerShown: false,
           tabBarIcon(props) {
-            return <Icons name="bookmarks" {...props} />;
+            return <Icons name="search" {...props} />;
           },
         }}
       />

@@ -116,28 +116,7 @@ const DictionaryScreen = ({
   return (
     <SafeAreaView>
       <View style={styles.topicContainer}>
-        <TouchableOpacity
-          onPress={() => DisplaySavedWords()}
-          style={{ flexDirection: "row" }}
-        >
-          <Text
-            style={{
-              color: "white",
-              alignSelf: "center",
-              fontSize: 20,
-              paddingLeft: 195,
-            }}
-          >
-            Saved Words
-          </Text>
-          <Icon
-            name="keyboard-arrow-right"
-            style={{ paddingTop: 5 }}
-            size={30}
-            color="white"
-          />
-        </TouchableOpacity>
-        <Text style={styles.topicText}>Dictionary</Text>
+        <Text style={styles.topicText}>DICTIONARY</Text>
       </View>
 
       <View style={styles.textSearch}>
@@ -163,51 +142,31 @@ const DictionaryScreen = ({
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonContainer}>
-        {/* <TouchableOpacity style={styles.button} onPress={getVoice}>
-          <Text style={styles.buttonText}>Voice</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={clear}>
-          <Text style={styles.buttonText}>Clear</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={openFilterModal}
-          style={{
-            width: 52,
-            aspectRatio: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 52,
-            backgroundColor: colors.primary,
-          }}
-        >
-          <Icons name="volume-up" size={30} color={colors.background} />
-        </TouchableOpacity>
-      </View>
 
       <View style={styles.WordMeaning}>
         {printmessage === "" ? null : (
           <Text
             style={{
-              fontSize: 20,
+              fontSize: 16,
               paddingLeft: 20,
               paddingTop: 10,
               color: "green",
+              fontFamily: "Roboto", // Use a unique font
             }}
           >
             {printmessage}
           </Text>
         )}
+
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text
             style={{
-              fontSize: 30,
+              fontSize: 36,
               paddingLeft: 20,
               paddingTop: 20,
               fontWeight: "bold",
+              fontFamily: "Montserrat", // Use a unique font
+              color: "#357cab", // Light color palette
             }}
           >
             {checkedWord}
@@ -222,38 +181,107 @@ const DictionaryScreen = ({
             fontWeight: "bold",
           }}
         >
-          ___________________
+          _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
         </Text>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+
+        <View style={styles.card}>
           <Text
             style={{
               fontSize: 20,
               paddingLeft: 20,
-              paddingTop: 20,
+              paddingTop: 5,
               fontWeight: "bold",
+              fontFamily: "Roboto", // Use a unique font
+              color: "#357cab", // Light color palette
             }}
           >
-            Definition :
+            Definition:
           </Text>
-        </View>
-        <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
-          {definition}
-        </Text>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text
             style={{
               fontSize: 20,
               paddingLeft: 20,
-              paddingTop: 20,
-              fontWeight: "bold",
+              paddingTop: 10,
+              fontFamily: "Roboto",
             }}
           >
-            Example :
+            {definition}
           </Text>
         </View>
-        <Text style={{ fontSize: 20, paddingLeft: 20, paddingTop: 10 }}>
-          {example}
-        </Text>
+
+        <View style={styles.card}>
+          <Text
+            style={{
+              fontSize: 20,
+              paddingLeft: 20,
+              paddingTop: 5,
+              fontWeight: "bold",
+              fontFamily: "Roboto", // Use a unique font
+              color: "#357cab", // Light color palette
+            }}
+          >
+            Example:
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              paddingLeft: 20,
+              paddingTop: 5,
+              fontFamily: "Roboto",
+            }}
+          >
+            {example}
+          </Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={openFilterModal}
+            style={{
+              width: 62,
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 52,
+              backgroundColor: colors.primary,
+            }}
+          >
+            <Icons name="volume-up" size={30} color={colors.background} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          {/* <TouchableOpacity style={styles.button} onPress={getVoice}>
+          <Text style={styles.buttonText}>Voice</Text>
+        </TouchableOpacity> */}
+          <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.clearButton} onPress={clear}>
+            <Text style={styles.buttonText}>Clear</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => DisplaySavedWords()}
+            style={{ flexDirection: "row" }}
+          >
+            <Text
+              style={{
+                color: "black",
+                alignSelf: "center",
+                fontSize: 20,
+                justifyContent: "center",
+              }}
+            >
+              Saved Words
+            </Text>
+            <Icon
+              name="keyboard-arrow-right"
+              style={{ paddingTop: 5 }}
+              size={30}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <BottomSheetModal
@@ -280,9 +308,18 @@ export default DictionaryScreen;
 const styles = StyleSheet.create({
   topicContainer: {
     width: "100%",
-    height: 100,
+    height: 50,
     backgroundColor: "#000030",
     justifyContent: "center",
+    marginTop: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
   },
   topicText: {
     fontSize: 30,
@@ -317,6 +354,16 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 8,
   },
+  clearButton: {
+    backgroundColor: "#730101",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignItems: "center",
+    width: 100,
+    margin: 8,
+  },
   buttonText: {
     color: "white",
     fontSize: 16,
@@ -327,10 +374,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     alignItems: "flex-start",
-    justifyContent: "flex-end",
+    justifyContent: "center",
   },
   WordMeaning: {
     height: "100%",
     backgroundColor: "white",
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 16,
+    margin: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  cardTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  cardText: {
+    fontSize: 20,
   },
 });

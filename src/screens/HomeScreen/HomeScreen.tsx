@@ -105,7 +105,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
 
   useEffect(() => {
     fetchFreeBooks();
-  }, [categoryIndex, clickFilter,startPrice,endPrice,genre,author]);
+  }, [categoryIndex, clickFilter, startPrice, endPrice, genre, author]);
 
   return (
     <ScrollView>
@@ -312,8 +312,11 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          {clickFilter ? (<Text style={{ fontSize: 24, fontWeight: "bold" }}>Filter View</Text>):null}
-          
+          {clickFilter ? (
+            <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+              Filter View
+            </Text>
+          ) : null}
         </View>
 
         {/* Mesonary */}

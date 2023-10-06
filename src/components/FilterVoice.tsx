@@ -8,9 +8,7 @@ import axios from "axios";
 import "react-native-url-polyfill/auto";
 import SoundPlayer from "react-native-sound-player";
 
-const FilterView = ({word_list}:{
-    word_list: [string, string, string];
-}) => {
+const FilterView = ({ word_list }: { word_list: [string, string, string] }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const Voice_CATEGORIES = [
@@ -59,12 +57,12 @@ const FilterView = ({word_list}:{
     encodedParams.set("pitch", Pitch_Voice[selectedChipIndex4]);
     encodedParams.set("output_type", "audio_url");
     const options = {
-      method: 'POST',
-      url: 'https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize',
+      method: "POST",
+      url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
       headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': '536bd4fffcmsh099f5a1d3f6ddb1p1cc931jsn60e86fc996a5',
-        'X-RapidAPI-Host': 'cloudlabs-text-to-speech.p.rapidapi.com'
+        "content-type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Key": "4f66b4a667msh6591a31e214b171p1133a5jsnd67f32e11575",
+        "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
       },
       data: encodedParams,
     };
@@ -198,9 +196,9 @@ const FilterView = ({word_list}:{
             justifyContent: "center",
             position: "relative",
           }}
-            onPress={() => {
-                getVoice("Hello");
-            }}
+          onPress={() => {
+            getVoice("Hello");
+          }}
         >
           <Text
             style={{

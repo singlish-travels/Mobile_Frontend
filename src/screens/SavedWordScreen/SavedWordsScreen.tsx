@@ -114,7 +114,7 @@ const SavedWords = ({ navigation }: RootStackScreenProps<"SavedWord">) => {
                 style={[
                   styles.wordItem,
                   ,
-                  index === DATA.length - 1 ? { marginBottom: 250 } : null,
+                  index === DATA.length - 1 ? { marginBottom: 350 } : null,
                 ]}
               >
                 <TouchableOpacity onPress={() => handleDeleteWord(item._id)}>

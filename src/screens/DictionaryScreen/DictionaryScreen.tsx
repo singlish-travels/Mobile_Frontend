@@ -168,7 +168,7 @@ const DictionaryScreen = ({
             style={{
               fontSize: 36,
               paddingLeft: 20,
-              paddingTop: 20,
+              paddingTop: 0,
               fontWeight: "bold",
               fontFamily: "Montserrat", // Use a unique font
               color: "#357cab", // Light color palette
@@ -239,6 +239,15 @@ const DictionaryScreen = ({
           </Text>
         </View>
         <View style={styles.buttonContainer}>
+          {/* <TouchableOpacity style={styles.button} onPress={getVoice}>
+          <Text style={styles.buttonText}>Voice</Text>
+        </TouchableOpacity> */}
+          <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.clearButton} onPress={clear}>
+            <Text style={styles.buttonText}>Clear</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={openFilterModal}
             style={{
@@ -251,17 +260,6 @@ const DictionaryScreen = ({
             }}
           >
             <Icons name="volume-up" size={30} color={colors.background} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttonContainer}>
-          {/* <TouchableOpacity style={styles.button} onPress={getVoice}>
-          <Text style={styles.buttonText}>Voice</Text>
-        </TouchableOpacity> */}
-          <TouchableOpacity style={styles.button} onPress={handleAddDictionary}>
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.clearButton} onPress={clear}>
-            <Text style={styles.buttonText}>Clear</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>

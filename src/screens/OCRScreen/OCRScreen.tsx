@@ -58,7 +58,6 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
       }
     );
   }
-
   return (
     <SafeAreaView
       style={{
@@ -160,6 +159,7 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
       </ScrollView>
     </SafeAreaView>
   );
+  
 };
 
 const styles = StyleSheet.create({

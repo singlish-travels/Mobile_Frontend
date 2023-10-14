@@ -46,15 +46,14 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
 
       if (responseData.message === "Login successful.") {
         console.log(responseData);
-        try{
+        try {
           await AsyncStorage.setItem("token", responseData.token);
-        }
-        catch(e){
+        } catch (e) {
           console.log(e);
         }
         navigation.navigate({ name: "TabsStack", key: "123" });
       } else {
-        // console.log(responseData);        
+        // console.log(responseData);
         setErrormessage(responseData.message);
       }
     } catch (error) {
@@ -123,7 +122,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<"Login">) => {
                 color="black"
                 style={{ flexDirection: "row", alignItems: "center" }}
               />
-              <Text style={{ color: Colors.darkText,marginLeft: 5 }} >
+              <Text style={{ color: Colors.darkText, marginLeft: 5 }}>
                 {showPassword ? "Hide Password" : "Show Password"}
               </Text>
             </TouchableOpacity>

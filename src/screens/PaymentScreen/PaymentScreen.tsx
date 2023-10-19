@@ -20,13 +20,13 @@ import getdetails from "../../api/details/details";
 const PaymentScreen = ({
   navigation,
   route: {
-    params: { id },
+    params: { title, price },
   },
 }: RootStackScreenProps<"Payment">) => {
   const statusBarHeight = StatusBar.currentHeight ?? 0;
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [BookName, setBookName] = useState("");
-  const [Price, setPrice] = useState("");
+  const [Price, setPrice] = useState("100");
   const [NameOnCard, setNamaOnCard] = useState("");
   const [CardNumber, setCardNumber] = useState("");
   const [ExpireDate, setExpireDate] = useState("");
@@ -39,16 +39,8 @@ const PaymentScreen = ({
     _id: string;
   }
 
-  const fetchBook = async () => {
-    const data = await getdetails(id);
-    setBook(data);
-    setBookName(book.title);
-    setPrice(book.price);
-  };
-  useEffect(() => {
-    fetchBook();
-  }, []);
-
+ 
+  
   const fetchdata = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -59,8 +51,10 @@ const PaymentScreen = ({
     }
   };
   useEffect(() => {
+    console.log(title);
     fetchdata();
   }, []);
+
 
   const isValidExpireDate = (date) => {
     const regex = /^(0[1-9]|1[0-2])\/[0-9]{2}$/;
@@ -68,42 +62,32 @@ const PaymentScreen = ({
   };
 
   const handlePayment = () => {
-    if (!NameOnCard ) {
-      Alert.alert('Error', 'Name on Card is required');
+    if (!NameOnCard) {
+      Alert.alert("Error", "Name on Card is required");
+      return;
+    } else if (!CardNumber) {
+      Alert.alert("Error", "Card Number is required");
+      return;
+    } else if (!ExpireDate) {
+      Alert.alert("Error", "Expire Date must be in MM/YY format.");
+      return;
+    } else if (!isValidExpireDate(ExpireDate)) {
+      Alert.alert("Error", "Expire Date is required");
+      return;
+    } else if (!SecurityCode) {
+      Alert.alert("Error", "Security Code is required");
+      return;
+    } else if (SecurityCode.length > 5) {
+      Alert.alert("Error", "Security Code is invalid");
+      return;
+    } else if (!PostalCode) {
+      Alert.alert("Error", "Postal Code is required");
       return;
     }
-    else if (!CardNumber ) {
-      Alert.alert('Error', 'Card Number is required');
-      return;
-    }
-    else if (!ExpireDate ) {
-      Alert.alert('Error', 'Expire Date must be in MM/YY format.');
-      return;
-    }
-    else if ( !isValidExpireDate(ExpireDate) ) {
-      Alert.alert('Error', 'Expire Date is required');
-      return;
-    }
-    else if (!SecurityCode ) {
-      Alert.alert('Error', 'Security Code is required');
-      return;
-    }
-    else if (SecurityCode.length>5) {
-      Alert.alert('Error', 'Security Code is invalid');
-      return;
-    }
-    else if (!PostalCode ) {
-      Alert.alert('Error', 'Postal Code is required');
-      return;
-    }
-
-    
 
     // Implement your payment logic here using the invoice details
     console.log("Payment process initiated for invoice:", {
       invoiceNumber,
-      Price,
-      id,
       Userid,
     });
   };
@@ -144,11 +128,11 @@ const PaymentScreen = ({
       <View style={{ width: "100%" }}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Book Name</Text>
-          <TextInput style={styles.input} value={BookName} editable={false}  />
+          <TextInput style={styles.input} value={title} editable={false} />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Payment amount  LKR:</Text>
-          <TextInput style={styles.input} value={Price.toString()} editable={false} />
+          <Text style={styles.label}>Payment amount LKR:</Text>
+          <TextInput style={styles.input} value={price.toString()} editable={false} />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Name on card</Text>
@@ -156,7 +140,6 @@ const PaymentScreen = ({
             style={styles.input}
             value={NameOnCard}
             onChangeText={(text) => setNamaOnCard(text)}
-          
           />
         </View>
 

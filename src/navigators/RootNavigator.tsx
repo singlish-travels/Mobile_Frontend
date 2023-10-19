@@ -22,7 +22,7 @@ export type RootStackParamList = {
   Pdf: { id: string };
   PdfScreen: {link:string};
   SavedWord: undefined;
-  Payment:{id:string};
+  Payment:{title:string , price:string};
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();

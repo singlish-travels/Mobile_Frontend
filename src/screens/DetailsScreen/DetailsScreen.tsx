@@ -105,7 +105,8 @@ const DetailsScreen = ({
             }}
             onPress={() => {
               navigation.navigate("Payment", {
-                id: book._id, 
+                title: book.title,
+                price:book.price, 
               });
             }}
           >

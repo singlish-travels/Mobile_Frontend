@@ -103,6 +103,11 @@ const DetailsScreen = ({
               borderWidth: 3,
               borderColor: "#000",
             }}
+            onPress={() => {
+              navigation.navigate("Payment", {
+                id: book._id, 
+              });
+            }}
           >
             <Icons name="add-shopping-cart" size={34} color={"#000"} />
           </TouchableOpacity>

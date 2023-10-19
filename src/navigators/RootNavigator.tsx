@@ -10,6 +10,7 @@ import PdfScreen from "../screens/PdfScreen/PdfScreen";
 import Login from "../screens/LoginScreen/LoginScreen";
 import Register from "../screens/RegisterScreen/RegisterScreen";
 import SavedWord from "../screens/SavedWordScreen/SavedWordsScreen";
+import PaymentScreen from "../screens/PaymentScreen/PaymentScreen";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   Pdf: { id: string };
   PdfScreen: {link:string};
   SavedWord: undefined;
+  Payment:{id:string};
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -56,6 +58,13 @@ const RootNavigator = () => {
       <RootStack.Screen
         name="Details"
         component={DetailsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+       <RootStack.Screen
+        name="Payment"
+        component={PaymentScreen}
         options={{
           headerShown: false,
         }}

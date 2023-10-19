@@ -132,7 +132,7 @@ const PaymentScreen = ({
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Payment amount LKR:</Text>
-          <TextInput style={styles.input} value={price.toString()} editable={false} />
+          <Text style={styles.input} > {price}</Text>  
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Name on card</Text>

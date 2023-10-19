@@ -13,6 +13,7 @@ import CustomBottomTabs from "../components/CustomBottomTabs";
 import DictionaryViewer from "../screens/DictionaryScreen/DictionaryScreen";
 import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import OCRScreen from "../screens/OCRScreen/OCRScreen";
+import CartScreen from "../screens/CartScreen/CartScreen";
 
 export type TabsStackParamList = {
   Home: undefined;
@@ -59,7 +60,7 @@ const TabsNavigator = () => {
       />
       <TabsStack.Screen
         name="Payment"
-        component={Example}
+        component={CartScreen}
         options={{
           headerShown: false,
           tabBarIcon(props) {

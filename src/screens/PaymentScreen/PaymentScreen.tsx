@@ -8,15 +8,23 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  Alert,
 } from "react-native";
-import { TabsStackScreenProps } from "../../navigators/TabNavigator";
+import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import jwt from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spacing from "../../constants/Spacing";
 import Colors from "../../constants/Colors";
+import getdetails from "../../api/details/details";
 
-const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
+const PaymentScreen = ({
+  navigation,
+  route: {
+    params: { id },
+  },
+}: RootStackScreenProps<"Payment">) => {
   const statusBarHeight = StatusBar.currentHeight ?? 0;
+  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [BookName, setBookName] = useState("");
   const [Price, setPrice] = useState("");
   const [NameOnCard, setNamaOnCard] = useState("");
@@ -24,17 +32,28 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
   const [ExpireDate, setExpireDate] = useState("");
   const [SecurityCode, setSecurityCode] = useState("");
   const [PostalCode, setPostalCode] = useState("");
-  const [id, setID] = useState("");
+  const [Userid, setUserID] = useState("");
+  const [book, setBook] = useState({} as any);
 
   interface DecodedToken {
     _id: string;
   }
 
+  const fetchBook = async () => {
+    const data = await getdetails(id);
+    setBook(data);
+    setBookName(book.title);
+    setPrice(book.price);
+  };
+  useEffect(() => {
+    fetchBook();
+  }, []);
+
   const fetchdata = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
       const decodedToken = jwt(token) as DecodedToken;
-      setID(decodedToken._id);
+      setUserID(decodedToken._id);
     } catch (error) {
       console.log(error);
     }
@@ -43,14 +62,49 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
     fetchdata();
   }, []);
 
-  const [invoiceNumber, setInvoiceNumber] = useState("");
-  const [amount, setAmount] = useState("");
+  const isValidExpireDate = (date) => {
+    const regex = /^(0[1-9]|1[0-2])\/[0-9]{2}$/;
+    return regex.test(date);
+  };
 
   const handlePayment = () => {
+    if (!NameOnCard ) {
+      Alert.alert('Error', 'Name on Card is required');
+      return;
+    }
+    else if (!CardNumber ) {
+      Alert.alert('Error', 'Card Number is required');
+      return;
+    }
+    else if (!ExpireDate ) {
+      Alert.alert('Error', 'Expire Date must be in MM/YY format.');
+      return;
+    }
+    else if ( !isValidExpireDate(ExpireDate) ) {
+      Alert.alert('Error', 'Expire Date is required');
+      return;
+    }
+    else if (!SecurityCode ) {
+      Alert.alert('Error', 'Security Code is required');
+      return;
+    }
+    else if (SecurityCode.length>5) {
+      Alert.alert('Error', 'Security Code is invalid');
+      return;
+    }
+    else if (!PostalCode ) {
+      Alert.alert('Error', 'Postal Code is required');
+      return;
+    }
+
+    
+
     // Implement your payment logic here using the invoice details
     console.log("Payment process initiated for invoice:", {
       invoiceNumber,
-      amount,
+      Price,
+      id,
+      Userid,
     });
   };
 
@@ -59,6 +113,7 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
       <View style={styles.topicContainer}>
         <Text style={styles.topicText}>Payment Invoice</Text>
       </View>
+
       <View style={{ flexDirection: "row", margin: 30, height: 50 }}>
         <View>
           <Image
@@ -89,29 +144,19 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
       <View style={{ width: "100%" }}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Book Name</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value="Harry Potter"
-            onChangeText={(text) => setInvoiceNumber(text)}
-          />
+          <TextInput style={styles.input} value={BookName} editable={false}  />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Payment amount</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value="LKR 300"
-            onChangeText={(text) => setInvoiceNumber(text)}
-          />
+          <Text style={styles.label}>Payment amount  LKR:</Text>
+          <TextInput style={styles.input} value={Price.toString()} editable={false} />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Name on card</Text>
           <TextInput
             style={styles.input}
-            keyboardType="numeric"
-            value={invoiceNumber}
-            onChangeText={(text) => setInvoiceNumber(text)}
+            value={NameOnCard}
+            onChangeText={(text) => setNamaOnCard(text)}
+          
           />
         </View>
 
@@ -120,19 +165,18 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            value={invoiceNumber}
-            onChangeText={(text) => setInvoiceNumber(text)}
+            value={CardNumber}
+            onChangeText={(text) => setCardNumber(text)}
           />
         </View>
         <View style={{ flexDirection: "row" }}>
           <View style={[styles.inputContainer, { flex: 1 }]}>
-            <Text style={styles.label}>Expiry date</Text>
+            <Text style={styles.label}>Expire date</Text>
             <TextInput
               style={styles.input}
-              keyboardType="numeric"
               placeholder="MM/YY"
-              value={invoiceNumber}
-              onChangeText={(text) => setInvoiceNumber(text)}
+              value={ExpireDate}
+              onChangeText={(text) => setExpireDate(text)}
             />
           </View>
           <View
@@ -144,8 +188,8 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={invoiceNumber}
-              onChangeText={(text) => setInvoiceNumber(text)}
+              value={SecurityCode}
+              onChangeText={(text) => setSecurityCode(text)}
             />
           </View>
         </View>
@@ -154,34 +198,14 @@ const PaymentScreen = ({ navigation }: TabsStackScreenProps<"Payment">) => {
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            value={invoiceNumber}
-            onChangeText={(text) => setInvoiceNumber(text)}
+            value={PostalCode}
+            onChangeText={(text) => setPostalCode(text)}
           />
         </View>
         <TouchableOpacity
-          style={{
-            padding: Spacing * 2,
-            backgroundColor: Colors.primary,
-            marginVertical: Spacing * 3,
-            marginHorizontal: Spacing * 5,
-            borderRadius: 130,
-            shadowColor: "black",
-            shadowOffset: {
-              width: 200,
-              height: 10,
-            },
-            shadowOpacity: 10,
-            shadowRadius: 10,
-            elevation: 14, // Android
-          }}>
-          <Text
-            style={{
-              color: Colors.onPrimary,
-              textAlign: "center",
-              fontSize: 20,
-            }}>
-            PROCESS PAYMENT
-          </Text>
+          style={styles.processPaymentButton}
+          onPress={() => handlePayment()}>
+          <Text style={styles.processPaymentButtonText}>PROCESS PAYMENT</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -257,15 +281,24 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   processPaymentButton: {
-    backgroundColor: "#3498db",
-    padding: 15,
-    borderRadius: 10,
-    width: "100%", // Button spans the width
+    padding: Spacing * 2,
+    backgroundColor: Colors.primary,
+    marginVertical: Spacing * 3,
+    marginHorizontal: Spacing * 5,
+    borderRadius: 130,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 200,
+      height: 10,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 14, // Android
   },
   processPaymentButtonText: {
-    fontSize: 18,
-    color: "white",
+    color: Colors.onPrimary,
     textAlign: "center",
+    fontSize: 20,
   },
 });
 

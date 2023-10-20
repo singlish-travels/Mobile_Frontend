@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import React, {  useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { RootStackScreenProps } from "../../navigators/RootNavigator";
 import {
   SafeAreaView,
@@ -12,16 +12,20 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import getdetails from "../../api/details/details";
-import {Linking} from 'react-native';
+import { Linking } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt from "jwt-decode";
+import addToCart from "../../api/cart/add_to_cart";
+import { ColorSpace } from "react-native-reanimated";
 
 const openUnityLink = async () => {
   const appExist = await Linking.openURL("unitydl://mylink?blankAR");
-  if(appExist){
+  if (appExist) {
     await Linking.openURL("unitydl://mylink?blankAR");
   } else {
     await Linking.openURL("https://interactive-book-reader.web.app");
   }
-}
+};
 const DetailsScreen = ({
   navigation,
   route: {
@@ -31,16 +35,50 @@ const DetailsScreen = ({
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const [count, setCount] = useState(1);
-  const [book,setBook]=useState({} as any);
+  const [book, setBook] = useState({} as any);
+  const [userId, setUserID] = useState("");
 
-  const fetchBook=async()=>{
-    const data=await getdetails(id);
-    setBook(data);
+  interface DecodedToken {
+    _id: string;
   }
 
+  const fetchdata = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const decodedToken = jwt(token) as DecodedToken;
+      setUserID(decodedToken._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchBook = async () => {
+    const data = await getdetails(id);
+    setBook(data);
+  };
+
   useEffect(() => {
-   fetchBook();
+    fetchBook();
+    fetchdata();
   }, []);
+
+  const AddToCart = async () => {
+    const CartData = {
+      user_id: userId,
+      book_id: id,
+    };
+    console.log(CartData);
+
+    try {
+      const responseData = await addToCart(CartData);
+      if (responseData.message === "book is added successfully.") {
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -54,8 +92,7 @@ const DetailsScreen = ({
 
       <SafeAreaView
         edges={["top"]}
-        style={{ position: "absolute", top: 0, left: 0, right: 0 }}
-      >
+        style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
         <StatusBar style="dark" />
         <View
           style={{
@@ -63,8 +100,7 @@ const DetailsScreen = ({
             alignItems: "center",
             padding: 20,
             gap: 8,
-          }}
-        >
+          }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
@@ -75,8 +111,7 @@ const DetailsScreen = ({
               borderRadius: 32,
               borderWidth: 3,
               borderColor: "#000",
-            }}
-          >
+            }}>
             <Icons name="arrow-back" size={34} color={"#000"} />
           </TouchableOpacity>
           <View style={{ flex: 1 }} />
@@ -89,11 +124,11 @@ const DetailsScreen = ({
               borderRadius: 52,
               borderWidth: 3,
               borderColor: "#000",
-            }}
-          >
+            }}>
             <Icons name="favorite-border" size={34} color={"#000"} />
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={AddToCart}
             style={{
               width: 52,
               aspectRatio: 1,
@@ -102,8 +137,7 @@ const DetailsScreen = ({
               borderRadius: 52,
               borderWidth: 3,
               borderColor: "#000",
-            }}
-          >
+            }}>
             <Icons name="add-shopping-cart" size={34} color={"#000"} />
           </TouchableOpacity>
         </View>
@@ -121,8 +155,7 @@ const DetailsScreen = ({
         }}
         handleIndicatorStyle={{
           backgroundColor: colors.text,
-        }}
-      >
+        }}>
         <View style={{ padding: 16, gap: 16, flex: 1 }}>
           <Text style={{ fontSize: 27, fontWeight: "700", color: colors.text }}>
             {book.title}
@@ -146,8 +179,7 @@ const DetailsScreen = ({
                   color: colors.text,
                   opacity: 0.5,
                   marginTop: 4,
-                }}
-              >
+                }}>
                 3.0 (250K Reviews)
               </Text>
             </View>
@@ -160,8 +192,7 @@ const DetailsScreen = ({
                 backgroundColor: colors.primary,
                 padding: 6,
                 borderRadius: 80,
-              }}
-            >
+              }}>
               <TouchableOpacity
                 onPress={() => setCount((count) => Math.max(1, count - 1))}
                 style={{
@@ -171,8 +202,7 @@ const DetailsScreen = ({
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: 34,
-                }}
-              >
+                }}>
                 <Icons name="remove" size={20} color={colors.text} />
               </TouchableOpacity>
               <Text
@@ -180,8 +210,7 @@ const DetailsScreen = ({
                   fontSize: 16,
                   fontWeight: "600",
                   color: colors.background,
-                }}
-              >
+                }}>
                 {count}
               </Text>
               <TouchableOpacity
@@ -193,8 +222,7 @@ const DetailsScreen = ({
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: 34,
-                }}
-              >
+                }}>
                 <Icons name="add" size={20} color={colors.text} />
               </TouchableOpacity>
             </View>
@@ -212,8 +240,9 @@ const DetailsScreen = ({
                   borderWidth: 1,
                   borderColor: "#000",
                 }}
-                onPress={() => navigation.navigate("PdfScreen", { link: book.pdf })}
-              >
+                onPress={() =>
+                  navigation.navigate("PdfScreen", { link: book.pdf })
+                }>
                 <MaterialIcons name="menu-book" size={44} color={Colors.text} />
               </TouchableOpacity>
               <Text
@@ -223,8 +252,7 @@ const DetailsScreen = ({
                   fontWeight: "400",
                   color: colors.text,
                   padding: 10,
-                }}
-              >
+                }}>
                 Read the book...
               </Text>
             </View>
@@ -241,9 +269,12 @@ const DetailsScreen = ({
                   borderWidth: 1,
                   borderColor: "#000",
                 }}
-                onPress={openUnityLink}
-              >
-                <MaterialIcons name="3d-rotation" size={44} color={Colors.text} />
+                onPress={openUnityLink}>
+                <MaterialIcons
+                  name="3d-rotation"
+                  size={44}
+                  color={Colors.text}
+                />
               </TouchableOpacity>
               <Text
                 style={{
@@ -252,8 +283,7 @@ const DetailsScreen = ({
                   fontWeight: "400",
                   color: colors.text,
                   padding: 10,
-                }}
-              >
+                }}>
                 Visit AR...
               </Text>
             </View>
@@ -266,14 +296,12 @@ const DetailsScreen = ({
                 fontWeight: "600",
                 marginBottom: 6,
                 color: colors.text,
-              }}
-            >
+              }}>
               Summary:
             </Text>
             <Text
               style={{ color: colors.text, opacity: 0.75 }}
-              numberOfLines={3}
-            >
+              numberOfLines={3}>
               {book.summary}
             </Text>
           </View>
@@ -283,8 +311,7 @@ const DetailsScreen = ({
                 fontSize: 16,
                 fontWeight: "600",
                 color: colors.text,
-              }}
-            >
+              }}>
               Author: {book.author}
             </Text>
           </View>
@@ -294,8 +321,7 @@ const DetailsScreen = ({
                 fontSize: 16,
                 fontWeight: "600",
                 color: colors.text,
-              }}
-            >
+              }}>
               Genre: {book.genre}
             </Text>
           </View>

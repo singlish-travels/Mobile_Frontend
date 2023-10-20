@@ -16,7 +16,7 @@ import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt from "jwt-decode";
 import addToCart from "../../api/cart/add_to_cart";
-import { ColorSpace } from "react-native-reanimated";
+import addToFavorite from "../../api/favorite/addFavorite";
 
 const openUnityLink = async () => {
   const appExist = await Linking.openURL("unitydl://mylink?blankAR");
@@ -80,6 +80,24 @@ const DetailsScreen = ({
     }
   };
 
+  const addToFavoriteList = async () => {
+    const FavoriteData = {
+      user_id: userId,
+      book_id: id,
+    };
+    console.log(FavoriteData);
+
+    try {
+      const responseData = await addToFavorite(FavoriteData);
+      if (responseData.message === "book is added successfully.") {
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -116,6 +134,7 @@ const DetailsScreen = ({
           </TouchableOpacity>
           <View style={{ flex: 1 }} />
           <TouchableOpacity
+            onPress={addToFavoriteList}
             style={{
               width: 52,
               aspectRatio: 1,

@@ -135,7 +135,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       </View>
       <KeyboardAwareScrollView>
         <View style={styles.lowerPart}>
-          {imageLink == null ? (
+          {imageLink ==="" ? (
             <Image
               resizeMode="cover"
               style={styles.circle}

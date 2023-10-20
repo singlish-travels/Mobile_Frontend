@@ -64,6 +64,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
   const [genre, setGenre] = useState("");
   const [author, setAuthor] = useState("");
   const [clickFilter, setClickFilter] = useState(false);
+  const [imageLink, setImageLink] = useState("");
 
   const fetchFreeBooks = async () => {
     try {
@@ -71,6 +72,7 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
       const decodedToken = jwt(token) as DecodedToken;
       const responseUserData = await getPublisher(decodedToken._id);
       setUsername(responseUserData.user[0].username);
+      setImageLink(responseUserData.user[0].image_link);
 
       if (clickFilter) {
         bottomSheetModalRef.current?.dismiss();
@@ -126,13 +128,23 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
             gap: 8,
           }}
         >
-          <Image
-            source={{
-              uri: PROFILE_PICTURE,
-            }}
-            style={{ width: 65, aspectRatio: 1, borderRadius: 30 }}
-            resizeMode="cover"
-          />
+          {imageLink === "" ? (
+            <Image
+              source={{
+                uri: PROFILE_PICTURE,
+              }}
+              style={{ width: 65, aspectRatio: 1, borderRadius: 30 }}
+              resizeMode="cover"
+            />
+          ) : (
+            <Image
+              source={{
+                uri: imageLink,
+              }}
+              style={{ width: 65, aspectRatio: 1, borderRadius: 30 }}
+              resizeMode="cover"
+            />
+          )}
           <View style={{ flex: 1 }}>
             <Text
               style={{

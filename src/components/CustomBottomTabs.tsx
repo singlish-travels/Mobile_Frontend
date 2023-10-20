@@ -79,7 +79,7 @@ const TabItem = ({
               ? "home"
               : routeName === "Dictionary"
               ? "bookmarks"
-              : routeName === "Payment"
+              : routeName === "Cart"
               ? "account-balance-wallet"
               : routeName==="OCR"
               ? "camera"

@@ -140,10 +140,10 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                 <TouchableOpacity
                   onPress={() =>
                     selected == 1
-                      ? navigation.navigate("PdfScreen", { link: item.pdf })
+                      ? navigation.navigate("PdfScreen", { link: item.book_details.pdf })
                       : navigation.navigate("Payment", {
-                          title: item.title,
-                          price: item.price.$numberInt,
+                          title: item.book_details.title,
+                          price: item.book_details.price,
                         })
                   }
                   style={{

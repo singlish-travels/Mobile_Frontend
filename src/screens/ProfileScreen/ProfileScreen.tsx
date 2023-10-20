@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -17,8 +18,8 @@ import { TabsStackScreenProps } from "../../navigators/TabNavigator";
 import getPublisher from "../../api/profile/get_user";
 import updateReader from "../../api/profile/update_user";
 import jwt from "jwt-decode";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -30,6 +31,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
   const [username, setUsername] = useState("");
   const [biodata, setBiodata] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [imageLink, setImageLink] = useState("");
 
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [isEmailEditing, setIsEmailEditing] = useState(false);
@@ -55,6 +57,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
       setUsername(responseData.user[0].username);
       setBiodata(responseData.user[0].bio_data);
       setPhoneNumber(responseData.user[0].phonenumber);
+      setImageLink(responseData.user[0].image_link);
     } catch (error) {
       console.log(error);
     }
@@ -64,6 +67,7 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
   }, []);
 
   const handleSavePress = async () => {
+    setIsNameEditing(false);
     setIsEmailEditing(false);
     setIsPasswordEditing(false);
     setIsAccountNoEditing(false);
@@ -119,28 +123,38 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
         flex: 1,
         alignItems: "center",
         marginTop: statusBarHeight,
-      }}
-    >
+      }}>
       <View style={styles.upperPart}>
         <Text style={styles.text}>Profile</Text>
-        <View style={styles.settingsButton}>
-          <Button title="Settings" />
-        </View>
+
         <TouchableOpacity style={styles.logOutButton}>
           <View>
-            <Button title="Log out"  onPress={handleLogout}/>
+            <Button title="Log out" onPress={handleLogout} />
           </View>
         </TouchableOpacity>
-
-        <Image
-          resizeMode="cover"
-          style={styles.circle}
-          source={require("../../assets/images/photo-1483134529005-4c93495107d5.jpg")}
-        />
       </View>
-      <View style={styles.lowerPart}>
-        <Text style={styles.nameText}>{name}</Text>
+      <KeyboardAwareScrollView>
         <View style={styles.lowerPart}>
+          {imageLink == null ? (
+            <Image
+              resizeMode="cover"
+              style={styles.circle}
+              source={require("../../assets/images/photo-1483134529005-4c93495107d5.jpg")}
+            />
+          ) : (
+            <Image
+              resizeMode="cover"
+              style={styles.circle}
+              source={{
+                uri: imageLink,
+              }}
+            />
+          )}
+
+          <View
+            style={{ padding: 10, margin: 5, height: 40, marginBottom: 15 }}>
+            <Text style={styles.nameText}>{name}</Text>
+          </View>
           <View style={styles.editabletext}>
             <Text style={styles.label}>Name : </Text>
             <TextInput
@@ -266,15 +280,13 @@ const ProfileScreen = ({ navigation }: TabsStackScreenProps<"Profile">) => {
               />
             </TouchableOpacity>
           </View>
-
-          <View style={styles.editabletext}>
-            <Text style={{ top: 10 }}>Terms and Conditions</Text>
+          <View style={styles.saveButton}>
+            <TouchableOpacity style={styles.button} onPress={handleSavePress}>
+              <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
-      <View style={styles.saveButton}>
-        <Button title="Save" onPress={handleSavePress} />
-      </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -289,22 +301,17 @@ const styles = StyleSheet.create({
   upperPart: {
     backgroundColor: "#000030",
     width: "100%",
-    height: "25%",
+    height: 70,
+    alignContent: "center",
+    justifyContent: "center",
   },
   lowerPart: {
     width: "100%",
     height: "75%",
-    top: 100,
+    top: 20,
     left: 5,
     right: 10,
-  },
-
-  settingsButton: {
-    width: 85,
-    height: 60,
-    position: "absolute",
-    left: 10,
-    top: 10,
+    paddingHorizontal: 10,
   },
 
   logOutButton: {
@@ -318,38 +325,52 @@ const styles = StyleSheet.create({
 
   saveButton: {
     width: "100%",
-    height: 60,
-    bottom: 50,
-    padding: 10,
+    padding: 20,
     borderRadius: 5,
     color: "white",
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignItems: "center",
+    width: 100,
+    margin: 8,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 
   circle: {
-    width: 180,
-    height: 180,
+    width: 120,
+    height: 120,
     borderRadius: 100,
-    backgroundColor: "red",
     alignSelf: "center",
-    top: "25%",
     shadowColor: "black",
   },
 
   text: {
-    top: 25,
     alignSelf: "center",
     fontSize: 36,
     color: "white",
     fontWeight: "bold",
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 
   nameText: {
-    top: 10,
     alignSelf: "center",
-    fontSize: 36,
+    fontSize: 30,
     color: "black",
     fontWeight: "bold",
     position: "absolute",
+    padding: 5,
+    paddingBottom: 10,
   },
 
   label: {
@@ -372,7 +393,6 @@ const styles = StyleSheet.create({
   editabletext: {
     flexDirection: "row",
     width: "60%",
-    height: 40,
-    marginBottom: 3,
+    marginBottom: 4,
   },
 });

@@ -80,7 +80,7 @@ const TabItem = ({
               : routeName === "Dictionary"
               ? "bookmarks"
               : routeName === "Cart"
-              ? "account-balance-wallet"
+              ? "add-shopping-cart"
               : routeName==="OCR"
               ? "camera"
               :"person"

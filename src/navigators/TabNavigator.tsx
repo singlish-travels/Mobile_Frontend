@@ -63,7 +63,7 @@ const TabsNavigator = () => {
         options={{
           headerShown: false,
           tabBarIcon(props) {
-            return <Icons name="account-balance-wallet" {...props} />;
+            return <Icons name="add-shopping-cart" {...props} />;
           },
         }}
       />

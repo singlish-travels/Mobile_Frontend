@@ -61,39 +61,50 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
   useEffect(() => {
     fetchdata();
   }, []);
-  
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <View style={styles.topicContainer}>
         <Text style={styles.topicText}>My Books</Text>
       </View>
       <View style={styles.selector}>
         <TouchableOpacity
           style={{ height: 65, width: "50%" }}
-          onPress={() => setSelected(1)}>
+          onPress={() => {
+            setSelected(1);
+            fetchdata();
+          }}
+        >
           <View
             style={[
               styles.button,
               selected === 1
                 ? { borderBottomWidth: 3, borderBottomColor: "blue" }
                 : null,
-            ]}>
+            ]}
+          >
             <Text style={styles.text}>Favorites</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ height: 65, width: "50%" }}
-          onPress={() => setSelected(2)}>
+          onPress={() => {
+            setSelected(2);
+            fetchdata();
+          }}
+        >
           <View
             style={[
               styles.button,
               selected === 2
                 ? { borderBottomWidth: 3, borderBottomColor: "blue" }
                 : null,
-            ]}>
+            ]}
+          >
             <Text style={styles.text}>Cart</Text>
           </View>
         </TouchableOpacity>
@@ -115,7 +126,8 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                 paddingHorizontal: 10,
                 borderBottomWidth: 3,
                 borderBottomColor: "#b5bcc9",
-              }}>
+              }}
+            >
               <View style={{ width: "30%" }}>
                 <Image
                   source={{
@@ -133,14 +145,20 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                   {item.book_details.title}
                 </Text>
                 <Text></Text>
-                <Text style={{ fontSize: 18 }}>Author : {item.book_details.author}</Text>
-                <Text style={{ fontSize: 18 }}>genre : {item.book_details.genre}</Text>
+                <Text style={{ fontSize: 18 }}>
+                  Author : {item.book_details.author}
+                </Text>
+                <Text style={{ fontSize: 18 }}>
+                  genre : {item.book_details.genre}
+                </Text>
                 <Text></Text>
 
                 <TouchableOpacity
                   onPress={() =>
                     selected == 1
-                      ? navigation.navigate("PdfScreen", { link: item.book_details.pdf })
+                      ? navigation.navigate("PdfScreen", {
+                          link: item.book_details.pdf,
+                        })
                       : navigation.navigate("Payment", {
                           title: item.book_details.title,
                           price: item.book_details.price,
@@ -159,14 +177,16 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                     shadowOpacity: 10,
                     shadowRadius: 10,
                     elevation: 14, // Android
-                  }}>
+                  }}
+                >
                   {selected == 1 ? (
                     <Text
                       style={{
                         color: Colors.onPrimary,
                         textAlign: "center",
                         fontSize: 20,
-                      }}>
+                      }}
+                    >
                       Read Now
                     </Text>
                   ) : (
@@ -175,7 +195,8 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                         color: Colors.onPrimary,
                         textAlign: "center",
                         fontSize: 20,
-                      }}>
+                      }}
+                    >
                       Buy now
                     </Text>
                   )}

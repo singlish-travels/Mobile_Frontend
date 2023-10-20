@@ -68,7 +68,6 @@ const DetailsScreen = ({
       book_id: id,
     };
     console.log(CartData);
-
     try {
       const responseData = await addToCart(CartData);
       if (responseData.message === "book is added successfully.") {

@@ -16,6 +16,7 @@ import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt from "jwt-decode";
 import addToCart from "../../api/cart/add_to_cart";
+import { ColorSpace } from "react-native-reanimated";
 
 const openUnityLink = async () => {
   const appExist = await Linking.openURL("unitydl://mylink?blankAR");
@@ -67,11 +68,12 @@ const DetailsScreen = ({
       book_id: id,
     };
     console.log(CartData);
+
     try {
       const responseData = await addToCart(CartData);
       if (responseData.message === "book is added successfully.") {
-        console.log(CartData);
       } else {
+        console.log("error");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -126,6 +128,7 @@ const DetailsScreen = ({
             <Icons name="favorite-border" size={34} color={"#000"} />
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={AddToCart}
             style={{
               width: 52,
               aspectRatio: 1,
@@ -134,8 +137,7 @@ const DetailsScreen = ({
               borderRadius: 52,
               borderWidth: 3,
               borderColor: "#000",
-            }}
-            onPress={AddToCart}>
+            }}>
             <Icons name="add-shopping-cart" size={34} color={"#000"} />
           </TouchableOpacity>
         </View>

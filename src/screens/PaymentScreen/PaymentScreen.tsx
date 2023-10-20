@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spacing from "../../constants/Spacing";
 import Colors from "../../constants/Colors";
 import getdetails from "../../api/details/details";
+import { ScrollView } from "react-native-gesture-handler";
 
 const PaymentScreen = ({
   navigation,
@@ -39,8 +40,6 @@ const PaymentScreen = ({
     _id: string;
   }
 
- 
-  
   const fetchdata = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -54,7 +53,6 @@ const PaymentScreen = ({
     console.log(title);
     fetchdata();
   }, []);
-
 
   const isValidExpireDate = (date) => {
     const regex = /^(0[1-9]|1[0-2])\/[0-9]{2}$/;
@@ -124,73 +122,74 @@ const PaymentScreen = ({
           />
         </View>
       </View>
-
-      <View style={{ width: "100%" }}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Book Name</Text>
-          <TextInput style={styles.input} value={title} editable={false} />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Payment amount LKR:</Text>
-          <Text style={styles.input} > {price}</Text>  
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name on card</Text>
-          <TextInput
-            style={styles.input}
-            value={NameOnCard}
-            onChangeText={(text) => setNamaOnCard(text)}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Card number</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value={CardNumber}
-            onChangeText={(text) => setCardNumber(text)}
-          />
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={[styles.inputContainer, { flex: 1 }]}>
-            <Text style={styles.label}>Expire date</Text>
+      <ScrollView>
+        <View style={{ width: "100%" }}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Book Name</Text>
+            <TextInput style={styles.input} value={title} editable={false} />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Payment amount LKR:</Text>
+            <Text style={styles.input}> {price}</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Name on card</Text>
             <TextInput
               style={styles.input}
-              placeholder="MM/YY"
-              value={ExpireDate}
-              onChangeText={(text) => setExpireDate(text)}
+              value={NameOnCard}
+              onChangeText={(text) => setNamaOnCard(text)}
             />
           </View>
-          <View
-            style={[
-              styles.inputContainer,
-              { flex: 1, marginLeft: 0, paddingLeft: 0 },
-            ]}>
-            <Text style={styles.label}>Security code</Text>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Card number</Text>
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={SecurityCode}
-              onChangeText={(text) => setSecurityCode(text)}
+              value={CardNumber}
+              onChangeText={(text) => setCardNumber(text)}
             />
           </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={[styles.inputContainer, { flex: 1 }]}>
+              <Text style={styles.label}>Expire date</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="MM/YY"
+                value={ExpireDate}
+                onChangeText={(text) => setExpireDate(text)}
+              />
+            </View>
+            <View
+              style={[
+                styles.inputContainer,
+                { flex: 1, marginLeft: 0, paddingLeft: 0 },
+              ]}>
+              <Text style={styles.label}>Security code</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={SecurityCode}
+                onChangeText={(text) => setSecurityCode(text)}
+              />
+            </View>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>ZIP/Postal code</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={PostalCode}
+              onChangeText={(text) => setPostalCode(text)}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.processPaymentButton}
+            onPress={() => handlePayment()}>
+            <Text style={styles.processPaymentButtonText}>PROCESS PAYMENT</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>ZIP/Postal code</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value={PostalCode}
-            onChangeText={(text) => setPostalCode(text)}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.processPaymentButton}
-          onPress={() => handlePayment()}>
-          <Text style={styles.processPaymentButtonText}>PROCESS PAYMENT</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -221,7 +220,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
     backgroundColor: "#f5f7fa",
   },
   heading: {

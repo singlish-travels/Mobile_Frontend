@@ -142,14 +142,13 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
     <SafeAreaView
       style={{
         flex: 1,
-        marginTop: statusBarHeight,
       }}>
       <View style={styles.topicContainer}>
         <Text style={styles.topicText}>My Books</Text>
       </View>
       <View style={styles.selector}>
         <TouchableOpacity
-          style={{ height: 80, width: "50%" }}
+          style={{ height: 65, width: "50%" }}
           onPress={() => setSelected(1)}>
           <View
             style={[
@@ -162,7 +161,7 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ height: 80, width: "50%" }}
+          style={{ height: 65, width: "50%" }}
           onPress={() => setSelected(2)}>
           <View
             style={[
@@ -185,34 +184,33 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
               style={{
                 width: "100%",
                 flexDirection: "row",
-                height: 450,
+                height: "auto",
                 flex: 1,
                 alignSelf: "flex-start",
-                padding: 20,
+                paddingTop: 20,
+                paddingHorizontal: 10,
+                borderBottomWidth: 3,
+                borderBottomColor: "#b5bcc9",
               }}>
-              <View style={{}}>
+              <View style={{ width: "30%" }}>
                 <Image
                   source={{
                     uri: item.coverpage,
                   }}
                   style={{
                     flex: 1,
-                    height: 450,
-                    width: 300,
-                    justifyContent: "flex-start",
+                    width: "100%",
                   }}
-                  resizeMode="cover"
+                  resizeMode="contain"
                 />
               </View>
-              <View style={{ flex: 4, padding: 20 }}>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              <View style={{ flex: 4, padding: 4 }}>
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                   {item.title}
                 </Text>
                 <Text></Text>
-                <Text></Text>
                 <Text style={{ fontSize: 18 }}>Author : {item.author}</Text>
                 <Text style={{ fontSize: 18 }}>genre : {item.genre}</Text>
-                <Text></Text>
                 <Text></Text>
 
                 <TouchableOpacity
@@ -225,11 +223,10 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                         })
                   }
                   style={{
-                    padding: Spacing * 2,
+                    padding: 14,
                     backgroundColor: Colors.primary,
-                    marginVertical: Spacing * 3,
                     marginHorizontal: Spacing * 5,
-                    borderRadius: 130,
+                    borderRadius: 30,
                     shadowColor: "black",
                     shadowOffset: {
                       width: 200,
@@ -326,10 +323,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4, // Add shadow for iOS
       },
     }),
-  },
-  image: {
-    height: 200,
-    width: 300,
   },
   Button: {
     width: "30%",

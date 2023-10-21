@@ -68,8 +68,8 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
   const deleteFromList = async (id: string) => {
     if (selected == 1) {
       Alert.alert(
-        "Delete Word",
-        "Are you sure you want to delete this word?",
+        "Remove Book",
+        "Are you sure you want to Remove from favorites?",
         [
           {
             text: "Cancel",
@@ -79,9 +79,8 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
             text: "Delete",
             onPress: () => {
               try {
-                // removeWord(id);
-                alert("Word Deleted Successfully");
-                //setWord("Word Deleted Successfully");
+                // removeBook(id);
+                alert("Book removed Successfully");
               } catch (error) {
                 console.error("Error:", error);
               }

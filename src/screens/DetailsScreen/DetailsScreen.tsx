@@ -16,6 +16,7 @@ import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt from "jwt-decode";
 import addToCart from "../../api/cart/add_to_cart";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import addToFavorite from "../../api/favorite/addFavorite";
 
 const openUnityLink = async () => {
@@ -37,6 +38,8 @@ const DetailsScreen = ({
   const [count, setCount] = useState(1);
   const [book, setBook] = useState({} as any);
   const [userId, setUserID] = useState("");
+  const [inCart, setInCart] = useState(false);
+  const [inFavorite, setInFavorite] = useState(false);
 
   interface DecodedToken {
     _id: string;
@@ -63,6 +66,7 @@ const DetailsScreen = ({
   }, []);
 
   const AddToCart = async () => {
+    setInCart(true);
     const CartData = {
       user_id: userId,
       book_id: id,
@@ -80,6 +84,7 @@ const DetailsScreen = ({
   };
 
   const addToFavoriteList = async () => {
+    setInFavorite(true);
     const FavoriteData = {
       user_id: userId,
       book_id: id,
@@ -95,6 +100,13 @@ const DetailsScreen = ({
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  const removeFromFavorite = async () => {
+    setInFavorite(false);
+  };
+  const removeFromCart = async () => {
+    setInCart(false);
   };
 
   return (
@@ -133,7 +145,7 @@ const DetailsScreen = ({
           </TouchableOpacity>
           <View style={{ flex: 1 }} />
           <TouchableOpacity
-            onPress={addToFavoriteList}
+            onPress={inFavorite ? removeFromFavorite : addToFavoriteList}
             style={{
               width: 52,
               aspectRatio: 1,
@@ -143,10 +155,14 @@ const DetailsScreen = ({
               borderWidth: 3,
               borderColor: "#000",
             }}>
-            <Icons name="favorite-border" size={34} color={"#000"} />
+            <Icons
+              name={inFavorite ? "favorite" : "favorite-border"}
+              size={34}
+              color={"#000"}
+            />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={AddToCart}
+            onPress={inCart ? removeFromCart : AddToCart}
             style={{
               width: 52,
               aspectRatio: 1,
@@ -156,7 +172,11 @@ const DetailsScreen = ({
               borderWidth: 3,
               borderColor: "#000",
             }}>
-            <Icons name="add-shopping-cart" size={34} color={"#000"} />
+            <Icons
+              name={inCart ? "shopping-cart" : "add-shopping-cart"}
+              size={34}
+              color={"#000"}
+            />
           </TouchableOpacity>
         </View>
       </SafeAreaView>

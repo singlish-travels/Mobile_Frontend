@@ -11,6 +11,7 @@ import {
   StatusBar,
   Platform,
   FlatList,
+  Alert,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -24,6 +25,8 @@ import Spacing from "../../constants/Spacing";
 import Colors from "../../constants/Colors";
 import getCart from "../../api/cart/get_cart";
 import getFavorite from "../../api/favorite/get_favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FontSize from "../../constants/FontSize";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -62,12 +65,43 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
     fetchdata();
   }, []);
 
+  const deleteFromList = async (id: string) => {
+    if (selected == 1) {
+      Alert.alert(
+        "Delete Word",
+        "Are you sure you want to delete this word?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: () => {
+              try {
+                // removeWord(id);
+                alert("Word Deleted Successfully");
+                //setWord("Word Deleted Successfully");
+              } catch (error) {
+                console.error("Error:", error);
+              }
+            },
+            style: "destructive",
+          },
+        ],
+        { cancelable: true }
+      );
+    }
+    if (selected == 2) {
+      //delete function for cart book
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-      }}
-    >
+      }}>
       <View style={styles.topicContainer}>
         <Text style={styles.topicText}>My Books</Text>
       </View>
@@ -77,16 +111,14 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
           onPress={() => {
             setSelected(1);
             fetchdata();
-          }}
-        >
+          }}>
           <View
             style={[
               styles.button,
               selected === 1
                 ? { borderBottomWidth: 3, borderBottomColor: "blue" }
                 : null,
-            ]}
-          >
+            ]}>
             <Text style={styles.text}>Favorites</Text>
           </View>
         </TouchableOpacity>
@@ -95,16 +127,14 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
           onPress={() => {
             setSelected(2);
             fetchdata();
-          }}
-        >
+          }}>
           <View
             style={[
               styles.button,
               selected === 2
                 ? { borderBottomWidth: 3, borderBottomColor: "blue" }
                 : null,
-            ]}
-          >
+            ]}>
             <Text style={styles.text}>Cart</Text>
           </View>
         </TouchableOpacity>
@@ -126,8 +156,7 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                 paddingHorizontal: 10,
                 borderBottomWidth: 3,
                 borderBottomColor: "#b5bcc9",
-              }}
-            >
+              }}>
               <View style={{ width: "30%" }}>
                 <Image
                   source={{
@@ -141,6 +170,12 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                 />
               </View>
               <View style={{ flex: 4, padding: 4 }}>
+                <TouchableOpacity
+                  onPress={() => deleteFromList(item.book_details._id)}>
+                  <Icon
+                    name="delete-outline"
+                    style={{ fontSize: 35, marginLeft: "85%" }}></Icon>
+                </TouchableOpacity>
                 <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                   {item.book_details.title}
                 </Text>
@@ -177,16 +212,14 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                     shadowOpacity: 10,
                     shadowRadius: 10,
                     elevation: 14, // Android
-                  }}
-                >
+                  }}>
                   {selected == 1 ? (
                     <Text
                       style={{
                         color: Colors.onPrimary,
                         textAlign: "center",
                         fontSize: 20,
-                      }}
-                    >
+                      }}>
                       Read Now
                     </Text>
                   ) : (
@@ -195,8 +228,7 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
                         color: Colors.onPrimary,
                         textAlign: "center",
                         fontSize: 20,
-                      }}
-                    >
+                      }}>
                       Buy now
                     </Text>
                   )}

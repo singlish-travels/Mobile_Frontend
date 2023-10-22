@@ -61,7 +61,7 @@ const FilterView = ({ word_list }: { word_list: [string, string, string] }) => {
       url: "https://cloudlabs-text-to-speech.p.rapidapi.com/synthesize",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
-        "X-RapidAPI-Key": "068563b624mshac6817b553a2e1ap1fb166jsn8c8cb503c815",
+        "X-RapidAPI-Key": "e5603382c2mshc58c7bc60469720p114a22jsn6b862f169def",
         "X-RapidAPI-Host": "cloudlabs-text-to-speech.p.rapidapi.com",
       },
       data: encodedParams,

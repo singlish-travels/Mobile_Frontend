@@ -27,6 +27,8 @@ import getCart from "../../api/cart/get_cart";
 import getFavorite from "../../api/favorite/get_favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FontSize from "../../constants/FontSize";
+import deleteBookCart from "../../api/cart/delete_cart";
+import deleteBookFavorite from "../../api/favorite/delete_book";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -41,8 +43,6 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
   interface DecodedToken {
     _id: string;
   }
-
-  const ReadBook = () => {};
   const [CartBook, setCartBook] = useState([]);
   const [FavoriteBook, setFavoriteBook] = useState([]);
 
@@ -54,7 +54,7 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
 
       const response = await getCart(decodedToken._id);
       const response2 = await getFavorite(decodedToken._id);
-      console.log(response.Cart);
+      // console.log(response.Cart);
       setCartBook(response.Cart);
       setFavoriteBook(response2.Favorite);
     } catch (error) {
@@ -65,7 +65,7 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
     fetchdata();
   }, []);
 
-  const deleteFromList = async (id: string) => {
+  const deleteFromList = async (book_id: string) => {
     if (selected == 1) {
       Alert.alert(
         "Remove Book",
@@ -80,7 +80,17 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
             onPress: () => {
               try {
                 // removeBook(id);
-                alert("Book removed Successfully");
+                const send_data={
+                  user_id:id,
+                  book_id:book_id
+                }
+                console.log(send_data);
+                const response = deleteBookFavorite(send_data);
+                if (response) {
+                  fetchdata();
+                  alert("Book removed Successfully");
+                }
+                
               } catch (error) {
                 console.error("Error:", error);
               }
@@ -92,7 +102,38 @@ const CartScreen = ({ navigation }: TabsStackScreenProps<"Cart">) => {
       );
     }
     if (selected == 2) {
-      //delete function for cart book
+      Alert.alert(
+        "Remove Book",
+        "Are you sure you want to Remove from Cart?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: () => {
+              try {
+                // removeBook(id);
+                const send_data={
+                  user_id:id,
+                  book_id:book_id
+                }
+                const response = deleteBookCart(send_data);
+                if (response) {
+                  fetchdata();
+                  alert("Book removed Successfully");
+                }
+                
+              } catch (error) {
+                console.error("Error:", error);
+              }
+            },
+            style: "destructive",
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
 

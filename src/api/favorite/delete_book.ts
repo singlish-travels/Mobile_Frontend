@@ -1,7 +1,7 @@
 import baseURL from "../../config/baseURL";
 
 async function deleteBookFavorite(send_data: any): Promise<any> {
-    const response = await fetch(`${baseURL}/api/favorite/delete_book`, {
+    const response = await fetch(`${baseURL}/api/favorite/deletebook`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json",

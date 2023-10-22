@@ -1,15 +1,15 @@
 import baseURL from "../../config/baseURL";
 
-async function deleteBookCart(send_data: any): Promise<any> {
-  const response = await fetch(`${baseURL}/api/cart/deletebook`, {
+async function getBook(id: string): Promise<any> {
+  const response = await fetch(`${baseURL}/api/cart/getbooksforuser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(send_data),
+    body: JSON.stringify({ user_id: id }),
   });
   const responseData = await response.json();
   return responseData;
 }
 
-export default deleteBookCart;
+export default getBook;

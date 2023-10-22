@@ -25,6 +25,8 @@ import getPublisher from "../../api/profile/get_user";
 import jwt from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import getFilterBook from "../../api/home/get_filter_book";
+import getBookCart from "../../api/cart/getBook";
+import getBookFavorite from "../../api/favorite/getBooks";
 
 const BOOK_CATEGORIES = [
   "All",
@@ -65,6 +67,8 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
   const [author, setAuthor] = useState("");
   const [clickFilter, setClickFilter] = useState(false);
   const [imageLink, setImageLink] = useState("");
+  const [cart, setCart] = useState([]) as any;
+  const [favorite, setFavorite] = useState([]) as any;
 
   const fetchFreeBooks = async () => {
     try {
@@ -73,6 +77,15 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
       const responseUserData = await getPublisher(decodedToken._id);
       setUsername(responseUserData.user[0].username);
       setImageLink(responseUserData.user[0].image_link);
+      const responseCartData = await getBookCart(decodedToken._id);
+      responseCartData.Cart.forEach((item: any) => {
+        setCart((cart: any) => [...cart, item.book_id]);
+      });
+
+      const responseFavoriteData = await getBookFavorite(decodedToken._id);
+      responseFavoriteData.Favorite.forEach((item: any) => {
+        setFavorite((favorite: any) => [...favorite, item.book_id]);
+      });
 
       if (clickFilter) {
         bottomSheetModalRef.current?.dismiss();
@@ -396,11 +409,19 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                           justifyContent: "center",
                         }}
                       >
-                        <Icons
-                          name="favorite-border"
-                          size={20}
-                          color={colors.text}
-                        />
+                        {favorite.includes(item._id) ? (
+                          <Icons
+                            name="favorite"
+                            size={20}
+                            color={colors.text}
+                          />
+                        ) : (
+                          <Icons
+                            name="favorite-border"
+                            size={20}
+                            color={colors.text}
+                          />
+                        )}
                       </View>
                     </View>
                     <View style={{ flex: 1 }} />
@@ -435,11 +456,15 @@ const HomeScreen = ({ navigation }: TabsStackScreenProps<"Home">) => {
                           backgroundColor: "#fff",
                         }}
                       >
-                        <Icons
-                          name="add-shopping-cart"
-                          size={18}
-                          color="#000"
-                        />
+                        {cart.includes(item._id) ? (
+                          <Icons name="shopping-cart" size={18} color="#000" />
+                        ) : (
+                          <Icons
+                            name="add-shopping-cart"
+                            size={18}
+                            color="#000"
+                          />
+                        )}
                       </TouchableOpacity>
                     </BlurView>
                   </View>

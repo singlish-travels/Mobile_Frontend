@@ -16,8 +16,11 @@ import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt from "jwt-decode";
 import addToCart from "../../api/cart/add_to_cart";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import addToFavorite from "../../api/favorite/addFavorite";
+import checkbookforuserCart from "../../api/cart/checkBook";
+import checkbookforuserFavorite from "../../api/favorite/checkBook";
+import deleteBookCart from "../../api/cart/delete_cart";
+import deleteBookFavorite from "../../api/favorite/delete_book";
 
 const openUnityLink = async () => {
   const appExist = await Linking.openURL("unitydl://mylink?blankAR");
@@ -50,6 +53,26 @@ const DetailsScreen = ({
       const token = await AsyncStorage.getItem("token");
       const decodedToken = jwt(token) as DecodedToken;
       setUserID(decodedToken._id);
+      const CartData = {
+        user_id: decodedToken._id,
+        book_id: id,
+      };
+      const FavoriteData = {
+        user_id: decodedToken._id,
+        book_id: id,
+      };
+      const responseDataCart = await checkbookforuserCart(CartData);
+      const responseDataFavorite = await checkbookforuserFavorite(FavoriteData);
+      if (responseDataCart.message === "Book already added to Cart!") {
+        setInCart(true);
+      } else {
+        setInCart(false);
+      }
+      if (responseDataFavorite.message === "Book already added to favorite") {
+        setInFavorite(true);
+      } else {
+        setInFavorite(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -104,9 +127,22 @@ const DetailsScreen = ({
 
   const removeFromFavorite = async () => {
     setInFavorite(false);
+    const FavoriteData = {
+      user_id: userId,
+      book_id: id,
+    };
+    console.log(FavoriteData);
+    await deleteBookFavorite(FavoriteData);
   };
   const removeFromCart = async () => {
+    console.log("remove from cart");
     setInCart(false);
+    const CartData = {
+      user_id: userId,
+      book_id: id,
+    };
+    console.log(CartData);
+    await deleteBookCart(CartData);
   };
 
   return (
@@ -121,7 +157,8 @@ const DetailsScreen = ({
 
       <SafeAreaView
         edges={["top"]}
-        style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+        style={{ position: "absolute", top: 0, left: 0, right: 0 }}
+      >
         <StatusBar style="dark" />
         <View
           style={{
@@ -129,7 +166,8 @@ const DetailsScreen = ({
             alignItems: "center",
             padding: 20,
             gap: 8,
-          }}>
+          }}
+        >
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
@@ -140,7 +178,8 @@ const DetailsScreen = ({
               borderRadius: 32,
               borderWidth: 3,
               borderColor: "#000",
-            }}>
+            }}
+          >
             <Icons name="arrow-back" size={34} color={"#000"} />
           </TouchableOpacity>
           <View style={{ flex: 1 }} />
@@ -154,7 +193,8 @@ const DetailsScreen = ({
               borderRadius: 52,
               borderWidth: 3,
               borderColor: "#000",
-            }}>
+            }}
+          >
             <Icons
               name={inFavorite ? "favorite" : "favorite-border"}
               size={34}
@@ -171,7 +211,8 @@ const DetailsScreen = ({
               borderRadius: 52,
               borderWidth: 3,
               borderColor: "#000",
-            }}>
+            }}
+          >
             <Icons
               name={inCart ? "shopping-cart" : "add-shopping-cart"}
               size={34}
@@ -193,7 +234,8 @@ const DetailsScreen = ({
         }}
         handleIndicatorStyle={{
           backgroundColor: colors.text,
-        }}>
+        }}
+      >
         <View style={{ padding: 16, gap: 16, flex: 1 }}>
           <Text style={{ fontSize: 27, fontWeight: "700", color: colors.text }}>
             {book.title}
@@ -217,7 +259,8 @@ const DetailsScreen = ({
                   color: colors.text,
                   opacity: 0.5,
                   marginTop: 4,
-                }}>
+                }}
+              >
                 3.0 (250K Reviews)
               </Text>
             </View>
@@ -230,7 +273,8 @@ const DetailsScreen = ({
                 backgroundColor: colors.primary,
                 padding: 6,
                 borderRadius: 80,
-              }}>
+              }}
+            >
               <TouchableOpacity
                 onPress={() => setCount((count) => Math.max(1, count - 1))}
                 style={{
@@ -240,7 +284,8 @@ const DetailsScreen = ({
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: 34,
-                }}>
+                }}
+              >
                 <Icons name="remove" size={20} color={colors.text} />
               </TouchableOpacity>
               <Text
@@ -248,7 +293,8 @@ const DetailsScreen = ({
                   fontSize: 16,
                   fontWeight: "600",
                   color: colors.background,
-                }}>
+                }}
+              >
                 {count}
               </Text>
               <TouchableOpacity
@@ -260,7 +306,8 @@ const DetailsScreen = ({
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: 34,
-                }}>
+                }}
+              >
                 <Icons name="add" size={20} color={colors.text} />
               </TouchableOpacity>
             </View>
@@ -280,7 +327,8 @@ const DetailsScreen = ({
                 }}
                 onPress={() =>
                   navigation.navigate("PdfScreen", { link: book.pdf })
-                }>
+                }
+              >
                 <MaterialIcons name="menu-book" size={44} color={Colors.text} />
               </TouchableOpacity>
               <Text
@@ -290,7 +338,8 @@ const DetailsScreen = ({
                   fontWeight: "400",
                   color: colors.text,
                   padding: 10,
-                }}>
+                }}
+              >
                 Read the book...
               </Text>
             </View>
@@ -307,7 +356,8 @@ const DetailsScreen = ({
                   borderWidth: 1,
                   borderColor: "#000",
                 }}
-                onPress={openUnityLink}>
+                onPress={openUnityLink}
+              >
                 <MaterialIcons
                   name="3d-rotation"
                   size={44}
@@ -321,7 +371,8 @@ const DetailsScreen = ({
                   fontWeight: "400",
                   color: colors.text,
                   padding: 10,
-                }}>
+                }}
+              >
                 Visit AR...
               </Text>
             </View>
@@ -334,12 +385,14 @@ const DetailsScreen = ({
                 fontWeight: "600",
                 marginBottom: 6,
                 color: colors.text,
-              }}>
+              }}
+            >
               Summary:
             </Text>
             <Text
               style={{ color: colors.text, opacity: 0.75 }}
-              numberOfLines={3}>
+              numberOfLines={3}
+            >
               {book.summary}
             </Text>
           </View>
@@ -349,7 +402,8 @@ const DetailsScreen = ({
                 fontSize: 16,
                 fontWeight: "600",
                 color: colors.text,
-              }}>
+              }}
+            >
               Author: {book.author}
             </Text>
           </View>
@@ -359,7 +413,8 @@ const DetailsScreen = ({
                 fontSize: 16,
                 fontWeight: "600",
                 color: colors.text,
-              }}>
+              }}
+            >
               Genre: {book.genre}
             </Text>
           </View>

@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { launchImageLibrary,launchCamera } from "react-native-image-picker";
+import { launchImageLibrary, launchCamera } from "react-native-image-picker";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 //import { TouchableOpacity } from "react-native-gesture-handler";
@@ -45,7 +45,7 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
     );
   };
 
-  const CameraLaunch=()=>{
+  const CameraLaunch = () => {
     launchCamera(
       {
         mediaType: "photo",
@@ -57,7 +57,7 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
         console.log(response);
       }
     );
-  }
+  };
   return (
     <SafeAreaView
       style={{
@@ -104,23 +104,13 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
             }}
           >
             <TouchableOpacity
-              style={[styles.galleryButton, { marginRight: 20 }]} // Add marginRight to the first button
+              style={[styles.galleryButton, { marginRight: 20 }]}
               onPress={() => {
                 ImagePicker();
               }}
             >
               <AntDesign name="picture" size={30} color="white" />
               <Text style={styles.buttonText}>Gallery</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.galleryButton} // No need to add margin to the second button
-              onPress={() => {
-                CameraLaunch();
-              }}
-            >
-              <AntDesign name="camera" size={30} color="white" />
-              <Text style={styles.buttonText}>Camera</Text>
             </TouchableOpacity>
           </View>
 
@@ -159,7 +149,6 @@ const OCRScreen = ({ navigation }: TabsStackScreenProps<"OCR">) => {
       </ScrollView>
     </SafeAreaView>
   );
-  
 };
 
 const styles = StyleSheet.create({

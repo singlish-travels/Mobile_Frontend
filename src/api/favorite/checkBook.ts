@@ -1,7 +1,7 @@
 import baseURL from "../../config/baseURL";
 
-async function deleteBookCart(send_data: any): Promise<any> {
-  const response = await fetch(`${baseURL}/api/cart/deletebook`, {
+async function checkbookforuser(send_data: any): Promise<any> {
+  const response = await fetch(`${baseURL}/api/favorite/checkbookforuser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -12,4 +12,4 @@ async function deleteBookCart(send_data: any): Promise<any> {
   return responseData;
 }
 
-export default deleteBookCart;
+export default checkbookforuser;

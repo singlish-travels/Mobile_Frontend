@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Interactive-Book-Reader-AR",
-    "slug": "Interactive-Book-Reader-AR",
+    "name": "firebaseWebrtc",
+    "slug": "firebaseWebrtc",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,9 +15,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -31,14 +29,14 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"
       ],
-      "package": "com.amrithshagar.InteractiveBookReaderAR"
+      "package": "com.samithk.firebaseWebrtc"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "6a63b2ee-4363-4be2-87f3-9c7ffa2e6f07"
+        "projectId": "53d379f6-e9bb-4d66-8081-180ef13d6382"
       }
     }
   }

@@ -1,3 +1,10 @@
+### COmmands to run
+
+https://docs.expo.dev/develop/development-builds/create-a-build/
+https://docs.expo.dev/build-reference/apk/
+H.W.K. Aravinda10:19 PM
+eas build -p android --profile preview
+
 # Mobile Application Frontend
 
 ![App Screenshot](assets/Home_Page.jpg)
@@ -29,12 +36,15 @@ These instructions will help you set up and run the mobile application frontend 
    ```bash
    git clone https://github.com/your-username/mobile-app-frontend.git
    cd mobile-app-frontend
+   ```
+
 2. Install dependencies:
    ```bash
    npm install
+   ```
 3. Using eas build create android or IOS build and install it on emulator or physical device.
 4. Start the development server:
    ```bash
    npm start
+   ```
 5. Connetc both computer and mobile devices to same wifi and get the ip adress of that and change the config/baseURL.ts file.
-   
